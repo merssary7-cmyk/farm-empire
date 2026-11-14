@@ -527,7 +527,7 @@ async function initCloudSave(){
    if(!lastLocalSerialized)lastLocalSerialized=JSON.stringify(state);
    localSavedAt=Date.now();cloudReady=true;queueCloudSave();
   }
-  cloudReady=true;cloudStatus('☁️ Сохранено');
+  cloudReady=true;const alreadySynced=lastCloudSyncedSerialized===JSON.stringify(state);cloudStatus(alreadySynced?'☁️ Сохранено':'☁️ Синхронизация…',alreadySynced?'':'syncing');
  }catch(e){
   cloudStatus('⚠️ Облако недоступно','error');
   setTimeout(()=>{if(!cloudReady)initCloudSave()},15000);
