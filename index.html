@@ -1045,5 +1045,5 @@ $('exportSave').onclick=()=>{let blob=new Blob([JSON.stringify(state,null,2)],{t
 $('resetSave').onclick=()=>{if(!confirm('Точно сбросить прогресс? Сначала экспортируй сохранение.'))return;localStorage.removeItem(KEY);state=fresh();makeOrders();save();update();toast('Новая ферма создана')};
 $('plantAll').title='Сажает выбранную культуру на все свободные грядки';
 if(window.Telegram?.WebApp){try{window.Telegram.WebApp.ready();window.Telegram.WebApp.expand();}catch(_){}}
-load();initPremium();update();initCloudSave();syncStarsEntitlements();autoFarmTick();setInterval(()=>{finishJobs();tickAnimals();tickBreeding();tickOrchard();autoFarmTick();update();save()},1000);
+load();initCloudSave();initPremium();update();syncStarsEntitlements();autoFarmTick();setInterval(()=>{finishJobs();tickAnimals();tickBreeding();tickOrchard();autoFarmTick();update();save()},1000);
 </script></body></html>
