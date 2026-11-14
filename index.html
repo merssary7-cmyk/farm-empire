@@ -301,10 +301,11 @@ body{background:radial-gradient(ellipse at 12% 8%,#fff3bf 0 7%,transparent 28%),
 
 .auto-settings{display:grid;gap:6px}.auto-settings .task{background:#f7f8ef;border-radius:12px;padding:9px 10px;margin:0}.auto-settings input{width:20px;height:20px;accent-color:#59a84f}.auto-settings select{max-width:46%;padding:8px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
 @media(max-width:850px){#nav{grid-template-columns:repeat(4,1fr)}}
+.cloud-pill{font-size:10px;padding:8px 9px;color:#4d7950}#cloudStatus.syncing{background:#fff8df}#cloudStatus.error{background:#fff0e9;color:#a14e39}
 </style></head>
 <body><div class="app">
 <header class="top"><div class="brand"><div class="logo">🌱</div><div>FARM <span style="color:#68ad55">EMPIRE</span><div style="font-size:10px;color:#829487;letter-spacing:2px">ALPHA 3.5 · BUILD & DECORATE</div></div></div>
-<div class="stats"><div class="pill">🪙 <span id="coins">0</span></div><div class="pill">💎 <span id="gems">0</span></div><div class="pill">⭐ Ур. <span id="level">1</span></div><div class="pill">📦 <span id="used">0</span>/<span id="capacity">80</span></div></div></header>
+<div class="stats"><div class="pill cloud-pill" id="cloudStatus">☁️ Подключение…</div><div class="pill">🪙 <span id="coins">0</span></div><div class="pill">💎 <span id="gems">0</span></div><div class="pill">⭐ Ур. <span id="level">1</span></div><div class="pill">📦 <span id="used">0</span>/<span id="capacity">80</span></div></div></header>
 <section class="profile"><div class="avatar">🧑‍🌾</div><div class="grow"><div class="levelrow"><span>Моя ферма · Уровень <b id="level2">1</b></span><span><span id="xp">0</span> / <span id="need">30</span> XP</span></div><div class="bar"><i id="xpbar" style="width:0%"></i></div></div><div style="font-size:25px">🏅</div></section>
 <nav class="nav" id="nav"><button class="active" data-tab="farm"><b>🏡</b>Ферма</button><button data-tab="animals"><b>🐄</b>Животные</button><button data-tab="production"><b>🏭</b>Производства</button><button data-tab="warehouse"><b>📦</b>Склад</button><button data-tab="orders"><b>🚚</b>Заказы</button><button data-tab="trade"><b>🧭</b>Торговля</button><button data-tab="shop"><b>🛒</b>Магазин</button><button data-tab="orchard"><b>🍎</b>Сад</button><button data-tab="achievements"><b>🏆</b>Награды</button><button data-tab="territory"><b>🗺️</b>Участок</button><button data-tab="season"><b>🍂</b>Сезон</button><button data-tab="guild"><b>🏰</b>Гильдия</button><button data-tab="journeys"><b>🚂</b>Путешествия</button><button data-tab="regions"><b>🏞️</b>Регионы</button><button data-tab="crystal"><b>🔮</b>Пещеры</button><button data-tab="museum"><b>🏛️</b>Музей</button><button data-tab="festival"><b>🎪</b>Фестиваль</button><button data-tab="social"><b>👥</b>Друзья</button><button data-tab="more"><b>🌟</b>Ещё</button><button data-tab="premium"><b>⭐</b>Премиум</button></nav>
 <main>
@@ -480,7 +481,59 @@ function normalize(){state.landLevel=Math.max(1,Math.min(5,Number(state.landLeve
 function dailyDate(){let d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function ensureDaily(){let d=dailyDate();if(!state.daily||state.daily.date!==d){state.daily={date:d,harvested:0,produced:0,orders:0,claimed:{}};}}
 function load(){try{let s=JSON.parse(localStorage.getItem(KEY));if(s)state={...fresh(),...s};else{let old=JSON.parse(localStorage.getItem(OLDKEY));if(old){state.coins=old.coins??500;state.gems=old.gems??12;state.level=old.level??1;state.xp=old.xp??0;state.plots=old.plots||state.plots;state.inventory={wheat:old.wheat||0,flour:old.flour||0,bread:old.bread||0,fish:old.fish||0};state.house=old.house||'🏡';state.log.unshift('Сохранение Alpha 0.3 перенесено в Alpha 0.4.');}}}catch(e){}normalize();ensureDaily();if(!state.orders.length)makeOrders()}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){toast('Не удалось сохранить: возможно, память браузера заполнена')}}
+const CLOUD_META_KEY='farmEmpireCloudMeta04';
+let cloudReady=false,cloudRevision=0,cloudSyncTimer=null,cloudSyncBusy=false,lastLocalSerialized='',lastCloudSyncedSerialized='',localSavedAt=0;
+function cloudStatus(message,kind=''){const el=$('cloudStatus');if(!el)return;el.textContent=message;el.classList.toggle('syncing',kind==='syncing');el.classList.toggle('error',kind==='error')}
+function cloudMeta(){try{return JSON.parse(localStorage.getItem(CLOUD_META_KEY)||'null')}catch(_){return null}}
+function writeCloudMeta(updatedAt=0){try{localStorage.setItem(CLOUD_META_KEY,JSON.stringify({revision:cloudRevision,localSavedAt,updatedAt}))}catch(_){}}
+function queueCloudSave(){if(!cloudReady||!window.Telegram?.WebApp?.initData||cloudSyncTimer)return;cloudSyncTimer=setTimeout(()=>{cloudSyncTimer=null;pushCloudSave()},2200)}
+async function pushCloudSave(){
+ if(!cloudReady||cloudSyncBusy)return;
+ const serialized=JSON.stringify(state);if(serialized===lastCloudSyncedSerialized)return;
+ cloudSyncBusy=true;cloudStatus('☁️ Сохраняем…','syncing');
+ try{
+  const response=await fetch('https://farm-empire-api-core-production.up.railway.app/api/game/save',{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'tma '+window.Telegram.WebApp.initData},body:JSON.stringify({save:JSON.parse(serialized),expectedRevision:cloudRevision})});
+  const result=await response.json().catch(()=>({}));
+  if(response.status===409){
+   if(result.save){
+    state={...fresh(),...result.save};normalize();ensureDaily();cloudRevision=Number(result.revision)||0;
+    const adopted=JSON.stringify(state);localStorage.setItem(KEY,adopted);lastLocalSerialized=adopted;lastCloudSyncedSerialized=adopted;localSavedAt=Date.now();writeCloudMeta(Number(result.updatedAt)||0);update();toast('☁️ Загружен более новый прогресс с другого устройства');
+   }
+   cloudStatus('☁️ Синхронизировано');return;
+  }
+  if(!response.ok)throw new Error(result.error||'HTTP '+response.status);
+  cloudRevision=Number(result.revision)||cloudRevision+1;lastCloudSyncedSerialized=serialized;writeCloudMeta(Number(result.updatedAt)||0);cloudStatus('☁️ Сохранено');
+  if(JSON.stringify(state)!==serialized)queueCloudSave();
+ }catch(e){
+  cloudStatus('⚠️ Нет связи — сохранено на устройстве','error');
+  setTimeout(()=>{if(cloudReady&&JSON.stringify(state)!==lastCloudSyncedSerialized)queueCloudSave()},12000);
+ }finally{cloudSyncBusy=false}
+}
+async function initCloudSave(){
+ const tg=window.Telegram?.WebApp;
+ if(!tg?.initData){cloudStatus('💾 Локально');return}
+ cloudStatus('☁️ Подключаем…','syncing');
+ try{
+  const response=await fetch('https://farm-empire-api-core-production.up.railway.app/api/game/save',{method:'GET',headers:{'Authorization':'tma '+tg.initData}});
+  const result=await response.json();if(!response.ok)throw new Error(result.error||'HTTP '+response.status);
+  const meta=cloudMeta(),serverRevision=Number(result.revision)||0;
+  cloudRevision=serverRevision;
+  const localHasUnsynced=!!(result.save&&meta&&Number(meta.revision)===serverRevision&&Number(meta.localSavedAt)>Number(result.updatedAt||0)+1000);
+  if(result.save&&!localHasUnsynced){
+   state={...fresh(),...result.save};normalize();ensureDaily();
+   const adopted=JSON.stringify(state);localStorage.setItem(KEY,adopted);lastLocalSerialized=adopted;lastCloudSyncedSerialized=adopted;localSavedAt=Date.now();writeCloudMeta(Number(result.updatedAt)||0);update();
+  }else{
+   lastCloudSyncedSerialized=result.save?JSON.stringify(result.save):'';
+   if(!lastLocalSerialized)lastLocalSerialized=JSON.stringify(state);
+   localSavedAt=Date.now();cloudReady=true;queueCloudSave();
+  }
+  cloudReady=true;cloudStatus('☁️ Сохранено');
+ }catch(e){
+  cloudStatus('⚠️ Облако недоступно','error');
+  setTimeout(()=>{if(!cloudReady)initCloudSave()},15000);
+ }
+}
+function save(){try{const serialized=JSON.stringify(state);localStorage.setItem(KEY,serialized);if(serialized!==lastLocalSerialized){lastLocalSerialized=serialized;localSavedAt=Date.now();queueCloudSave()}}catch(e){toast('Не удалось сохранить: возможно, память браузера заполнена')}}
 function toast(t){let el=$('toast');el.textContent=t;el.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.classList.remove('show'),2100)}
 function log(t){state.log.unshift(t);state.log=state.log.slice(0,35);$('log').innerHTML=state.log.map(x=>'• '+x).join('<br>')}
 function needXP(){return Math.floor(80*Math.pow(state.level,1.55)+20)}
@@ -991,5 +1044,5 @@ $('exportSave').onclick=()=>{let blob=new Blob([JSON.stringify(state,null,2)],{t
 $('resetSave').onclick=()=>{if(!confirm('Точно сбросить прогресс? Сначала экспортируй сохранение.'))return;localStorage.removeItem(KEY);state=fresh();makeOrders();save();update();toast('Новая ферма создана')};
 $('plantAll').title='Сажает выбранную культуру на все свободные грядки';
 if(window.Telegram?.WebApp){try{window.Telegram.WebApp.ready();window.Telegram.WebApp.expand();}catch(_){}}
-load();initPremium();update();syncStarsEntitlements();autoFarmTick();setInterval(()=>{finishJobs();tickAnimals();tickBreeding();tickOrchard();autoFarmTick();update();save()},1000);
+load();initPremium();update();initCloudSave();syncStarsEntitlements();autoFarmTick();setInterval(()=>{finishJobs();tickAnimals();tickBreeding();tickOrchard();autoFarmTick();update();save()},1000);
 </script></body></html>
