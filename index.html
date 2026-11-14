@@ -483,6 +483,7 @@ function ensureDaily(){let d=dailyDate();if(!state.daily||state.daily.date!==d){
 function load(){try{let s=JSON.parse(localStorage.getItem(KEY));if(s)state={...fresh(),...s};else{let old=JSON.parse(localStorage.getItem(OLDKEY));if(old){state.coins=old.coins??500;state.gems=old.gems??12;state.level=old.level??1;state.xp=old.xp??0;state.plots=old.plots||state.plots;state.inventory={wheat:old.wheat||0,flour:old.flour||0,bread:old.bread||0,fish:old.fish||0};state.house=old.house||'🏡';state.log.unshift('Сохранение Alpha 0.3 перенесено в Alpha 0.4.');}}}catch(e){}normalize();ensureDaily();if(!state.orders.length)makeOrders()}
 const CLOUD_META_KEY='farmEmpireCloudMeta04';
 let cloudReady=false,cloudRevision=0,cloudSyncTimer=null,cloudSyncBusy=false,lastLocalSerialized='',lastCloudSyncedSerialized='',localSavedAt=0;
+async function cloudFetch(url,options={}){const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),10000);try{return await fetch(url,{...options,signal:controller.signal})}finally{clearTimeout(timer)}}
 function cloudStatus(message,kind=''){const el=$('cloudStatus');if(!el)return;el.textContent=message;el.classList.toggle('syncing',kind==='syncing');el.classList.toggle('error',kind==='error')}
 function cloudMeta(){try{return JSON.parse(localStorage.getItem(CLOUD_META_KEY)||'null')}catch(_){return null}}
 function writeCloudMeta(updatedAt=0){try{localStorage.setItem(CLOUD_META_KEY,JSON.stringify({revision:cloudRevision,localSavedAt,updatedAt}))}catch(_){}}
@@ -492,7 +493,7 @@ async function pushCloudSave(){
  const serialized=JSON.stringify(state);if(serialized===lastCloudSyncedSerialized)return;
  cloudSyncBusy=true;cloudStatus('☁️ Сохраняем…','syncing');
  try{
-  const response=await fetch('https://farm-empire-api-core-production.up.railway.app/api/game/save',{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'tma '+window.Telegram.WebApp.initData},body:JSON.stringify({save:JSON.parse(serialized),expectedRevision:cloudRevision})});
+  const response=await cloudFetch('https://farm-empire-api-core-production.up.railway.app/api/game/save',{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'tma '+window.Telegram.WebApp.initData},body:JSON.stringify({save:JSON.parse(serialized),expectedRevision:cloudRevision})});
   const result=await response.json().catch(()=>({}));
   if(response.status===409){
    if(result.save){
@@ -514,7 +515,7 @@ async function initCloudSave(){
  if(!tg?.initData){cloudStatus('💾 Локально');return}
  cloudStatus('☁️ Подключаем…','syncing');
  try{
-  const response=await fetch('https://farm-empire-api-core-production.up.railway.app/api/game/save',{method:'GET',headers:{'Authorization':'tma '+tg.initData}});
+  const response=await cloudFetch('https://farm-empire-api-core-production.up.railway.app/api/game/save',{method:'GET',headers:{'Authorization':'tma '+tg.initData}});
   const result=await response.json();if(!response.ok)throw new Error(result.error||'HTTP '+response.status);
   const meta=cloudMeta(),serverRevision=Number(result.revision)||0;
   cloudRevision=serverRevision;
@@ -529,7 +530,7 @@ async function initCloudSave(){
   }
   cloudReady=true;const alreadySynced=lastCloudSyncedSerialized===JSON.stringify(state);cloudStatus(alreadySynced?'☁️ Сохранено':'☁️ Синхронизация…',alreadySynced?'':'syncing');
  }catch(e){
-  cloudStatus('⚠️ Облако недоступно','error');
+  cloudStatus(e?.name==='AbortError'?'⏳ Сервер не ответил — повторяем':'⚠️ Облако недоступно','error');
   setTimeout(()=>{if(!cloudReady)initCloudSave()},15000);
  }
 }
