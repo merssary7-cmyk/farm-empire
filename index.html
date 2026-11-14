@@ -750,11 +750,11 @@ async function loadPlayerProfile(expectedNickname=''){
    const response=await fetch('https://farm-empire-api-core-production.up.railway.app/api/player/profile',{headers:{'Authorization':'tma '+tg.initData}});
    if(!response.ok)throw new Error('PROFILE_LOAD_FAILED');
    profile=await response.json();
-   if(!expectedNickname||String(profile.nickname||'').toLocaleLowerCase('und')===String(expectedNickname).normalize('NFC').trim().replace(/\\s+/g,' ').toLocaleLowerCase('und'))break;
+   if(!expectedNickname||String(profile.nickname||'').toLocaleLowerCase('und')===String(expectedNickname).normalize('NFC').trim().replace(/\s+/g,' ').toLocaleLowerCase('und'))break;
    await new Promise(resolve=>setTimeout(resolve,700));
   }
   if(el&&profile?.nickname)el.textContent=profile.nickname;
-  return !!profile?.nickname&&(!expectedNickname||String(profile.nickname).toLocaleLowerCase('und')===String(expectedNickname).normalize('NFC').trim().replace(/\\s+/g,' ').toLocaleLowerCase('und'));
+  return !!profile?.nickname&&(!expectedNickname||String(profile.nickname).toLocaleLowerCase('und')===String(expectedNickname).normalize('NFC').trim().replace(/\s+/g,' ').toLocaleLowerCase('und'));
  }catch(_){if(el)el.textContent='Фермер';return false;}
 }
 window.openNicknameEditor=()=>{
