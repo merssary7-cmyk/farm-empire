@@ -2185,6 +2185,42 @@ body{
 </section>
 </main><div class="footer">Farm Empire Alpha 3.6 · Долгая прокачка · Автоферма · Рулетка · Платежи Stars требуют серверного подключения</div></div>
 <div class="modalback" id="modal"><div class="modal"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px"><h3 id="modalTitle">Окно</h3><button class="btn small" id="closeModal">✕</button></div><div id="modalContent"></div></div></div><div class="toast" id="toast"></div>
+<style id="farm-empire-glowup-v14">
+/* ALPHA 4.6 — SUNLIT ESTATE: refined surfaces, depth, and tactile feedback */
+:root{--fe-ink:#294936;--fe-leaf:#4d9650;--fe-leaf-deep:#347747;--fe-cream:#fffaf0;--fe-line:#e3e9d8;--fe-shadow:0 12px 30px #365b3415}
+::selection{background:#cce9b7;color:#244b32}
+button,.btn,.nav button{-webkit-tap-highlight-color:transparent}
+button:focus-visible,.btn:focus-visible,.nav button:focus-visible{outline:3px solid #e3b85c!important;outline-offset:3px}
+.top{position:relative;overflow:hidden;background:linear-gradient(112deg,#fffef8 0%,#f6faed 56%,#eaf5df 100%)!important;border:1px solid #fff!important;border-bottom-color:#dce8d2!important;box-shadow:0 5px 0 #dce8d2,0 12px 26px #365b3412,inset 0 1px #fff!important}
+.top:after{content:"";position:absolute;right:-34px;top:-58px;width:180px;height:140px;border:1px solid #d4e9c7;border-radius:50%;box-shadow:0 0 0 14px #d4e9c722,0 0 0 30px #d4e9c714;pointer-events:none}
+.brand{position:relative;z-index:1}.brand>div:last-child{letter-spacing:.35px}
+.stats .pill{background:linear-gradient(180deg,#fffef9,#f4f7eb)!important;border:1px solid #e0e8d8!important;box-shadow:0 2px 0 #e4eadc,inset 0 1px #fff!important;font-variant-numeric:tabular-nums}
+.profile{position:relative;overflow:hidden;background:linear-gradient(115deg,#fffdf4,#f0f7e9 70%,#e5f1dc)!important;border:1px solid #fff!important;box-shadow:0 5px 0 #dfe9d7,0 12px 25px #365b3410!important}
+.profile:after{content:"";position:absolute;right:54px;bottom:-36px;width:110px;height:110px;border:1px solid #d7e9cb;border-radius:50%;box-shadow:0 0 0 12px #d7e9cb35,0 0 0 25px #d7e9cb20;pointer-events:none}
+.avatar{box-shadow:0 4px 0 #d7e6ce,0 7px 16px #426b3a20!important}
+.bar{overflow:hidden;background:#e1ead9!important;border:1px solid #d4e2cb}.bar i{background:linear-gradient(90deg,#74bd62,#a6d86d,#e6c35f)!important;box-shadow:0 0 12px #8fc76b80}
+.nav{background:linear-gradient(180deg,#f9fbf3,#edf4e7)!important;border:1px solid #fff!important;box-shadow:0 5px 0 #dfe8d7,0 10px 22px #365b3410!important}
+.nav button{min-height:46px}.nav button:hover{transform:translateY(-2px);box-shadow:0 5px 0 #dce4d2,0 9px 15px #385c3518!important}.nav button:active{transform:translateY(1px);box-shadow:0 1px 0 #dce4d2!important}.nav button.active{filter:saturate(1.08)}
+.panel{border:1px solid #fff!important;box-shadow:0 5px 0 #e4eadc,0 14px 32px #365b3410,inset 0 1px #fff!important}
+.sectionhead,.farmhead{background:linear-gradient(100deg,#fffdf5,#f3f8eb)!important;border-bottom:1px solid #e7ecdf!important}.sectionhead h2,.farmhead h2{letter-spacing:-.25px}
+.cardhead{background:linear-gradient(100deg,#f5f9ed,#edf5e5)!important}
+.tile,.animal-interior-card,.animal-tile{border:1px solid #e4eadc!important;box-shadow:0 3px 0 #e7ecdf,0 7px 16px #365b340b,inset 0 1px #fff!important;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.tile:hover,.animal-interior-card:hover,.animal-tile:hover{transform:translateY(-2px);border-color:#c7dfb9!important;box-shadow:0 5px 0 #dfe9d7,0 12px 20px #365b3415!important}
+.tileicon,.animal-interior-icon{filter:drop-shadow(0 3px 2px #425b3220)}
+.btn{transition:transform .15s ease,filter .15s ease,box-shadow .15s ease!important;box-shadow:0 3px 0 #d8e2d1,0 5px 10px #365b3410!important}
+.btn:hover:not(:disabled){filter:brightness(1.035) saturate(1.06);transform:translateY(-1px)}.btn:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 #d8e2d1!important}
+.btn.primary{box-shadow:0 3px 0 #47864a,0 6px 13px #4a8e4b25!important}.btn.gold{box-shadow:0 3px 0 #c79b43,0 6px 13px #c79b4325!important}
+.tag{border:1px solid #e1e9d8;box-shadow:inset 0 1px #ffffffb8}
+.modalback,.modal{backdrop-filter:blur(7px)}.modal{border:1px solid #fff!important;box-shadow:0 18px 55px #24452b35,inset 0 1px #fff!important}
+.task{border:1px solid #e2ead9!important;box-shadow:0 3px 0 #e7ecdf!important}
+.farm-viewport{border:1px solid #d4e4c8!important;border-radius:20px!important;box-shadow:inset 0 0 0 4px #ffffff70,inset 0 12px 24px #315f3210,0 8px 22px #365b3418!important}
+.farm-map{isolation:isolate}.farm-map .map-place,.farm-map [data-zone],.farm-map [data-building],.farm-map [data-animal]{transition:filter .18s ease,transform .18s ease}
+.farm-map .map-place:hover,.farm-map [data-zone]:hover,.farm-map [data-building]:hover,.farm-map [data-animal]:hover{filter:brightness(1.07) drop-shadow(0 5px 5px #29493635)}
+.animal-pen{filter:drop-shadow(0 4px 5px #315f3220)}.animal-sprite{transform-origin:50% 90%}.animal-sprite:nth-child(3n){animation-delay:.35s}.animal-sprite:nth-child(4n){animation-delay:.7s}
+@media(hover:none){.tile:hover,.animal-interior-card:hover,.animal-tile:hover{transform:none}.nav button:hover,.btn:hover:not(:disabled){transform:none}}
+@media(max-width:760px){.top{border-radius:16px!important}.profile{border-radius:16px!important}.nav{border-radius:16px!important;padding:6px!important}.nav button{min-height:43px}.panel{border-radius:17px!important}.farm-viewport{border-radius:16px!important}.tile,.animal-interior-card,.animal-tile{border-radius:15px!important}}
+@media(prefers-reduced-motion:reduce){.nav button,.tile,.animal-interior-card,.animal-tile,.btn{transition:none!important}.animal-sprite{animation:none!important}}
+</style>
 <script>
 const $=id=>document.getElementById(id), now=()=>Date.now();
 const CROPS={
