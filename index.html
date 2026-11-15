@@ -665,18 +665,23 @@ function farmAnimalSvg(id,baby=false){
  else {body='<ellipse cx="39" cy="35" rx="22" ry="16" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/>';head='<circle cx="62" cy="28" r="11" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><path d="M55 18q-4-10 1-11l6 9M66 17q4-11 9-7l-3 10" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><path d="M70 28 82 32 70 36Z" fill="'+c[1]+'"/><circle cx="64" cy="26" r="1.6" fill="#302d25"/><path d="M56 17q-1-9 5-7l1 8" fill="#d94d43"/>';extra='<path d="M26 47v6M44 47v6" stroke="'+c[3]+'" stroke-width="3.5" stroke-linecap="round"/><path d="M19 31q-8-4-6-10" fill="none" stroke="'+c[3]+'" stroke-width="2"/>';}
  return '<svg viewBox="0 0 92 62" aria-hidden="true"><g transform="translate('+(46-46*s)+' '+(31-31*s)+') scale('+s+')">'+body+head+extra+'</g></svg>';
 }
+let farmMapAnimalSignature='';
 function upgradeFarmMapArt(){
  const map=$('farmMap');if(!map)return;
  const kinds={'house-art':'house','pond-art':'pond','mill-art':'mill','bakery-art':'bakery','dairy-art':'dairy','coop-art':'coop','barn-art':'barn','sheep-art':'sheep','pig-art':'pigsty','duck-art':'duck','goat-art':'goat','storage-art':'storage','market-art':'market','cart-art':'orders'};
- map.querySelectorAll('.place-art').forEach(el=>{const kind=Object.keys(kinds).find(k=>el.classList.contains(k));if(kind)el.innerHTML=farmBuildingSvg(kinds[kind]);});
+ map.querySelectorAll('.place-art').forEach(el=>{
+  if(el.dataset.artReady==='1')return;
+  const kind=Object.keys(kinds).find(k=>el.classList.contains(k));
+  if(kind){el.innerHTML=farmBuildingSvg(kinds[kind]);el.dataset.artReady='1';}
+ });
 }
-
 function renderFarmMap(){
  upgradeFarmMapArt();
- const set=(id,txt)=>{let el=$(id);if(el)el.textContent=txt};
- set('mapChicken','Кур: '+(state.animals.chicken||0)+' · молодняк: '+state.animalHerd.filter(x=>x.id==='chicken'&&animalStage(x,ANIMALS.chicken)!=='adult').length);
- set('mapCow','Коров: '+(state.animals.cow||0)+' · молодняк: '+state.animalHerd.filter(x=>x.id==='cow'&&animalStage(x,ANIMALS.cow)!=='adult').length);
- set('mapSheep','Овец: '+(state.animals.sheep||0)+' · молодняк: '+state.animalHerd.filter(x=>x.id==='sheep'&&animalStage(x,ANIMALS.sheep)!=='adult').length);
+ const set=(id,txt)=>{let el=$(id);if(el&&el.textContent!==txt)el.textContent=txt};
+ const young=id=>state.animalHerd.filter(x=>x.id===id&&animalStage(x,ANIMALS[id])!=='adult').length;
+ set('mapChicken','Кур: '+(state.animals.chicken||0)+' · молодняк: '+young('chicken'));
+ set('mapCow','Коров: '+(state.animals.cow||0)+' · молодняк: '+young('cow'));
+ set('mapSheep','Овец: '+(state.animals.sheep||0)+' · молодняк: '+young('sheep'));
  set('mapPig',state.level>=ANIMALS.pig.level?'Свиней: '+(state.animals.pig||0):'Откроется на 8 уровне');
  renderMapAnimalLife();
 }
@@ -685,21 +690,20 @@ function renderMapAnimalLife(){
  let layer=map.querySelector('.animal-life-layer');
  if(!layer){layer=document.createElement('div');layer.className='animal-life-layer';layer.setAttribute('aria-hidden','true');map.appendChild(layer)}
  const herds=[
-  {id:'chicken',x:16,y:48},
-  {id:'cow',x:73,y:48},
-  {id:'pig',x:16,y:64},
-  {id:'sheep',x:73,y:64},
-  {id:'duck',x:17,y:78},
-  {id:'goat',x:73,y:78}
+  {id:'chicken',x:30,y:48},{id:'cow',x:64,y:48},
+  {id:'pig',x:30,y:64},{id:'sheep',x:64,y:64},
+  {id:'duck',x:30,y:78},{id:'goat',x:64,y:78}
  ];
+ const signature=herds.map(h=>state.animalHerd.filter(a=>a.id===h.id).slice(0,4).map(a=>h.id+':'+animalStage(a,ANIMALS[h.id])).join(',')).join('|');
+ if(signature===farmMapAnimalSignature)return;
+ farmMapAnimalSignature=signature;
  let html='';
  herds.forEach(h=>{
   const animals=state.animalHerd.filter(a=>a.id===h.id).slice(0,4);
   animals.forEach((a,i)=>{
    const baby=animalStage(a,ANIMALS[h.id])!=='adult';
-   const col=i%2,row=Math.floor(i/2);
-   const left=h.x+col*7,top=h.y+row*3.2;
-   html+=`<span class="animal-sprite ${baby?'baby':''}" style="left:${left}%;top:${top}%;--delay:${-i*.63}s;--walk-time:${4.1+(i%3)*.7}s">${farmAnimalSvg(h.id,baby)}${i===0?'<i class="spark">✦</i>':''}</span>`;
+   const col=i%2,row=Math.floor(i/2),left=h.x+col*5.5,top=h.y+row*2.5;
+   html+=`<span class="animal-sprite ${baby?'baby':''}" style="left:${left}%;top:${top}%">${farmAnimalSvg(h.id,baby)}</span>`;
   });
  });
  layer.innerHTML=html;
@@ -1280,3 +1284,81 @@ if(window.Telegram?.WebApp){try{
 }catch(_){try{window.Telegram.WebApp.expand()}catch(__){}}}
 load();initCloudSave();initPremium();update();syncStarsEntitlements();autoFarmTick();setInterval(()=>{finishJobs();tickAnimals();tickBreeding();tickOrchard();autoFarmTick();update();save()},1000);
 </script></body></html>
+<style>
+
+/* VISUAL & PERFORMANCE PASS — warm illustrated farm, crisp labels, light map rendering */
+:root{--ink:#263f32;--muted:#758579;--line:#e5eadf;--cream:#fffdf5;--shadow:0 8px 24px rgba(39,67,48,.09)}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(180deg,#e8f4ef 0%,#f5f4e9 46%,#edf3e6 100%)}
+.app{max-width:1380px;padding:clamp(8px,1.8vw,20px)}
+.panel{border:1px solid #e7ecdf;border-radius:22px;background:#fffefa;box-shadow:0 5px 18px rgba(42,68,49,.07)}
+.farmhead,.sectionhead{padding:16px 18px}
+.farmhead h2,.sectionhead h2{font-size:clamp(16px,2vw,20px);font-weight:800;letter-spacing:-.45px}
+.sub{font-size:11px;color:#839184;font-weight:650}
+.btn{border:1px solid #e0e9da;border-radius:12px;background:#f5f8f1;color:#34513c;box-shadow:0 2px 0 #e0e8d9;font-weight:750}
+.btn.primary{background:linear-gradient(180deg,#77c96b,#4ea85b);border-color:#58ad5e;box-shadow:0 3px 0 #39874a;color:#fff}
+.btn.gold{background:linear-gradient(180deg,#ffe18b,#efb947);border-color:#e7bd64;box-shadow:0 3px 0 #d19a38;color:#60491f}
+.nav button{border:1px solid #e7ecdf;border-radius:14px;background:#fffefa;box-shadow:0 2px 7px rgba(39,67,48,.05);font-weight:750;color:#526958}
+.nav button.active{border:1px solid #8ac77a;background:#edf8e8;box-shadow:inset 0 0 0 1px #d8edcf}
+.farm-viewport{height:clamp(440px,64dvh,690px);border-radius:0 0 20px 20px;touch-action:none;contain:strict;overflow:hidden;background:#a8dc8a}
+.farm-map.illustrated-map{transform-origin:0 0;will-change:transform;backface-visibility:hidden;contain:layout paint;isolation:isolate}
+.farm-map .world-art{display:block;pointer-events:none;user-select:none;-webkit-user-drag:none}
+.farm-map .map-sky,.farm-map .map-forest,.farm-map .map-path,.farm-map .map-place,.farm-map .field-island,.farm-map .map-decor,.farm-map .map-legend,.farm-map #mapDecorations,.farm-map .animal-life-layer{backface-visibility:hidden}
+.farm-map .map-cloud,.farm-map .map-sun,.farm-map .map-place .place-art,.farm-map .animal-sprite,.farm-map .mill-place .place-art:after,.farm-map .bakery-place .place-art,.farm-map .dairy-place .place-art:after{animation:none!important;transition:none!important}
+.farm-map .map-cloud{filter:none;opacity:.82}
+.farm-map .map-sun{filter:none}
+.farm-map .map-forest{filter:none;text-shadow:0 2px 2px rgba(42,75,38,.18)}
+.farm-map .map-place{width:29%;min-width:0;gap:4px;padding:0 3px;filter:none;text-shadow:none;transition:none}
+.farm-map .map-place:active{transform:scale(.98)}
+.farm-map .map-place .place-art{width:100%;height:76px;min-height:76px;margin:0;filter:drop-shadow(0 4px 2px rgba(35,67,41,.2))!important}
+.farm-map .map-place .place-art svg{width:100%;height:100%;max-width:108px;overflow:visible}
+.farm-map .map-place b{display:flex;align-items:center;justify-content:center;width:100%;min-height:29px;padding:5px 7px;border:1px solid rgba(255,255,255,.92);border-radius:10px;background:rgba(255,253,242,.96);box-shadow:0 2px 5px rgba(40,62,39,.12);color:#35513b;font-size:10px;font-weight:800;line-height:1.15;letter-spacing:-.1px;white-space:normal;text-align:center;overflow-wrap:anywhere;text-shadow:none}
+.farm-map .map-place small{display:block;width:100%;min-height:20px;padding:4px 6px;border:0;border-radius:8px;background:rgba(239,248,228,.94);color:#61785d;font-size:8px;font-weight:700;line-height:1.15;white-space:normal;text-align:center;overflow-wrap:anywhere;text-shadow:none}
+.farm-map .map-place .place-art:before{background:rgba(51,91,48,.18);filter:none}
+.farm-map .field-island{box-shadow:0 5px 12px rgba(57,57,31,.2);background:linear-gradient(145deg,#a66d40,#81502f);border:4px solid #e9c98c}
+.farm-map .field-island:before{border:1px dashed rgba(255,235,190,.7)}
+.farm-map .field-sign{font-size:10px;letter-spacing:.8px;color:#fff3d1}
+.farm-map .field-caption{font-size:9px;color:#fff3d1}
+.farm-map .plot{border:2px solid #d6a96c;border-radius:9px;box-shadow:inset 0 2px 0 rgba(255,220,162,.35),0 2px 0 #65442d}
+.farm-map .plot .crop{font-size:22px}
+.farm-map .plot small{font-size:8px}
+.farm-map .map-legend{border:1px solid rgba(255,255,255,.85);border-radius:11px;background:rgba(255,253,242,.94);box-shadow:0 2px 8px rgba(39,67,48,.12);color:#50694d;font-size:9px;font-weight:750}
+.farm-map .animal-life-layer{z-index:8;pointer-events:none;overflow:hidden}
+.farm-map .animal-sprite{width:42px;height:36px;filter:drop-shadow(0 2px 1px rgba(35,67,41,.2));animation:none!important;transition:none!important}
+.farm-map .animal-sprite svg{display:block;width:100%;height:100%}
+.farm-map .animal-sprite.baby{width:30px;height:27px}
+.map-controls{padding:9px 11px;background:#fbfcf6;border-top:1px solid #edf0e6;gap:7px}
+.map-controls button{border:1px solid #e2e9d9;border-radius:10px;background:#fff;color:#49624c;box-shadow:0 2px 0 #e8eee2}
+.map-controls .build-toggle{background:#5cae62;color:#fff;border-color:#5cae62;box-shadow:0 2px 0 #438c4d}
+.map-controls span{color:#879487;font-size:10px}
+.profile{border:1px solid #e7ecdf;border-radius:18px;background:#fffefa;box-shadow:0 5px 16px rgba(39,67,48,.06)}
+.pill{border:1px solid #e8ecdf;border-radius:12px;background:#fffefa;box-shadow:0 2px 5px rgba(39,67,48,.05);font-size:12px}
+.tile{border:1px solid #e8ede2;border-radius:16px;background:#fffefa;box-shadow:0 2px 7px rgba(39,67,48,.045)}
+.modal{border:1px solid #e8ede2;border-radius:20px}
+@media(max-width:760px){
+ .farm-viewport{height:clamp(430px,62dvh,620px);border-radius:0 0 16px 16px}
+ .farm-map .map-place{width:29%!important}
+ .farm-map .map-place .place-art{height:66px!important;min-height:66px!important}
+ .farm-map .map-place b{min-height:28px;font-size:10px;padding:5px 5px}
+ .farm-map .map-place small{min-height:19px;font-size:8px;padding:3px 4px}
+ .farm-map .home-place{top:64px!important;left:35%!important;width:30%!important}
+ .farm-map .mill-place{top:170px!important;left:2%!important}
+ .farm-map .pond-place{top:170px!important;left:69%!important}
+ .farm-map .bakery-place{top:325px!important;left:2%!important}
+ .farm-map .dairy-place{top:325px!important;left:69%!important}
+ .farm-map .field-island{top:485px!important;left:22%!important;width:56%!important}
+ .farm-map .chicken-place{top:635px!important;left:2%!important}
+ .farm-map .cow-place{top:635px!important;left:69%!important}
+ .farm-map .pig-place{top:845px!important;left:2%!important}
+ .farm-map .sheep-place{top:845px!important;left:69%!important}
+ .farm-map .duck-place{top:1055px!important;left:2%!important}
+ .farm-map .goat-place{top:1055px!important;left:69%!important}
+ .farm-map .barn-storage{top:1260px!important;left:2%!important;width:28%!important}
+ .farm-map .market-place{top:1260px!important;left:36%!important;width:28%!important}
+ .farm-map .order-place{top:1260px!important;left:69%!important;width:29%!important}
+ .farm-map .map-place .place-art{filter:drop-shadow(0 3px 2px rgba(35,67,41,.18))!important}
+ .map-controls{gap:6px;padding:8px}
+ .map-controls span{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){.farm-map *{animation:none!important;transition:none!important}}
+
+</style>
