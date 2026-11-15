@@ -6,7 +6,7 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 :root{--ink:#294333;--muted:#718477;--green:#4f9b58;--green2:#79c968;--cream:#fffaf0;--line:#e8e2d2;--gold:#f3bd45;--shadow:0 10px 28px #314b3020}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#dff2ff,#f7f4e8 42%,#e9f0df);font-family:Inter,ui-rounded,"Trebuchet MS",system-ui,sans-serif;color:var(--ink)}
+*{box-sizing:border-box}html,body{min-height:100%;overscroll-behavior:none}body{margin:0;overscroll-behavior-y:none;}background:linear-gradient(180deg,#dff2ff,#f7f4e8 42%,#e9f0df);font-family:Inter,ui-rounded,"Trebuchet MS",system-ui,sans-serif;color:var(--ink)}
 button{font:inherit;cursor:pointer;border:0;color:inherit}button:disabled{opacity:.42;cursor:not-allowed;filter:grayscale(.3)}
 .app{max-width:1240px;margin:auto;padding:14px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px;font-weight:1000;font-size:clamp(21px,3vw,30px);letter-spacing:-1px}.logo{width:48px;height:48px;border-radius:16px;background:linear-gradient(145deg,#91df75,#399653);display:grid;place-items:center;font-size:28px;box-shadow:0 5px 0 #347a49}
@@ -1076,20 +1076,51 @@ function openModal(title,content){$('modalTitle').textContent=title;$('modalCont
 $('closeModal').onclick=closeModal;$('modal').onclick=e=>{if(e.target===$('modal'))closeModal()};
 $('farmMap').addEventListener('click',e=>{let b=e.target.closest('[data-zone]');if(!b)return;let z=b.dataset.zone;if(z==='pond'){ $('fishBtn').click();return;}if(z==='home'){openModal('🏡 Дом фермера',`<p>Добро пожаловать домой! Здесь начинается развитие твоей усадьбы.</p><div class="rowbtn"><button class="btn primary" onclick="closeModal();document.querySelector('[data-tab=shop]').click()">Украшения и покупки</button></div>`);return;}let tab=z==='animals'?'animals':z==='production'?'production':z;let navButton=document.querySelector(`[data-tab="${tab}"]`);if(navButton)navButton.click();});
 
-// Alpha 3.1: touch pan + pinch zoom for the mobile farm map.
+// Alpha 3.8: stable one-finger pan and two-finger pinch for the farm map.
 (()=>{
  const viewport=document.getElementById('farmViewport'),world=document.getElementById('farmMap');
  if(!viewport||!world)return;
- const BASE_W=640,BASE_H=1480,points=new Map();let scale=1,x=0,y=0,last=null,pinch=null,moved=false,suppressClick=false;
+ const BASE_W=640,BASE_H=1480,points=new Map();
+ let scale=1,x=0,y=0,last=null,pinch=null,moved=false,suppressClick=false,clickTimer=null;
  const mobile=()=>window.matchMedia('(max-width:760px)').matches;
  function bounds(){const w=viewport.clientWidth,h=viewport.clientHeight,sw=BASE_W*scale,sh=BASE_H*scale;return {minX:Math.min(0,w-sw),maxX:Math.max(0,(w-sw)/2),minY:Math.min(0,h-sh),maxY:Math.max(0,(h-sh)/2)}}
  function apply(){if(!mobile())return;const b=bounds();x=Math.max(b.minX,Math.min(b.maxX,x));y=Math.max(b.minY,Math.min(b.maxY,y));world.style.transform=`translate3d(${x}px,${y}px,0) scale(${scale})`;}
  function fit(reset=true){if(!mobile())return;const w=viewport.clientWidth;scale=Math.min(1,Math.max(.48,w/BASE_W));if(reset){x=(w-BASE_W*scale)/2;y=0;}apply();}
- viewport.addEventListener('pointerdown',e=>{if(!mobile())return;if(decorBuildMode&&e.target.closest('.map-decoration'))return;if(e.pointerType==='mouse'&&e.button!==0)return;points.set(e.pointerId,{x:e.clientX,y:e.clientY});if(points.size===1){last={x:e.clientX,y:e.clientY};moved=false;pinch=null;}else if(points.size===2){const a=[...points.values()];pinch={distance:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y),scale,startX:x,startY:y};last=null;}e.target.setPointerCapture?.(e.pointerId);});
- viewport.addEventListener('pointermove',e=>{if(!points.has(e.pointerId)||!mobile())return;points.set(e.pointerId,{x:e.clientX,y:e.clientY});if(points.size>=2&&pinch){const a=[...points.values()],d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);const next=Math.max(.48,Math.min(1.18,pinch.scale*d/Math.max(1,pinch.distance)));const midX=(a[0].x+a[1].x)/2-viewport.getBoundingClientRect().left,midY=(a[0].y+a[1].y)/2-viewport.getBoundingClientRect().top,worldX=(midX-pinch.startX)/pinch.scale,worldY=(midY-pinch.startY)/pinch.scale;scale=next;x=midX-worldX*scale;y=midY-worldY*scale;moved=true;apply();e.preventDefault();return;}if(last){const dx=e.clientX-last.x,dy=e.clientY-last.y;if(Math.abs(dx)+Math.abs(dy)>3)moved=true;x+=dx;y+=dy;last={x:e.clientX,y:e.clientY};apply();if(moved)e.preventDefault();}}, {passive:false});
- function end(e){if(!points.has(e.pointerId))return;points.delete(e.pointerId);if(moved)suppressClick=true;if(points.size===1){const p=[...points.values()][0];last={x:p.x,y:p.y};pinch=null;}else{last=null;pinch=null;}if(!points.size){setTimeout(()=>{suppressClick=false;},80);}}
- viewport.addEventListener('pointerup',end);viewport.addEventListener('pointercancel',end);
- world.addEventListener('click',e=>{if(suppressClick){e.preventDefault();e.stopImmediatePropagation();suppressClick=false;}},true);
+ viewport.addEventListener('pointerdown',e=>{
+  if(!mobile()||(decorBuildMode&&e.target.closest('.map-decoration'))||(e.pointerType==='mouse'&&e.button!==0))return;
+  points.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  try{viewport.setPointerCapture(e.pointerId)}catch(_){}
+  if(points.size===1){last={x:e.clientX,y:e.clientY};moved=false;pinch=null;}
+  else if(points.size===2){
+   const a=[...points.values()],midX=(a[0].x+a[1].x)/2-viewport.getBoundingClientRect().left,midY=(a[0].y+a[1].y)/2-viewport.getBoundingClientRect().top;
+   pinch={distance:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y),scale,startMidX:midX,startMidY:midY,worldX:(midX-x)/scale,worldY:(midY-y)/scale};last=null;
+  }
+ });
+ viewport.addEventListener('pointermove',e=>{
+  if(!points.has(e.pointerId)||!mobile())return;
+  points.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(points.size>=2&&pinch){
+   const a=[...points.values()],d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y),rect=viewport.getBoundingClientRect();
+   const midX=(a[0].x+a[1].x)/2-rect.left,midY=(a[0].y+a[1].y)/2-rect.top;
+   scale=Math.max(.48,Math.min(1.18,pinch.scale*d/Math.max(1,pinch.distance)));
+   x=midX-pinch.worldX*scale;y=midY-pinch.worldY*scale;moved=true;apply();e.preventDefault();return;
+  }
+  if(last&&points.size===1){
+   const dx=e.clientX-last.x,dy=e.clientY-last.y;
+   if(Math.abs(dx)+Math.abs(dy)>3)moved=true;
+   if(moved){x+=dx;y+=dy;apply();e.preventDefault();}
+   last={x:e.clientX,y:e.clientY};
+  }
+ },{passive:false});
+ function end(e){
+  if(!points.has(e.pointerId))return;
+  points.delete(e.pointerId);
+  if(moved){suppressClick=true;clearTimeout(clickTimer);clickTimer=setTimeout(()=>{suppressClick=false},180);}
+  if(points.size===1){const p=[...points.values()][0];last={x:p.x,y:p.y};pinch=null;}
+  else{last=null;pinch=null;}
+ }
+ viewport.addEventListener('pointerup',end);viewport.addEventListener('pointercancel',end);viewport.addEventListener('lostpointercapture',end);
+ world.addEventListener('click',e=>{if(suppressClick){e.preventDefault();e.stopImmediatePropagation();suppressClick=false;clearTimeout(clickTimer);}},true);
  document.getElementById('mapZoomIn')?.addEventListener('click',()=>{const old=scale;scale=Math.min(1.18,scale+.12);const cx=viewport.clientWidth/2,cy=viewport.clientHeight/2;x=cx-(cx-x)*scale/old;y=cy-(cy-y)*scale/old;apply();});
  document.getElementById('mapZoomOut')?.addEventListener('click',()=>{const old=scale;scale=Math.max(.48,scale-.12);const cx=viewport.clientWidth/2,cy=viewport.clientHeight/2;x=cx-(cx-x)*scale/old;y=cy-(cy-y)*scale/old;apply();});
  document.getElementById('mapZoomReset')?.addEventListener('click',()=>fit(true));
@@ -1125,6 +1156,12 @@ document.querySelectorAll('.hub-link').forEach(b=>b.addEventListener('click',()=
 $('exportSave').onclick=()=>{let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='farm-empire-save.json';a.click();URL.revokeObjectURL(a.href);toast('Файл сохранения подготовлен')};
 $('resetSave').onclick=()=>{if(!confirm('Точно сбросить прогресс? Сначала экспортируй сохранение.'))return;localStorage.removeItem(KEY);state=fresh();makeOrders();save();update();toast('Новая ферма создана')};
 $('plantAll').title='Сажает выбранную культуру на все свободные грядки';
-if(window.Telegram?.WebApp){try{window.Telegram.WebApp.ready();window.Telegram.WebApp.expand();}catch(_){}}
+if(window.Telegram?.WebApp){try{
+ const tg=window.Telegram.WebApp;
+ tg.ready();tg.expand();
+ if(typeof tg.disableVerticalSwipes==='function')tg.disableVerticalSwipes();
+ if(typeof tg.enableClosingConfirmation==='function')tg.enableClosingConfirmation();
+ if(typeof tg.requestFullscreen==='function'&&tg.isVersionAtLeast?.('8.0'))tg.requestFullscreen().catch(()=>tg.expand());
+}catch(_){try{window.Telegram.WebApp.expand()}catch(__){}}}
 load();initCloudSave();initPremium();update();syncStarsEntitlements();autoFarmTick();setInterval(()=>{finishJobs();tickAnimals();tickBreeding();tickOrchard();autoFarmTick();update();save()},1000);
 </script></body></html>
