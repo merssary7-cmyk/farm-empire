@@ -816,6 +816,105 @@ body{
 }
 @media(prefers-reduced-motion:reduce){.view.active{animation:none!important}}
 </style>
+<style id="farm-empire-visual-rebuild-v2">
+
+/* FARM EMPIRE — cohesive visual rebuild v2 */
+:root{
+ --fe-bg:#e9f0df;--fe-paper:#fffdf4;--fe-paper2:#f4eedc;--fe-ink:#304a36;
+ --fe-muted:#788873;--fe-green:#5d9850;--fe-green2:#8fc66c;--fe-deep:#294c36;
+ --fe-wood:#8d623e;--fe-wood2:#68472f;--fe-line:#e4ddc8;
+ --fe-shadow:0 12px 28px rgba(44,67,39,.11),0 3px 0 rgba(117,145,84,.16);
+}
+html,body{background:radial-gradient(ellipse at 12% 0%,#fff7d9 0,transparent 28%),linear-gradient(180deg,#dcecf0 0,#edf1df 270px,#e5edd8 100%)!important;color:var(--fe-ink)!important}
+body{font-family:Inter,ui-rounded,"Trebuchet MS",system-ui,sans-serif!important;-webkit-font-smoothing:antialiased}
+button{ -webkit-tap-highlight-color:transparent }
+.app{max-width:1380px!important;margin:0 auto!important;padding:16px!important}
+.top{padding:12px 15px!important;border:1px solid #d9dfc6!important;border-radius:22px!important;background:linear-gradient(115deg,#fffdf3 0%,#f4efd9 65%,#e8efda 100%)!important;box-shadow:0 5px 0 #d4dfc0,0 12px 24px #365a3518!important}
+.brand{color:#31563a!important;font-size:clamp(22px,2.2vw,29px)!important;letter-spacing:-1px!important}
+.brand>div:last-child{line-height:1.08}
+.brand>div:last-child>div{font-size:9px!important;letter-spacing:2.2px!important;color:#879277!important}
+.logo{width:52px!important;height:52px!important;border:3px solid #fff9e7!important;border-radius:18px!important;background:linear-gradient(145deg,#d6ef9d,#75b95c)!important;box-shadow:inset 0 2px 0 #fff9,0 4px 0 #4d8746,0 8px 13px #365a3530!important}
+.stats{gap:7px!important}
+.stats .pill{padding:8px 12px!important;border:1px solid #e1d7b9!important;border-radius:13px!important;background:linear-gradient(180deg,#fffef8,#f1e8d1)!important;color:#536846!important;box-shadow:0 3px 0 #d8cba9!important;font-size:12px!important;font-weight:850!important}
+.profile{padding:12px 16px!important;border:1px solid #dce3c9!important;border-radius:20px!important;background:linear-gradient(105deg,#fffdf4,#f2f7e5)!important;box-shadow:0 4px 0 #d1dfbd,0 10px 22px #3b5b3517!important}
+.profile .avatar{border:3px solid #fff!important;border-radius:16px!important;background:linear-gradient(145deg,#f8e4ad,#e8bd69)!important;box-shadow:0 3px 0 #d4a557!important}
+.levelrow{color:#6f8067!important}.bar{height:11px!important;background:#e4ead8!important;border:1px solid #d5dfc6!important}.bar i{background:linear-gradient(90deg,#f1c75e,#9ccc68,#63a95c)!important}
+.nav{display:flex!important;gap:7px!important;overflow-x:auto!important;overscroll-behavior-x:contain!important;scrollbar-width:none!important;padding:8px!important;border:1px solid #d7dfc4!important;border-radius:17px!important;background:linear-gradient(180deg,#f7f5e8,#e9efdc)!important;box-shadow:0 4px 0 #d3dfc0,0 8px 18px #3a5b3512!important}
+.nav::-webkit-scrollbar{display:none}
+.nav button{flex:0 0 88px!important;min-height:67px!important;padding:8px 5px!important;border:1px solid #e4dfc9!important;border-radius:13px!important;background:linear-gradient(180deg,#fffef9,#f1eddf)!important;color:#647456!important;box-shadow:0 3px 0 #d9d6c2!important;font-size:10px!important;font-weight:800!important;white-space:normal!important}
+.nav button b{font-size:22px!important;margin-bottom:2px!important}
+.nav button.active{border:1px solid #8bbd70!important;background:linear-gradient(180deg,#e3f3c9,#b9dc91)!important;color:#315b38!important;box-shadow:inset 0 1px 0 #fff,0 3px 0 #85b36a!important}
+.panel{border:1px solid #e2ddc9!important;border-radius:22px!important;background:linear-gradient(145deg,#fffef9,#f8f3e5)!important;box-shadow:var(--fe-shadow)!important}
+.farmhead,.sectionhead{padding:16px 19px!important;background:linear-gradient(180deg,#fffef9,#f3efdf)!important;border-bottom:1px solid #e8e1ce!important}
+.farmhead h2,.sectionhead h2{color:#3d6744!important;font-size:clamp(17px,1.7vw,21px)!important;font-weight:900!important;letter-spacing:-.55px!important}
+.sub{color:#89917b!important;font-weight:700!important}
+.cardhead{padding:15px 17px 9px!important;color:#426747!important;font-size:14px!important}
+.cardbody{padding:0 17px 16px!important}
+.tile,.order,.recipe,.task,.achievement,.land-card,.animal-tile,.production-tile,.orchard-card,.region-card,.journey-card,.guild-project,.museum-set,.festival-task{border:1px solid #e4e5d3!important;border-radius:17px!important;background:linear-gradient(145deg,#fffef9,#f0f5e6)!important;box-shadow:0 3px 0 #dfe6d1,0 8px 17px #3c5c3510!important}
+.tile{padding:14px!important;gap:13px!important}
+.tileicon{border:1px solid #e4e5d1!important;border-radius:15px!important;background:linear-gradient(145deg,#fff4d9,#e5f0d9)!important;box-shadow:inset 0 1px 0 #fff!important}
+.tile h3{color:#3d6141!important;font-size:14px!important;font-weight:900!important}
+.tile p{color:#788675!important;line-height:1.55!important}
+.tag{border:1px solid #dce8ce!important;background:#edf5e4!important;color:#58804b!important;border-radius:9px!important}
+.btn{min-height:39px!important;padding:9px 13px!important;border:1px solid #dbe2cc!important;border-radius:12px!important;background:linear-gradient(180deg,#fffef8,#eeeedd)!important;color:#506647!important;box-shadow:inset 0 1px 0 #fff,0 3px 0 #d6ddc8!important;font-weight:850!important}
+.btn.primary{border-color:#78ae65!important;background:linear-gradient(180deg,#a9d783,#70b35d)!important;color:#234b31!important;box-shadow:inset 0 1px 0 #ffffffaa,0 3px 0 #548e4c!important}
+.btn.gold{border-color:#dfbd72!important;background:linear-gradient(180deg,#ffe9a8,#edc46c)!important;color:#694d24!important;box-shadow:inset 0 1px 0 #fff9,0 3px 0 #c69c4e!important}
+.btn.danger{border-color:#e6c8b9!important;background:linear-gradient(180deg,#fff2e9,#f3ddd0)!important;color:#925644!important}
+.recipe,.order{padding:12px!important;background:linear-gradient(145deg,#fffef9,#f5f2e5)!important}
+.inventory{gap:10px!important}.invitem{border:1px solid #e1e5d4!important;border-radius:14px!important;background:linear-gradient(145deg,#fffef8,#edf4e5)!important;box-shadow:0 2px 0 #dce4d0!important}
+.modalback{background:#1e392d99!important;backdrop-filter:blur(7px)!important}
+.modal{border:1px solid #e5ddc7!important;border-radius:23px!important;background:linear-gradient(145deg,#fffef8,#f3eddd)!important;box-shadow:0 8px 0 #b6a57e,0 25px 65px #1e392d55!important}
+.item{border:1px solid #e1e6d5!important;border-radius:14px!important;background:linear-gradient(145deg,#fffef9,#eef4e5)!important}
+.toast{border:1px solid #e8d9b5!important;border-radius:14px!important;background:linear-gradient(180deg,#fffdf1,#efe4c8)!important;color:#405c3e!important;box-shadow:0 4px 0 #cbb88e,0 10px 22px #29452f35!important}
+.mobile-screen-hero{border:1px solid #dfe5d1!important;border-radius:21px!important;background:linear-gradient(120deg,#f4f8e8,#fff7e1 70%,#e7f1dd)!important;box-shadow:0 4px 0 #d7e2c8,0 10px 20px #3b5c3510!important}
+.screen-kicker{color:#7b9a65!important;letter-spacing:1.8px!important;font-weight:900!important}
+.mobile-screen-hero h2{color:#365f3e!important;font-weight:950!important;letter-spacing:-.7px!important}
+.mobile-screen-hero p{color:#778573!important;line-height:1.5!important}
+.production-summary,.warehouse-tip,.orders-note,.shop-tip{border:1px solid #dfe6d1!important;border-radius:14px!important;background:linear-gradient(100deg,#edf6e3,#fff9e8)!important;color:#5e7654!important}
+#farmViewport{border:5px solid #fff6df!important;border-radius:21px!important;background:#a6d681!important;box-shadow:inset 0 0 0 2px #94bb73,0 5px 0 #c2d2a5,0 14px 24px #36573525!important}
+#farmMap .map-place{filter:drop-shadow(0 6px 5px #28482d50)!important}
+#farmMap .map-place .place-art{filter:drop-shadow(0 9px 5px #28482d55)!important}
+#farmMap .map-place b{border:1px solid #e9cd98!important;border-radius:10px!important;background:linear-gradient(180deg,#9b754c,#69472e)!important;color:#fff8e6!important;box-shadow:inset 0 1px 0 #ffffff55,0 3px 0 #513720,0 6px 11px #28482d38!important;font-size:12px!important;font-weight:900!important}
+#farmMap .map-place small{border:1px solid #dce9c8!important;border-radius:8px!important;background:linear-gradient(180deg,#fffdf0,#eaf2d9)!important;color:#526b48!important;box-shadow:0 2px 0 #b9c99f!important;font-size:10px!important}
+#farmMap .field-island{border:5px solid #f0d39c!important;border-radius:23px!important;background:linear-gradient(145deg,#bd8952,#895a37 68%,#69452e)!important;box-shadow:inset 0 0 0 3px #d7a96e,0 8px 0 #547a43,0 15px 23px #28482d60!important}
+#farmMap .field-sign{border:1px solid #f0d49c!important;border-radius:10px!important;background:linear-gradient(180deg,#a87949,#704b30)!important;color:#fff5d9!important;box-shadow:0 3px 0 #52371f!important}
+#farmMap .field-island .plot{border:2px solid #e1b77d!important;border-radius:10px!important;background:linear-gradient(145deg,#c18a50,#80502f)!important;box-shadow:inset 0 2px 0 #fff4,0 3px 0 #593820!important}
+#farmMap .plot-expansion,#farmMap .map-legend{border:1px solid #e9d7ad!important;border-radius:11px!important;background:linear-gradient(180deg,#fff9e8,#efe1c1)!important;box-shadow:0 3px 0 #b9a176,0 7px 13px #28482d30!important;color:#536a45!important}
+#farmMap .map-extension{filter:drop-shadow(0 6px 5px #28482d45)!important}
+@media(min-width:851px){
+ .app{max-width:1380px!important;padding:18px!important}
+ .top{margin-bottom:14px!important}
+ .profile{margin-bottom:14px!important}
+ .nav{margin:0 0 15px!important}
+ .layout{grid-template-columns:minmax(0,1.8fr) minmax(300px,.8fr)!important;gap:16px!important}
+ .farm-viewport{height:min(72vh,760px)!important;min-height:560px!important}
+}
+@media(max-width:850px){
+ .app{max-width:none!important;padding:0 0 18px!important}
+ .top{background:linear-gradient(110deg,#315a3d,#477849)!important;border:0!important;border-bottom:2px solid #9ab977!important;box-shadow:0 4px 13px #1e402d40!important}
+ .stats .pill{border:1px solid #a8c28c!important;background:linear-gradient(180deg,#f8f4df,#e8e4c9)!important;color:#425d3e!important;box-shadow:0 2px 0 #b9c59d!important}
+ .profile{background:linear-gradient(110deg,#fffdf2,#edf4df)!important}
+ main{background:linear-gradient(180deg,#e8efdc,#f7f1e2)!important}
+ .inside-building main{padding:12px 10px calc(18px + env(safe-area-inset-bottom,0px))!important}
+ .inside-building .view.active>.panel,.inside-building .view.active .panel{border-radius:18px!important}
+ .inside-building .sectionhead{padding:14px 14px!important}
+ .inside-building .cardbody{padding:0 13px 14px!important}
+ .mobile-screen-hero{margin:0 0 11px!important;padding:16px!important}
+ .contentgrid{gap:10px!important}
+ #farmViewport{border-radius:0!important;border-left:0!important;border-right:0!important;box-shadow:none!important}
+}
+@media(max-width:520px){
+ .tile{padding:12px!important}.btn{min-height:37px!important}
+ .mobile-screen-hero{border-radius:17px!important}
+ .inventory{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(hover:hover) and (pointer:fine){
+ .nav button:hover,.btn:not(:disabled):hover{transform:translateY(-2px)!important;filter:brightness(1.035)!important}
+ .tile:hover{transform:translateY(-2px)!important;box-shadow:0 5px 0 #dfe6d1,0 12px 20px #3c5c3518!important}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+</style>
 </head>
 <body><div id="bootScreen" role="status" aria-live="polite"><div class="boot-loading-ui"><div class="boot-status" id="bootStatus">Загружаем твою ферму…</div><div class="boot-progress"><i id="bootProgressFill"></i></div></div></div><div class="app">
 <header class="top"><div class="brand"><div class="logo">🌱</div><div>FARM <span style="color:#68ad55">EMPIRE</span><div style="font-size:10px;color:#829487;letter-spacing:2px">ALPHA 3.5 · BUILD & DECORATE</div></div></div>
