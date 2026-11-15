@@ -539,7 +539,24 @@ body.inside-building #backToWorld{display:inline-flex!important}
 .boot-progress{height:16px;padding:2px;border:2px solid #8b4b1e;border-radius:99px;background:#75401f;box-shadow:0 3px 0 #512b17,0 4px 14px #35200a80;overflow:hidden}
 .boot-progress i{display:block;width:8%;height:100%;border-radius:99px;background:linear-gradient(90deg,#9ee64e,#51b52f);box-shadow:inset 0 1px 2px #fff9;transition:width .45s ease}
 @media(max-height:600px){.boot-loading-ui{bottom:calc(4% + env(safe-area-inset-bottom,0px))}}
-@media(prefers-reduced-motion:reduce){#bootScreen{transition:none!important}}</style>
+@media(prefers-reduced-motion:reduce){#bootScreen{transition:none!important}}
+/* FARM EMPIRE — illustrated isometric art pass */
+.farm-map.illustrated-map{background:linear-gradient(155deg,#a9e78b 0%,#83d36a 48%,#65b957 100%)}
+.farm-map .place-art:not(.pond-art){width:94px;height:88px;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important}
+.farm-map .place-art:not(.pond-art):before{display:none!important}
+.farm-map .place-art:not(.pond-art)>svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 7px 3px #31512c55);transform:translateY(-2px);transition:transform .22s cubic-bezier(.2,.8,.2,1),filter .22s}
+.farm-map .map-place:active .place-art>svg{transform:translateY(2px) scale(.96);filter:drop-shadow(0 3px 2px #31512c55)}
+.farm-map .map-place b{background:linear-gradient(180deg,#79532f,#49301e);border:2px solid #e5c47d;box-shadow:0 3px 0 #3d2919,0 6px 12px #2d4d2855;text-shadow:0 1px 1px #2c1c10}
+.farm-map .map-place small{background:linear-gradient(180deg,#579343,#376d32);border:1px solid #d6ed9d;box-shadow:0 2px 4px #31552c55}
+.farm-map .field-island{background:linear-gradient(145deg,#a96f3e,#754627 65%,#5d3924);border:6px solid #e6bb72;box-shadow:inset 0 0 0 3px #c58b4d,0 8px 0 #4b743d,0 14px 22px #31552c55}
+.farm-map .field-island .plot{background:linear-gradient(145deg,#b77b45,#754527);border:2px solid #e9c17d;box-shadow:inset 0 2px 2px #f6d49a55,0 3px 0 #56351f}
+.farm-map .map-path{background:linear-gradient(90deg,#c99a5f,#f0d29a 48%,#d4aa6f);border-color:#a47a4b;box-shadow:inset 0 0 0 3px #f6dfb2,0 5px 0 #638d4933}
+@media(max-width:700px){
+ .farm-map .map-place .place-art{width:78px!important;height:72px!important;margin-bottom:0}
+ .farm-map .map-place .place-art>svg{width:100%;height:100%}
+}
+
+</style>
 </head>
 <body><div id="bootScreen" role="status" aria-live="polite"><div class="boot-loading-ui"><div class="boot-status" id="bootStatus">Загружаем твою ферму…</div><div class="boot-progress"><i id="bootProgressFill"></i></div></div></div><div class="app">
 <header class="top"><div class="brand"><div class="logo">🌱</div><div>FARM <span style="color:#68ad55">EMPIRE</span><div style="font-size:10px;color:#829487;letter-spacing:2px">ALPHA 3.5 · BUILD & DECORATE</div></div></div>
@@ -797,19 +814,36 @@ function spendInputs(inputs){Object.entries(inputs).forEach(([id,n])=>state.inve
 function fmt(sec){sec=Math.max(0,Math.ceil(sec));if(sec<60)return sec+'с';if(sec<3600)return Math.floor(sec/60)+'м '+(sec%60?sec%60+'с':'');if(sec<86400)return Math.floor(sec/3600)+'ч '+Math.floor(sec%3600/60)+'м';return Math.floor(sec/86400)+'д '+Math.floor(sec%86400/3600)+'ч'}
 
 function farmBuildingSvg(kind){
- const palettes={house:['#f2d28c','#b94f43','#f8e8bf','#754b32'],mill:['#e7d79e','#789d58','#fff0c4','#71533a'],bakery:['#f3c98c','#b85c43','#fff0d5','#74452f'],dairy:['#e8f0e5','#6b9bb5','#fff','#526f83'],coop:['#f3d89c','#bd7542','#fff0c7','#80502e'],barn:['#e8a18d','#a6423d','#fff0df','#6e302d'],sheep:['#e9d6a8','#b48b5c','#fff4dc','#765638'],pigsty:['#f2c0bd','#c8797d','#fff0e8','#92545b'],duck:['#e7ce8d','#a98b51','#fff0c8','#74562f'],goat:['#e8c995','#98704b','#fff0d2','#745333'],storage:['#efc77f','#a86b38','#fff0c6','#714525'],market:['#f4d18d','#bd7940','#fff0cf','#80532e'],orders:['#e5c58a','#9d6a3f','#fff2d1','#714a2d'],pond:['#80d0e8','#328db7','#d9f5ff','#286e91']};
+ const palettes={
+  house:['#f6d58e','#b84e42','#fff0c9','#70442f','#8b3e36'],
+  mill:['#ead99b','#739b55','#fff1c8','#6b5038','#547a43'],
+  bakery:['#f2c78a','#bd6245','#fff0d4','#74452f','#a84e3b'],
+  dairy:['#e9f1e9','#75a8c4','#ffffff','#526f83','#5c8daa'],
+  coop:['#f4d99e','#c27a42','#fff1c8','#80502e','#a85d32'],
+  barn:['#eaa08d','#a8423d','#fff0df','#6e302d','#87352f'],
+  sheep:['#ead8b2','#b18a60','#fff5df','#765638','#94714c'],
+  pigsty:['#f2c0bd','#c8797d','#fff0e8','#92545b','#aa626b'],
+  duck:['#e9d18d','#a98b51','#fff0c8','#74562f','#90743e'],
+  goat:['#e8c995','#98704b','#fff0d2','#745333','#815b3d'],
+  storage:['#efc77f','#a86b38','#fff0c6','#714525','#8d542d'],
+  market:['#f4d18d','#bd7940','#fff0cf','#80532e','#a96534'],
+  orders:['#e5c58a','#9d6a3f','#fff2d1','#714a2d','#87542f']
+ };
+ if(kind==='pond')return '<svg viewBox="0 0 160 126" aria-label="Пруд"><ellipse cx="80" cy="105" rx="65" ry="13" fill="#315c35" opacity=".3"/><path d="M10 65Q14 20 78 17Q146 13 151 64Q148 108 81 113Q16 111 10 65Z" fill="#9bc96c" stroke="#e7efae" stroke-width="7"/><path d="M20 63Q25 28 80 26Q137 23 141 63Q137 98 80 103Q26 101 20 63Z" fill="#319cc4" stroke="#247fa5" stroke-width="4"/><path d="M38 48q19-13 38 0t39 0M45 72q17-9 34 0t30 0" fill="none" stroke="#c8f4f8" stroke-width="4" stroke-linecap="round"/><circle cx="119" cy="39" r="5" fill="#fff" opacity=".65"/></svg>';
  const p=palettes[kind]||palettes.storage;
- if(kind==='pond')return '<svg viewBox="0 0 140 112" aria-label="Пруд"><ellipse cx="70" cy="91" rx="58" ry="13" fill="#365d36" opacity=".2"/><path d="M13 57Q18 17 68 16Q123 12 128 58Q126 94 72 99Q20 98 13 57Z" fill="#8dbd61" stroke="#e0e8a5" stroke-width="6"/><path d="M21 55Q26 25 70 24Q112 22 120 57Q115 86 70 90Q27 88 21 55Z" fill="#3a9fc4" stroke="#267fa5" stroke-width="4"/><path d="M34 48q18-12 35 0t35 0M42 66q14-8 28 0" fill="none" stroke="#c5f3f7" stroke-width="4" stroke-linecap="round"/></svg>';
- let detail='';
- if(kind==='barn')detail='<path d="M54 105V69q16-18 32 0v36Z" fill="#823d37" stroke="'+p[2]+'" stroke-width="3"/><path d="M54 78h32M54 89h32M70 69v36" stroke="'+p[2]+'" stroke-width="2"/>';
- if(['coop','sheep','pigsty','duck','goat'].includes(kind))detail='<path d="M17 101h106M25 91v16M42 91v16M98 91v16M115 91v16" stroke="'+p[3]+'" stroke-width="4" stroke-linecap="round"/>';
- if(kind==='mill')detail='<circle cx="70" cy="39" r="8" fill="#b78b52" stroke="#fff0c7" stroke-width="3"/><path d="M70 39V6M70 39 43 29M70 39l27-10M70 39v29" stroke="#fff0c7" stroke-width="6" stroke-linecap="round"/>';
- if(kind==='bakery')detail='<path d="M19 46h102l-7 14H26Z" fill="#f6b65e"/><path d="M34 42q4-13 12 0q8-14 16 0q8-14 16 0q8-14 16 0" fill="none" stroke="#fff0c9" stroke-width="5"/>';
- if(kind==='market')detail='<path d="M18 45h104l-8 18H26Z" fill="#fff0d0"/><path d="M23 47h17l-4 14H26ZM53 47h17v14H49ZM85 47h17l-4 14H81Z" fill="#d95e50"/>';
- if(kind==='storage')detail='<path d="M34 105V64h72v41M34 75h72M70 64v41M40 81l26 19M100 81 74 100" fill="#946038" stroke="#e8c47f" stroke-width="3"/>';
- if(kind==='orders')detail='<path d="M44 105V62h52v43" fill="#f8e7bf" stroke="'+p[3]+'" stroke-width="3"/><path d="M52 73h36M52 83h36M52 93h25" stroke="'+p[3]+'" stroke-width="3"/>';
- const windows='<rect x="27" y="57" width="18" height="17" rx="3" fill="#bfe5ed" stroke="'+p[3]+'" stroke-width="3"/><path d="M36 58v15M28 65h16" stroke="#fff" stroke-width="2"/><rect x="95" y="57" width="18" height="17" rx="3" fill="#bfe5ed" stroke="'+p[3]+'" stroke-width="3"/><path d="M104 58v15M96 65h16" stroke="#fff" stroke-width="2"/>';
- return '<svg viewBox="0 0 140 120" aria-label="Постройка"><ellipse cx="70" cy="105" rx="55" ry="9" fill="#365d36" opacity=".2"/><path d="M18 45 70 14 122 45v53q0 7-8 7H26q-8 0-8-7Z" fill="'+p[0]+'" stroke="'+p[3]+'" stroke-width="3"/><path d="M12 45 70 7 128 45 118 54 70 25 22 54Z" fill="'+p[1]+'" stroke="'+p[3]+'" stroke-width="3"/>'+windows+'<path d="M58 105V78q12-17 24 0v27Z" fill="'+p[3]+'" stroke="'+p[2]+'" stroke-width="3"/>'+detail+'</svg>';
+ const [wall,roof,trim,wood,roofDark]=p;
+ let special='';
+ if(kind==='mill')special='<g transform="translate(80 34)"><circle r="8" fill="#b7864c" stroke="#fff0c7" stroke-width="3"/><g fill="#fff0c7" stroke="#9b7446" stroke-width="2"><path d="M-5-7-10-45 0-49 5-8Z"/><path d="M7-5 45-10 49 0 8 5Z"/><path d="M5 7 10 45 0 49-5 8Z"/><path d="M-7 5-45 10-49 0-8-5Z"/></g></g>';
+ if(kind==='bakery')special='<path d="M18 59H139L132 75H25Z" fill="#fff0d2" stroke="'+wood+'" stroke-width="2"/><path d="M22 60H42L39 72H25ZM62 60H82L79 72H59ZM102 60H122L119 72H99Z" fill="#d95d4e"/><path d="M35 50q5-13 11 0q7-14 14 0q7-14 14 0q7-14 14 0" fill="none" stroke="#fff7df" stroke-width="5" stroke-linecap="round"/>';
+ if(kind==='market')special='<path d="M17 61H140L132 76H25Z" fill="#fff0d2" stroke="'+wood+'" stroke-width="2"/><path d="M23 62H43L40 74H27ZM63 62H83L80 74H60ZM103 62H123L120 74H100Z" fill="#d95d4e"/>';
+ if(kind==='coop'||kind==='sheep'||kind==='pigsty'||kind==='duck'||kind==='goat')special='<path d="M12 111H148M23 103V121M45 104V121M117 104V121M139 103V121" fill="none" stroke="'+wood+'" stroke-width="5" stroke-linecap="round"/><path d="M13 110 25 101 37 110 49 101 61 110" fill="none" stroke="'+trim+'" stroke-width="3"/>';
+ if(kind==='barn')special='<path d="M53 119V83Q80 57 107 83V119Z" fill="'+roofDark+'" stroke="'+trim+'" stroke-width="4"/><path d="M80 73V119M53 91H107M53 105H107" stroke="'+trim+'" stroke-width="3"/>';
+ if(kind==='storage')special='<path d="M49 119V85H111V119M49 94H111M80 85V119M55 99 76 115M105 99 84 115" fill="#966139" stroke="'+trim+'" stroke-width="3"/>';
+ if(kind==='orders')special='<path d="M53 119V81H108V119" fill="#fff0d1" stroke="'+wood+'" stroke-width="3"/><path d="M62 91H99M62 101H99M62 111H89" stroke="'+wood+'" stroke-width="3"/>';
+ const door=kind==='barn'||kind==='storage'||kind==='orders'?'':'<path d="M69 121V91Q80 76 91 91V121Z" fill="'+wood+'" stroke="'+trim+'" stroke-width="3"/><circle cx="87" cy="105" r="2" fill="#f7d77f"/>';
+ const windows='<g stroke="'+wood+'" stroke-width="3"><rect x="35" y="72" width="18" height="19" rx="3" fill="#a9dce8"/><path d="M44 73V90M36 81H52" stroke="#fff" stroke-width="2"/><rect x="104" y="76" width="18" height="19" rx="3" fill="#a9dce8"/><path d="M113 77V94M105 85H121" stroke="#fff" stroke-width="2"/></g>';
+ const sign=kind==='coop'?'<circle cx="128" cy="75" r="10" fill="#fff1c8" stroke="'+wood+'" stroke-width="2"/><path d="M122 75q6-9 12 0q-6 9-12 0" fill="#d8a43c"/>':kind==='dairy'?'<path d="M115 43h25v18h-25Z" fill="#f9ffff" stroke="'+wood+'" stroke-width="2"/><path d="M120 48h15M120 54h11" stroke="#6b9bb5" stroke-width="2"/>':'';
+ return '<svg viewBox="0 0 160 140" role="img" aria-label="Постройка"><defs><linearGradient id="roof-'+kind+'" x1="0" y1="0" x2="1" y2="1"><stop stop-color="'+roof+'"/><stop offset="1" stop-color="'+roofDark+'"/></linearGradient><linearGradient id="wall-'+kind+'" x1="0" y1="0" x2="0" y2="1"><stop stop-color="'+wall+'"/><stop offset="1" stop-color="'+trim+'"/></linearGradient></defs><ellipse cx="82" cy="126" rx="66" ry="10" fill="#274d2d" opacity=".3"/><path d="M20 61 82 43 145 65V116L82 135 20 113Z" fill="'+roofDark+'" opacity=".22"/><path d="M83 47 139 65V115L83 132Z" fill="'+trim+'" stroke="'+wood+'" stroke-width="3"/><path d="M22 62 83 47V132L22 114Z" fill="url(#wall-'+kind+')" stroke="'+wood+'" stroke-width="3"/><path d="M12 59 77 13 151 52 137 68 78 37 26 76Z" fill="url(#roof-'+kind+')" stroke="'+wood+'" stroke-width="4" stroke-linejoin="round"/><path d="M78 13 151 52 137 68 78 37Z" fill="'+roofDark+'" opacity=".45"/><path d="M20 62 77 22 77 13 12 59Z" fill="'+trim+'" opacity=".35"/><path d="M27 69 77 37 77 44 29 76Z" fill="'+trim+'" opacity=".8"/><path d="M31 80 49 75V94L31 99Z" fill="#9ed5e4" stroke="'+wood+'" stroke-width="3"/><path d="M40 78V96M32 87 48 83" stroke="#fff" stroke-width="2"/><path d="M96 76 119 83V101L96 94Z" fill="#9ed5e4" stroke="'+wood+'" stroke-width="3"/><path d="M107 79V98M97 85 118 91" stroke="#fff" stroke-width="2"/>'+door+windows+special+sign+'<path d="M20 114 82 132 139 115" fill="none" stroke="'+trim+'" stroke-width="5" stroke-linecap="round"/><path d="M18 59 77 13 151 52" fill="none" stroke="#fff4c9" stroke-width="2.5" opacity=".7"/></svg>';
 }
 function farmAnimalSvg(id,baby=false){
  const colors={
