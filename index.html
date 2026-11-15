@@ -915,6 +915,27 @@ button{ -webkit-tap-highlight-color:transparent }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 </style>
+<style id="farm-empire-building-art-v3">
+
+/* ACTUAL BUILDING ART — larger, bespoke dimensional landmark assets */
+#farmMap .map-place{min-width:112px!important;gap:4px!important}
+#farmMap .map-place .place-art{width:124px!important;height:112px!important;min-height:112px!important;display:grid!important;place-items:center!important;overflow:visible!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;filter:drop-shadow(0 9px 5px #27472d70)!important}
+#farmMap .map-place .place-art:before{display:none!important;content:none!important}
+#farmMap .map-place .place-art svg{display:block!important;width:100%!important;height:100%!important;overflow:visible!important}
+#farmMap .map-place .place-art span{display:none!important}
+#farmMap .map-place b{margin-top:-2px!important;padding:5px 10px!important;font-size:12px!important;letter-spacing:.1px!important}
+#farmMap .map-place small{font-size:10px!important;padding:3px 8px!important}
+#farmMap .pond-place .place-art{width:126px!important;height:86px!important;min-height:86px!important;border:0!important;background:transparent!important;box-shadow:none!important}
+#farmMap .pond-place .place-art:before{display:none!important}
+#farmMap .pond-place .place-art svg{width:100%!important;height:100%!important}
+@media(max-width:850px){
+ #farmMap .map-place{min-width:96px!important;gap:3px!important}
+ #farmMap .map-place .place-art{width:106px!important;height:96px!important;min-height:96px!important}
+ #farmMap .map-place b{font-size:10px!important;padding:4px 7px!important}
+ #farmMap .map-place small{font-size:8px!important;padding:3px 5px!important}
+ #farmMap .pond-place .place-art{width:108px!important;height:76px!important;min-height:76px!important}
+}
+</style>
 </head>
 <body><div id="bootScreen" role="status" aria-live="polite"><div class="boot-loading-ui"><div class="boot-status" id="bootStatus">Загружаем твою ферму…</div><div class="boot-progress"><i id="bootProgressFill"></i></div></div></div><div class="app">
 <header class="top"><div class="brand"><div class="logo">🌱</div><div>FARM <span style="color:#68ad55">EMPIRE</span><div style="font-size:10px;color:#829487;letter-spacing:2px">ALPHA 3.5 · BUILD & DECORATE</div></div></div>
@@ -1218,35 +1239,49 @@ function fmt(sec){sec=Math.max(0,Math.ceil(sec));if(sec<60)return sec+'с';if(se
 
 function farmBuildingSvg(kind){
  const palettes={
-  house:['#f4d99a','#b84d42','#fff0c8','#795033','#9b4038'],
-  mill:['#e9dda7','#789e58','#fff2cb','#705239','#557b43'],
-  bakery:['#f4c98c','#c76548','#fff1d5','#75472f','#a64c3b'],
-  dairy:['#edf4e8','#79aec8','#fff','#526f83','#5d91ad'],
-  coop:['#f5dfa7','#c88445','#fff2d0','#80512f','#a96735'],
-  barn:['#edaa96','#ae4740','#fff0df','#71332f','#8b3834'],
+  house:['#f3d59a','#b94f43','#fff1c9','#805335','#963d35'],
+  mill:['#ead9a0','#769b58','#fff2cb','#755437','#557b42'],
+  bakery:['#f2c58a','#c65d43','#fff1d5','#75472f','#a34c3b'],
+  dairy:['#e9f1e8','#75a9c4','#fff','#536f83','#5488a5'],
+  coop:['#f4dca3','#c78643','#fff2d0','#80512f','#a96735'],
+  barn:['#e9a18c','#ad413c','#fff0df','#71332f','#8b3834'],
   sheep:['#efdfc0','#b18a61','#fff5df','#765638','#98714a'],
-  pigsty:['#f4c9c8','#c8797d','#fff0e8','#92545b','#a65f67'],
+  pigsty:['#f3c2c2','#c8797d','#fff0e8','#92545b','#a65f67'],
   duck:['#edd99b','#ad9258','#fff2cb','#755a35','#8e7747'],
   goat:['#ebd0a0','#9a744e','#fff0d2','#745333','#815b3d'],
   storage:['#efca86','#a96c39','#fff0c6','#714525','#8d542d'],
   market:['#f5d79b','#bd7940','#fff0cf','#80532e','#a96534'],
   orders:['#e9c98e','#9d6a3f','#fff2d1','#714a2d','#87542f']
  };
- if(kind==='pond')return '<svg viewBox="0 0 180 130" role="img" aria-label="Пруд"><ellipse cx="90" cy="112" rx="72" ry="12" fill="#315c35" opacity=".22"/><path d="M13 68Q18 22 88 18Q160 16 168 66Q165 109 91 116Q20 113 13 68Z" fill="#9bc96c" stroke="#e7efae" stroke-width="7"/><path d="M23 66Q29 30 90 27Q150 25 158 66Q154 99 91 106Q31 104 23 66Z" fill="#319cc4" stroke="#247fa5" stroke-width="3"/><path d="M43 51q20-13 39 0t39 0M49 77q18-9 36 0t34 0" fill="none" stroke="#c8f4f8" stroke-width="4" stroke-linecap="round"/><circle cx="136" cy="43" r="5" fill="#fff" opacity=".7"/></svg>';
  const p=palettes[kind]||palettes.storage,[wall,roof,trim,wood,dark]=p;
- let feature='';
- if(kind==='mill')feature='<g transform="translate(91 38)" fill="#fff1cf" stroke="#987447" stroke-width="3" stroke-linejoin="round"><circle r="8" fill="#bd965d"/><path d="M-5-8-11-51 0-56 6-8ZM8-5 51-11 56 0 8 6ZM5 8 11 51 0 56-6 8ZM-8 5-51 11-56 0-8-6Z"/></g>';
- if(kind==='bakery')feature='<path d="M42 54h25v-25q0-12 13-12t13 12v25" fill="#b66b4d" stroke="'+wood+'" stroke-width="4"/><path d="M48 28q0-12 13-12" fill="none" stroke="#fff0d5" stroke-width="4"/><path d="M34 117h112l-8 12H43Z" fill="#fff0d5" stroke="'+wood+'" stroke-width="2"/>';
- if(kind==='dairy')feature='<g transform="translate(119 18)"><path d="M0 9h24l-3 11v29H3V20Z" fill="#fff" stroke="'+wood+'" stroke-width="2"/><path d="M6 9V3h12v6" fill="none" stroke="'+wood+'" stroke-width="3"/><path d="M7 29h10M7 36h10" stroke="#78b5d0" stroke-width="3"/></g>';
- if(['coop','sheep','pigsty','duck','goat'].includes(kind))feature='<g fill="none" stroke="'+wood+'" stroke-width="5" stroke-linecap="round"><path d="M24 117h132M34 108v18m28-18v18m58-18v18m28-18v18"/><path d="m25 112 13-9 13 9 13-9 13 9"/></g>';
- if(kind==='barn')feature='<path d="M68 139V91Q91 66 114 91V139Z" fill="'+dark+'" stroke="'+trim+'" stroke-width="4"/><path d="M91 77v62M68 105h46M68 122h46" stroke="'+trim+'" stroke-width="3"/>';
- if(kind==='storage')feature='<g fill="#d8ad68" stroke="'+wood+'" stroke-width="2"><path d="M49 118q-5-20 14-24 18 4 14 24Z"/><path d="M96 118q-5-20 14-24 18 4 14 24Z"/></g>';
- if(kind==='market')feature='<path d="M25 65h130l-9 18H34Z" fill="#fff0d2" stroke="'+wood+'" stroke-width="3"/><path d="M34 66h24l-4 16H38ZM76 66h25l-2 16H78ZM119 66h25l-5 16h-22Z" fill="#d95d4e"/>';
- if(kind==='orders')feature='<path d="M64 116V78h55v38" fill="#fff0d1" stroke="'+wood+'" stroke-width="3"/><path d="M73 88h37M73 98h37M73 108h27" stroke="'+wood+'" stroke-width="3"/>';
- const door=(kind==='barn'||kind==='storage'||kind==='orders')?'':'<path d="M78 139v-39q13-17 26 0v39Z" fill="'+wood+'" stroke="'+trim+'" stroke-width="3"/><circle cx="97" cy="119" r="2.5" fill="#f7d77f"/>';
- const chimney=(kind==='house'||kind==='bakery')?'<path d="M119 39V9h13v38" fill="'+dark+'" stroke="'+wood+'" stroke-width="3"/><path d="M116 9h19" stroke="'+trim+'" stroke-width="5"/>':'';
- const windows='<g stroke="'+wood+'" stroke-width="3"><path d="M43 82 62 76v20l-19 6Z" fill="#a9dce8"/><path d="m52 79 0 19m-9-9 19-6" stroke="#fff" stroke-width="2"/><path d="m119 83 18 6v19l-18-6Z" fill="#a9dce8"/><path d="m128 86 0 19m-9-10 18 6" stroke="#fff" stroke-width="2"/></g>';
- return '<svg viewBox="0 0 180 160" role="img" aria-label="Постройка" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="roof-'+kind+'" x1="0" y1="0" x2="1" y2="1"><stop stop-color="'+roof+'"/><stop offset="1" stop-color="'+dark+'"/></linearGradient><linearGradient id="wall-'+kind+'" x1="0" y1="0" x2="0" y2="1"><stop stop-color="'+wall+'"/><stop offset="1" stop-color="'+trim+'"/></linearGradient></defs><ellipse cx="91" cy="145" rx="69" ry="10" fill="#244d2e" opacity=".22"/>'+chimney+'<path d="M34 66 91 48 150 68v58l-59 19-57-20Z" fill="'+dark+'" opacity=".2"/><path d="m91 69 59-19v76l-59 19Z" fill="'+trim+'" stroke="'+wood+'" stroke-width="3" stroke-linejoin="round"/><path d="m34 68 57 1v76l-57-20Z" fill="url(#wall-'+kind+')" stroke="'+wood+'" stroke-width="3" stroke-linejoin="round"/><path d="m24 66 67-49 67 38-14 17-53-31-53 36Z" fill="url(#roof-'+kind+')" stroke="'+wood+'" stroke-width="4" stroke-linejoin="round"/><path d="m91 17 67 38-14 17-53-31Z" fill="'+dark+'" opacity=".35"/><path d="m34 68 57-35v-9L24 66Z" fill="'+trim+'" opacity=".35"/>'+windows+door+feature+'<path d="m34 124 57 20 59-19" fill="none" stroke="'+trim+'" stroke-width="5" stroke-linecap="round"/><path d="m24 66 67-49 67 38" fill="none" stroke="#fff4c9" stroke-width="2.5" opacity=".72"/></svg>';
+ const windows='<g stroke="'+wood+'" stroke-width="3"><path d="M43 78 63 72v25l-20 6Z" fill="#8ed2e7"/><path d="m53 75 0 25m-10-12 20-6" stroke="#fff" stroke-width="3"/><path d="m119 79 19 6v25l-19-6Z" fill="#8ed2e7"/><path d="m128 82 0 25m-9-12 19 6" stroke="#fff" stroke-width="3"/></g>';
+ const door=(kind==='barn'||kind==='storage'||kind==='orders')
+  ?'<path d="M68 139V96q23-29 46 0v43Z" fill="'+wood+'" stroke="'+trim+'" stroke-width="4"/><path d="M91 79v60M69 112h45" stroke="'+trim+'" stroke-width="3"/><circle cx="99" cy="119" r="3" fill="#f6d77c"/>'
+  :'<path d="M77 139v-39q14-20 28 0v39Z" fill="'+wood+'" stroke="'+trim+'" stroke-width="4"/><path d="M91 92v47" stroke="'+trim+'" stroke-width="2.5"/><circle cx="100" cy="119" r="2.8" fill="#f7d77f"/>';
+ const chimney=(kind==='house'||kind==='bakery')
+  ?'<path d="M119 43V8h15v43" fill="'+dark+'" stroke="'+wood+'" stroke-width="3"/><path d="M115 9h23" stroke="'+trim+'" stroke-width="6" stroke-linecap="round"/><path d="M124 2q-7-9 0-14m9 15q-4-8 3-12" fill="none" stroke="#fff" stroke-width="3" opacity=".65"/>':'';
+ const extras={
+  house:'<path d="M25 62 91 12l66 39-7 10-59-34-58 43Z" fill="#fff1cf" opacity=".25"/><path d="M20 66h142" stroke="'+trim+'" stroke-width="5"/><path d="M34 130h115" stroke="'+wood+'" stroke-width="3" opacity=".5"/>',
+  mill:'<g transform="translate(91 35)" stroke="'+wood+'" stroke-width="4" stroke-linejoin="round"><circle r="7" fill="#d8b36a"/><path d="M-5-7-12-54 0-60 6-7ZM7-5 54-12 60 0 7 6ZM5 7 12 54 0 60-6 7ZM-7 5-54 12-60 0-7-6Z" fill="#fff0cf"/><path d="M-4-10 0-49 4-10M10-4 49 0 10 4M4 10 0 49-4 10M-10 4-49 0-10-4" fill="none" stroke="#c7a06a" stroke-width="2"/></g><path d="M40 53 91 18l51 29" fill="none" stroke="#fff0ce" stroke-width="3" opacity=".6"/>',
+  bakery:'<path d="M43 54h96v-13q0-18-20-18H63q-20 0-20 18Z" fill="#b95f43" stroke="'+wood+'" stroke-width="4"/><path d="M55 45q0-13 14-13h44q14 0 14 13" fill="none" stroke="#ffe4b2" stroke-width="4"/><path d="M34 119h114l-9 13H43Z" fill="#fff0d5" stroke="'+wood+'" stroke-width="3"/><path d="M54 124h72" stroke="#d3a56e" stroke-width="3"/>',
+  dairy:'<g transform="translate(120 17)"><path d="M0 12h26l-3 12v31H3V24Z" fill="#fff" stroke="'+wood+'" stroke-width="3"/><path d="M6 12V4h14v8" fill="none" stroke="'+wood+'" stroke-width="3"/><path d="M7 32h12m-12 8h12" stroke="#75b6d3" stroke-width="4"/><path d="M3 55h20" stroke="#fff" stroke-width="3"/></g><path d="M33 116h25" stroke="#fff" stroke-width="5" stroke-linecap="round"/>',
+  coop:'<g fill="none" stroke="'+wood+'" stroke-width="5" stroke-linecap="round"><path d="M22 119h138M34 108v20m31-20v20m31-20v20m31-20v20m20-20v20"/></g><path d="M36 113q-4-23 15-25 18 3 15 25" fill="#f6d99c" stroke="'+wood+'" stroke-width="3"/><path d="M42 100h18" stroke="#fff0c8" stroke-width="3"/>',
+  barn:'<path d="M67 139V94q24-31 48 0v45Z" fill="'+dark+'" stroke="'+trim+'" stroke-width="4"/><path d="M91 78v61M68 108h46M68 124h46" stroke="'+trim+'" stroke-width="4"/><path d="M31 67h18v57H31Z" fill="'+dark+'" opacity=".2"/>',
+  sheep:'<g fill="none" stroke="'+wood+'" stroke-width="5" stroke-linecap="round"><path d="M22 119h138M34 108v20m31-20v20m31-20v20m31-20v20m20-20v20"/></g><g fill="#fff3d8" stroke="#c5a77b" stroke-width="2"><circle cx="54" cy="96" r="9"/><circle cx="68" cy="91" r="10"/><circle cx="82" cy="97" r="9"/></g>',
+  pigsty:'<g fill="none" stroke="'+wood+'" stroke-width="5" stroke-linecap="round"><path d="M22 119h138M34 108v20m31-20v20m31-20v20m31-20v20m20-20v20"/></g><path d="M47 112q0-18 17-18t17 18" fill="#f2b5b5" stroke="'+wood+'" stroke-width="3"/><circle cx="64" cy="104" r="2" fill="#a65f67"/>',
+  duck:'<g fill="none" stroke="'+wood+'" stroke-width="5" stroke-linecap="round"><path d="M22 119h138M34 108v20m31-20v20m31-20v20m31-20v20m20-20v20"/></g><path d="M47 111q-3-21 17-23 19 2 18 23" fill="#f2d67e" stroke="'+wood+'" stroke-width="3"/><path d="M55 99q9-7 18 0" fill="none" stroke="#fff2c5" stroke-width="3"/>',
+  goat:'<g fill="none" stroke="'+wood+'" stroke-width="5" stroke-linecap="round"><path d="M22 119h138M34 108v20m31-20v20m31-20v20m31-20v20m20-20v20"/></g><path d="M48 112q0-20 18-20 17 0 17 20" fill="#e4c18b" stroke="'+wood+'" stroke-width="3"/><path d="M58 99q-5-13 0-18m14 18q6-13 10-10" fill="none" stroke="'+wood+'" stroke-width="3"/>',
+  storage:'<g fill="#d8ad68" stroke="'+wood+'" stroke-width="3"><path d="M45 119q-7-23 13-29 21 6 14 29Z"/><path d="M96 119q-7-23 13-29 21 6 14 29Z"/></g><path d="M38 122h96" stroke="'+trim+'" stroke-width="4"/>',
+  market:'<path d="M25 63h132l-9 22H34Z" fill="#fff0d2" stroke="'+wood+'" stroke-width="4"/><path d="M35 65h24l-5 19H38ZM76 65h26l-2 19H78ZM119 65h25l-5 19h-22Z" fill="#d95d4e"/><path d="M39 87h104" stroke="'+wood+'" stroke-width="4"/><path d="M53 104h22m-22 8h22" stroke="#fff4cf" stroke-width="4"/>',
+  orders:'<path d="M64 116V78h55v38" fill="#fff0d1" stroke="'+wood+'" stroke-width="4"/><path d="M74 89h36m-36 10h36m-36 10h27" stroke="'+wood+'" stroke-width="3"/><path d="M59 77h65" stroke="'+trim+'" stroke-width="5"/>'
+ };
+ let shingles='';
+ for(let row=0;row<3;row++)for(let col=0;col<4;col++){
+  const x=34+col*29+(row%2?14:0),y=42+row*10;
+  shingles+='<path d="M'+x+' '+y+'l13 -9 13 8" fill="none" stroke="#fff3cf" stroke-width="2" opacity=".34"/>';
+ }
+ const timber='<path d="M37 74 37 130m54-58v70m56-67v55M38 74l53-34 55 30M38 128l53 17 56-18" fill="none" stroke="'+wood+'" stroke-width="3.5" opacity=".55"/>';
+ return '<svg viewBox="0 0 180 160" width="100%" height="100%" role="img" aria-label="'+kind+' farm building" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="roof-'+kind+'" x1="0" y1="0" x2="1" y2="1"><stop stop-color="'+roof+'"/><stop offset=".58" stop-color="'+trim+'"/><stop offset="1" stop-color="'+dark+'"/></linearGradient><linearGradient id="wall-'+kind+'" x1="0" y1="0" x2="0" y2="1"><stop stop-color="'+wall+'"/><stop offset="1" stop-color="'+trim+'"/></linearGradient><linearGradient id="side-'+kind+'" x1="0" y1="0" x2="1" y2="1"><stop stop-color="'+trim+'"/><stop offset="1" stop-color="'+dark+'"/></linearGradient><filter id="shadow-'+kind+'" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="4"/></filter></defs><ellipse cx="91" cy="148" rx="70" ry="9" fill="#203e29" opacity=".28" filter="url(#shadow-'+kind+')"/><ellipse cx="91" cy="145" rx="68" ry="8" fill="#315b35" opacity=".22"/>'+chimney+'<path d="m91 69 59-19v76l-59 19Z" fill="url(#side-'+kind+')" stroke="'+wood+'" stroke-width="3" stroke-linejoin="round"/><path d="m34 68 57 1v76l-57-20Z" fill="url(#wall-'+kind+')" stroke="'+wood+'" stroke-width="3" stroke-linejoin="round"/><path d="m24 66 67-49 67 38-14 17-53-31-53 36Z" fill="url(#roof-'+kind+')" stroke="'+wood+'" stroke-width="4" stroke-linejoin="round"/><path d="m91 17 67 38-14 17-53-31Z" fill="'+dark+'" opacity=".25"/><path d="m24 66 67-49 67 38" fill="none" stroke="#fff4cd" stroke-width="4" stroke-linecap="round" opacity=".7"/><path d="m34 68 57 1 0 7-57-1Z" fill="'+trim+'" opacity=".8"/>'+shingles+timber+windows+door+(extras[kind]||'')+'<path d="m34 124 57 20 59-19" fill="none" stroke="'+trim+'" stroke-width="5" stroke-linecap="round"/><path d="M28 66 91 20l63 36" fill="none" stroke="#fff" stroke-width="1.5" opacity=".25"/></svg>';
 }
 function farmAnimalSvg(id,baby=false){
  const colors={
