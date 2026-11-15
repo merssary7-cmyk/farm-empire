@@ -942,7 +942,7 @@ button{ -webkit-tap-highlight-color:transparent }
 <div class="stats"><div class="pill cloud-pill" id="cloudStatus">☁️ Подключение…</div><div class="pill">🪙 <span id="coins">0</span></div><div class="pill">💎 <span id="gems">0</span></div><div class="pill">⭐ Ур. <span id="level">1</span></div><div class="pill">📦 <span id="used">0</span>/<span id="capacity">80</span></div></div><button id="backToWorld" type="button" aria-label="Выйти из меню и вернуться на ферму" title="Выйти">✕</button></header>
 <section class="profile"><div class="avatar" aria-label="Аватар игрока">🧑‍🌾</div><div class="grow"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px"><strong id="playerNickname" style="font-size:16px">Фермер</strong><button class="btn small" id="changeNicknameBtn" data-price="0" type="button">✏️ Сменить бесплатно</button></div><div class="levelrow"><span>Моя ферма · Уровень <b id="level2">1</b></span><span><span id="xp">0</span> / <span id="need">30</span> XP</span></div><div class="bar"><i id="xpbar" style="width:0%"></i></div></div><div style="font-size:25px">🏅</div></section>
 <nav class="nav" id="nav"><button class="active" data-tab="farm"><b>🏡</b>Ферма</button><button data-tab="animals"><b>🐄</b>Животные</button><button data-tab="production"><b>🏭</b>Производства</button><button data-tab="warehouse"><b>📦</b>Склад</button><button data-tab="orders"><b>🚚</b>Заказы</button><button data-tab="trade"><b>🧭</b>Торговля</button><button data-tab="shop"><b>🛒</b>Магазин</button><button data-tab="orchard"><b>🍎</b>Сад</button><button data-tab="achievements"><b>🏆</b>Награды</button><button data-tab="territory"><b>🗺️</b>Участок</button><button data-tab="season"><b>🍂</b>Сезон</button><button data-tab="guild"><b>🏰</b>Гильдия</button><button data-tab="journeys"><b>🚂</b>Путешествия</button><button data-tab="regions"><b>🏞️</b>Регионы</button><button data-tab="crystal"><b>🔮</b>Пещеры</button><button data-tab="museum"><b>🏛️</b>Музей</button><button data-tab="festival"><b>🎪</b>Фестиваль</button><button data-tab="social"><b>👥</b>Друзья</button><button data-tab="more"><b>🌟</b>Ещё</button><button data-tab="premium"><b>⭐</b>Премиум</button></nav>
-<main>
+<main><button id="farmInteriorExit" type="button" aria-label="Вернуться на карту фермы" onclick="closeFarmInterior()">← На ферму</button>
 <section class="view active" id="view-farm"><div class="layout"><section class="panel"><div class="farmhead"><h2>🌻 Живая ферма · Долина</h2><span class="sub">Участок <b id="farmlevel">1</b> · <span id="plotcount">8</span> грядок</span></div><div class="tutorial-card" id="tutorialCard" hidden aria-live="polite"></div>
 <div class="farm-viewport" id="farmViewport" aria-label="Прокручиваемая карта фермы"><div class="scene farm-map illustrated-map" id="farmMap">
 <svg class="world-art" viewBox="0 0 640 1680" role="img" aria-label="Цельная зелёная долина фермы с дорожками, прудом, садами и загонами" xmlns="http://www.w3.org/2000/svg">
@@ -1681,7 +1681,8 @@ function renderBuildings(){
   return '<div class="tile production-tile" data-building="'+b.id+'"><div class="tileicon">'+b.emoji+'</div><div class="grow"><h3>'+b.name+' '+(unlocked?'':'🔒')+'</h3><p>'+(unlocked?b.desc:'Откроется на '+b.level+' уровне')+'</p>'+(unlocked?'<div class="rowbtn"><span class="tag">Слоты: '+active.length+'/'+slots+'</span></div>'+upgradePanel+live+activeCards+recipes:'<span class="tag">Нужен уровень '+b.level+'</span>')+'</div></div>';
  }).join('');
 }
-window.closeProductionInterior=()=>{window.mapInteriorFocus=null;const farmTab=document.querySelector('[data-tab="farm"]');if(farmTab)farmTab.click();else{renderBuildings();}};
+window.closeFarmInterior=()=>{window.mapInteriorFocus=null;window.openingMapInterior=false;const farmTab=document.querySelector('#nav [data-tab="farm"]');if(farmTab)farmTab.click();else{document.body.classList.remove('inside-building');renderBuildings();renderAnimals();}};
+window.closeProductionInterior=window.closeFarmInterior;
 window.upgradeProductionBuilding=id=>{let b=BUILDINGS.find(x=>x.id===id);if(!b||state.level<b.level)return;let level=state.buildingUpgrades[id]||0;if(level>=5){toast('У здания максимальный уровень');return}let cost=buildingUpgradeCost(b,level);if(state.coins<cost){toast('Для улучшения нужно '+cost.toLocaleString('ru-RU')+' монет');return}state.coins-=cost;state.buildingUpgrades[id]=level+1;let nextSlots=buildingUpgradeSlots(level+1);log('⬆️ '+b.name+' улучшено до '+(level+1)+' уровня: скорость +8%'+(nextSlots>buildingUpgradeSlots(level)?', открыт дополнительный слот':'')+'.');save();update();toast('Здание улучшено! Производство ускорено на 8%'+(nextSlots>buildingUpgradeSlots(level)?', новый слот открыт':'')+'!')};
 window.startJob=(bid,rid)=>{let b=BUILDINGS.find(x=>x.id===bid),r=b&&b.recipes.find(x=>x.id===rid);if(!b||!r)return;let jobs=state.jobs[bid]||[],upgrade=state.buildingUpgrades[bid]||0,slots=buildingUpgradeSlots(upgrade),durationMs=Math.max(1000,Math.round(r.time*1000*buildingSpeedFactor(upgrade)));if(state.level<b.level||jobs.filter(Boolean).length>=slots||!hasInputs(r.inputs)){toast('Нет свободного слота или ингредиентов');return}spendInputs(r.inputs);state.daily.produced++;state.seasonStats.produce++;addFestivalPoints('produce',5);jobs.push({recipe:rid,durationMs,finishAt:now()+durationMs});state.jobs[bid]=jobs;addXP(1);log(b.name+': запущено '+r.name);save();update()};
 function finishJobs(){let changed=false;for(let b of BUILDINGS){let jobs=state.jobs[b.id]||[];state.jobs[b.id]=jobs.filter(j=>{if(j&&now()>=j.finishAt){if(totalItems()>=state.capacity)return true;let r=b.recipes.find(x=>x.id===j.recipe);if(r){let got=addItem(r.out,r.qty);addXP(r.xp);log(b.name+': готово '+itemInfo(r.out).name+' ×'+got)}changed=true;return false}return true})}if(changed){save();update();toast('🏭 Производство завершено!')}}
@@ -2084,3 +2085,56 @@ window.acceptTutorial=()=>{if(!state.tutorial||state.tutorial.choice!=='pending'
 window.skipTutorial=()=>{if(!state.tutorial||state.tutorial.choice!=='pending')return;state.tutorial.choice='skipped';state.tutorial.choiceVersion=1;state.tutorial.step=3;state.tutorial.completed=true;closeModal();save();update();toast('🌻 Хорошей игры! Обучение можно пропустить.')};
 startFarmEmpire();
 </script></body></html>
+
+<style id="farm-empire-world-redesign-v4">
+/* Remove the accidental fixed bottom action tray: keep the farm map unobstructed. */
+@media(max-width:850px){
+ #view-farm .actions{position:static!important;inset:auto!important;display:none!important}
+ #view-farm .map-controls{display:none!important}
+}
+/* One reliable exit control for every building and animal-pen interior. */
+#farmInteriorExit{display:none;position:fixed;z-index:10050;top:calc(12px + env(safe-area-inset-top,0px));right:12px;min-height:42px;padding:9px 15px;border:2px solid #f0d39a;border-radius:14px;background:linear-gradient(180deg,#fff8e5,#f1dfb8);color:#65472b;font-weight:900;font-size:13px;box-shadow:0 4px 0 #9a7042,0 8px 18px #233e2d45;cursor:pointer}
+body.inside-building #farmInteriorExit{display:inline-flex;align-items:center;justify-content:center}
+#productionInteriorExit{display:none!important}
+@media(max-width:850px){
+ #farmInteriorExit{top:calc(8px + env(safe-area-inset-top,0px));right:9px;min-height:38px;padding:7px 12px;font-size:12px}
+ body.inside-building .top{padding-right:118px}
+}
+/* Cozy hand-painted valley: richer grass, clover, flower patches and warm light. */
+#farmMap.illustrated-map{background:
+ radial-gradient(ellipse at 16% 9%,#f7f0b54a 0 4%,transparent 19%),
+ radial-gradient(ellipse at 82% 22%,#e7f4b45c 0 6%,transparent 22%),
+ radial-gradient(ellipse at 12% 70%,#fff0b13d 0 5%,transparent 21%),
+ radial-gradient(ellipse at 88% 86%,#f8edb53d 0 5%,transparent 22%),
+ linear-gradient(155deg,#a9d979 0%,#83c76e 42%,#a5d77d 100%)!important;
+}
+#farmMap.illustrated-map:after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.38;background-image:
+ radial-gradient(ellipse 3px 2px at 18px 24px,#fff6c8 98%,transparent),
+ radial-gradient(ellipse 2px 3px at 71px 82px,#e9f5bd 98%,transparent),
+ radial-gradient(ellipse 3px 2px at 116px 44px,#fff6c8 98%,transparent),
+ radial-gradient(ellipse 2px 2px at 156px 122px,#f8f1b9 98%,transparent);
+ background-size:190px 170px,210px 190px,240px 210px,175px 205px}
+#farmMap>.world-art{filter:saturate(1.13) contrast(1.04) brightness(1.025)!important}
+#farmMap .map-place{z-index:7!important;filter:drop-shadow(0 7px 5px #294a2e48)!important}
+#farmMap .map-place .place-art{width:146px!important;height:132px!important;min-height:132px!important;filter:drop-shadow(0 11px 6px #24462e66)!important;transform:translateY(-2px);transition:transform .22s ease,filter .22s ease}
+#farmMap .map-place:active .place-art{transform:translateY(1px) scale(.97)}
+#farmMap .map-place b{background:linear-gradient(180deg,#fff7dc,#f1d7a5)!important;color:#65472d!important;border:2px solid #fff0c8!important;border-radius:12px!important;text-shadow:none!important;box-shadow:0 3px 0 #a67a48,0 6px 12px #29452d36!important;padding:5px 10px!important}
+#farmMap .map-place small{background:#f7f4dfed!important;color:#526c43!important;border:1px solid #c8d9a9!important;border-radius:9px!important;text-shadow:none!important;box-shadow:0 2px 0 #7b9d5b!important}
+#farmMap .pond-place .place-art{width:150px!important;height:102px!important;min-height:102px!important}
+#farmMap .animal-life-layer{z-index:8!important}
+#farmMap .animal-sprite{width:46px!important;height:42px!important;filter:drop-shadow(0 4px 3px #23472e75)!important}
+#farmMap .animal-sprite svg{width:100%!important;height:100%!important;overflow:visible}
+#farmMap .animal-sprite.baby{width:34px!important;height:32px!important}
+#farmMap .animal-sprite:after{width:26px!important;height:7px!important;left:10px!important;background:#25462c66!important}
+#farmMap .map-legend{z-index:10!important;background:#fff8e8f2!important;border:2px solid #e9d29f!important;border-radius:13px!important;box-shadow:0 4px 0 #9c7c4f!important}
+.farm-viewport{border:5px solid #f8edcf!important;border-radius:23px!important;background:#9bd174!important;box-shadow:inset 0 0 0 2px #d3e7ad,0 7px 0 #789f58,0 15px 28px #345b3d35!important}
+@media(max-width:850px){
+ #farmMap .map-place .place-art{width:118px!important;height:108px!important;min-height:108px!important}
+ #farmMap .map-place b{font-size:10px!important;padding:4px 7px!important}
+ #farmMap .map-place small{font-size:8px!important}
+ #farmMap .pond-place .place-art{width:120px!important;height:86px!important;min-height:86px!important}
+ #farmMap .animal-sprite{width:40px!important;height:36px!important}
+ #farmMap .animal-sprite.baby{width:30px!important;height:28px!important}
+}
+@media(prefers-reduced-motion:reduce){#farmMap .map-place .place-art,#farmMap .animal-sprite{animation:none!important;transition:none!important}}
+</style>
