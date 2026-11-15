@@ -1268,6 +1268,135 @@ body{background:linear-gradient(180deg,#b9e1f0 0,#e8f0d9 28%,#e0ebcb 100%) fixed
  .pill{font-size:10px!important}
 }
 @media(prefers-reduced-motion:reduce){#nav button,.tile,.btn{transition:none!important}}
+</style><style id="farm-empire-animals-production-stage-v9">
+/* Stage 2: characterful animal pens and tactile production/warehouse screens */
+.animal-tile{
+ position:relative;overflow:hidden;isolation:isolate;min-height:180px;
+ background:linear-gradient(135deg,#fffef8 0%,#f5f8e9 58%,#eaf4dc 100%)!important;
+}
+.animal-tile:before{
+ content:"";position:absolute;z-index:-1;right:-25px;top:-36px;width:150px;height:150px;border-radius:50%;
+ background:radial-gradient(circle at 35% 35%,#d5edb6 0 25%,#e7f3d5 26% 53%,transparent 54%);
+ opacity:.75;
+}
+.animal-tile .tileicon.animal-big{
+ width:86px!important;height:86px!important;min-width:86px!important;min-height:86px!important;
+ border:3px solid #fff!important;border-radius:25px!important;
+ background:linear-gradient(145deg,#faffed,#dcefc8)!important;
+ box-shadow:0 5px 0 #c6dcb0,0 8px 17px #42653a1b!important;
+ font-size:44px!important;
+}
+.animal-tile .herd-row{display:flex;align-items:center;flex-wrap:wrap;gap:5px;margin:11px 0 8px}
+.animal-tile .herd-animal{
+ width:34px;height:34px;display:grid;place-items:center;border:2px solid #fff;border-radius:12px;
+ background:linear-gradient(145deg,#fffdf3,#edf4df);box-shadow:0 2px 0 #d7e4c9;
+ font-size:21px;filter:drop-shadow(0 2px 1px #5d714733);
+}
+.animal-tile .herd-animal.baby{transform:scale(.83);background:linear-gradient(145deg,#fff8dc,#f5e7ba)}
+.animal-tile .herd-animal.young{background:linear-gradient(145deg,#eff9e6,#dceecb)}
+.animal-tile .growth-track,.animal-upgrade .upgrade-meter{
+ height:9px!important;overflow:hidden;border:1px solid #d9e5ce;border-radius:99px;
+ background:#e8eedf!important;box-shadow:inset 0 2px 3px #3d5b3517!important;
+}
+.animal-tile .growth-track i,.animal-upgrade .upgrade-meter i{
+ display:block;height:100%;border-radius:99px;
+ background:linear-gradient(90deg,#f4cb68,#a5d96b 55%,#5ab65c)!important;
+ box-shadow:0 1px 2px #518c3c55;
+}
+.animal-tile .growth-note{display:block;margin:5px 0 8px;color:#819071!important;font-size:10px}
+.animal-interior-card{
+ position:relative;overflow:hidden;display:flex;align-items:center;gap:18px;
+ padding:20px!important;border:2px solid #fff;border-radius:23px;
+ background:radial-gradient(circle at 90% 10%,#dff1c9 0 18%,transparent 19%),linear-gradient(120deg,#fffbed,#edf7df);
+ box-shadow:0 5px 0 #c7d9ae,0 12px 24px #42613b18;
+}
+.animal-interior-icon{
+ flex:0 0 90px;width:90px;height:90px;display:grid;place-items:center;
+ border:3px solid #fff;border-radius:28px;background:linear-gradient(145deg,#fffbe9,#dcedc7);
+ box-shadow:0 5px 0 #c5d9ac,0 8px 18px #46623c20;font-size:54px;
+}
+.animal-interior-copy{min-width:0;flex:1}
+.animal-interior-copy h2{margin:4px 0;color:#365d39;font-size:23px}
+.animal-interior-copy p{margin:4px 0 12px;color:#75846c;line-height:1.5}
+.animal-interior-stats,.animal-interior-facts{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.animal-interior-stats span,.animal-interior-facts span{
+ padding:7px 10px;border:1px solid #e5e9d5;border-radius:11px;background:#ffffffb8;
+ color:#607452;font-size:11px;font-weight:750;
+}
+.animal-interior-stats b,.animal-interior-facts b{color:#365c39}
+.production-tile{
+ position:relative;overflow:hidden;border-radius:20px!important;
+ background:linear-gradient(145deg,#fffef9,#f3f8e9)!important;
+}
+.production-tile>.tileicon{
+ width:64px!important;height:64px!important;min-width:64px!important;
+ border-radius:20px!important;font-size:34px!important;
+ background:linear-gradient(145deg,#fffbe9,#e6f2d5)!important;
+ box-shadow:0 4px 0 #d2e2bf!important;
+}
+.production-tile h3{font-size:16px!important;letter-spacing:-.25px}
+.production-tile> .grow>p{color:#78866e!important}
+.production-live{
+ display:flex;align-items:center;gap:7px;margin:9px 0;padding:8px 10px;
+ border:1px solid #cce6bd;border-radius:11px;background:linear-gradient(90deg,#eef9e6,#f8fbed);
+ color:#477b43;font-size:11px;font-weight:850;
+}
+.production-live.idle{border-color:#e8dfc6;background:linear-gradient(90deg,#fff8e8,#fffdf5);color:#9a8150}
+.production-live .live-dot{
+ width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:#65bd5a;
+ box-shadow:0 0 0 4px #65bd5a22;animation:livePulse 2s ease-in-out infinite;
+}
+.production-live.idle .live-dot{background:#d8b75e;box-shadow:0 0 0 4px #d8b75e22;animation:none}
+@keyframes livePulse{50%{box-shadow:0 0 0 7px #65bd5a08}}
+.recipe{
+ position:relative;overflow:hidden;padding:13px!important;margin-top:9px!important;
+ border:1px solid #e6e8d8!important;border-radius:15px!important;
+ background:linear-gradient(145deg,#fffef8,#f3f7e9)!important;
+ box-shadow:0 3px 0 #e1e8d5!important;
+}
+.recipehead{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#3f613d;font-weight:900}
+.recipehead>span:last-child{padding:5px 8px;border:1px solid #e6dfc7;border-radius:9px;background:#fff8e7;color:#8c7548;font-size:11px}
+.recipe>small{display:block;margin:8px 0;color:#819071;line-height:1.5}
+.recipe .rowbtn{align-items:center;margin-top:8px}
+.recipe .rowbtn .btn{min-height:36px}
+.production-summary{
+ display:flex;gap:8px;flex-wrap:wrap;margin:0 0 13px;
+}
+.production-summary span{
+ padding:8px 11px;border:1px solid #fff;border-radius:11px;
+ background:linear-gradient(#fffef7,#f1f6e7);box-shadow:0 2px 0 #dfe7d1;
+ color:#6a7e5c;font-size:11px;font-weight:800;
+}
+.order{
+ position:relative;overflow:hidden;padding:15px!important;border-radius:18px!important;
+ background:linear-gradient(145deg,#fffef9,#f3f8e9)!important;
+}
+.orderhead{display:flex;justify-content:space-between;gap:9px;align-items:center;color:#3d603d;font-weight:900}
+.order p{color:#71836a;line-height:1.5}
+#inventory{gap:10px!important}
+.invitem{
+ min-height:112px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+ gap:5px!important;padding:12px 8px!important;border:2px solid #fff!important;border-radius:17px!important;
+ background:linear-gradient(145deg,#fffef8,#f0f6e6)!important;
+ box-shadow:0 4px 0 #dce7ce,0 7px 14px #3d5e3610!important;
+ transition:transform .15s,box-shadow .15s!important;
+}
+.invitem:active{transform:translateY(2px)!important;box-shadow:0 2px 0 #dce7ce!important}
+.invitem .emoji{font-size:31px!important;filter:drop-shadow(0 3px 2px #526b3c2c)}
+.invitem strong{color:#4c6845!important;font-size:12px!important}
+.invitem small{color:#8b9277!important;font-size:10px!important}
+#animalInteriorHero{margin-bottom:14px}
+@media(max-width:650px){
+ .animal-interior-card{align-items:flex-start;gap:12px;padding:14px!important;border-radius:19px}
+ .animal-interior-icon{flex-basis:64px;width:64px;height:64px;border-radius:20px;font-size:39px}
+ .animal-interior-copy h2{font-size:19px}
+ .animal-interior-stats span,.animal-interior-facts span{font-size:10px;padding:6px 8px}
+ .animal-tile .tileicon.animal-big{width:61px!important;height:61px!important;min-width:61px!important;min-height:61px!important;border-radius:18px!important;font-size:34px!important}
+ .production-tile>.tileicon{width:53px!important;height:53px!important;min-width:53px!important;border-radius:16px!important;font-size:29px!important}
+ .recipe{padding:11px!important}
+ .orderhead{align-items:flex-start;flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){.production-live .live-dot{animation:none!important}}
 </style></head>
 <body><div id="bootScreen" role="status" aria-live="polite"><div class="boot-loading-ui"><div class="boot-status" id="bootStatus">Загружаем твою ферму…</div><div class="boot-progress"><i id="bootProgressFill"></i></div></div></div><div class="app">
 <header class="top"><div class="brand"><div class="logo">🌱</div><div>FARM <span style="color:#68ad55">EMPIRE</span><div style="font-size:10px;color:#829487;letter-spacing:2px">ALPHA 3.5 · BUILD & DECORATE</div></div></div>
@@ -1691,7 +1820,7 @@ function farmAnimalSvg(id,baby=false){
  else if(id==='duck'){body='<ellipse cx="39" cy="35" rx="25" ry="15" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><path d="M27 32q15-13 25 3-12 12-25-3" fill="'+c[1]+'"/>';head='<path d="M57 29q-4-13 8-15 12 1 10 14" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><circle cx="69" cy="27" r="2" fill="#3b392d"/><path d="M75 31 88 35 75 38Z" fill="'+c[2]+'"/>';extra='<path d="M31 47v7M47 47v7" stroke="'+c[2]+'" stroke-width="3" stroke-linecap="round"/>';}
  else if(id==='goat'){body='<ellipse cx="37" cy="34" rx="24" ry="15" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/>';head='<path d="M59 24q-5-13 2-17M72 24q8-13 11-8" fill="none" stroke="'+c[3]+'" stroke-width="3" stroke-linecap="round"/><path d="M57 27q9-10 19 0l-1 18q-11 8-19-2Z" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><circle cx="63" cy="34" r="1.6" fill="#29251e"/><circle cx="72" cy="34" r="1.6" fill="#29251e"/><path d="M65 44q5 5 9 0" fill="none" stroke="'+c[3]+'" stroke-width="2"/>';extra='<path d="M23 45v9M46 45v9" stroke="'+c[3]+'" stroke-width="3.5" stroke-linecap="round"/>';}
  else {body='<ellipse cx="39" cy="35" rx="22" ry="16" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/>';head='<circle cx="62" cy="28" r="11" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><path d="M55 18q-4-10 1-11l6 9M66 17q4-11 9-7l-3 10" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><path d="M70 28 82 32 70 36Z" fill="'+c[1]+'"/><circle cx="64" cy="26" r="1.6" fill="#302d25"/><path d="M56 17q-1-9 5-7l1 8" fill="#d94d43"/>';extra='<path d="M26 47v6M44 47v6" stroke="'+c[3]+'" stroke-width="3.5" stroke-linecap="round"/><path d="M19 31q-8-4-6-10" fill="none" stroke="'+c[3]+'" stroke-width="2"/>';}
- return '<svg viewBox="0 0 92 62" aria-hidden="true"><g transform="translate('+(46-46*s)+' '+(31-31*s)+') scale('+s+')">'+body+head+extra+'</g></svg>';
+ return '<svg class="farm-animal-art" viewBox="0 0 104 72" aria-hidden="true"><defs><linearGradient id="animal-coat-'+id+'" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff" stop-opacity=".38"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><ellipse cx="51" cy="62" rx="'+(31*s)+'" ry="'+(5*s)+'" fill="#294c2d" opacity=".22"/><path d="M12 60q8-6 16-1m46 1q8-6 16-1" fill="none" stroke="#7ab45a" stroke-width="2" stroke-linecap="round" opacity=".75"/><g transform="translate('+(52-46*s)+' '+(36-31*s)+') scale('+s+')">'+body+head+extra+'<path d="M20 27q12-15 29-7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".2"/><circle cx="64" cy="30" r="1.1" fill="#fff" opacity=".85"/></g><g fill="#fff4c6"><circle cx="13" cy="53" r="2.2"/><circle cx="17" cy="50" r="1.5"/></g><circle cx="15" cy="53" r="1" fill="#efc45b"/></svg>';
 }
 let farmMapAnimalSignature='';
 function upgradeFarmMapArt(){
