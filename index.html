@@ -305,6 +305,40 @@ body{background:radial-gradient(ellipse at 12% 8%,#fff3bf 0 7%,transparent 28%),
 
 /* UX pass 01: prevent page bounce around the farm and clarify destructive actions. */
 html,body{overscroll-behavior:none}body{overflow-x:hidden}.farm-viewport{overscroll-behavior:contain;-webkit-user-select:none;user-select:none}.farm-viewport .plot,.farm-viewport .map-place{-webkit-user-select:none;user-select:none}.btn.danger{background:linear-gradient(180deg,#fff0ec,#f8d7cf);border:1px solid #e9b7aa;color:#8b3d30;box-shadow:0 3px 0 #d9a69a}
+
+/* ALPHA 3.9 — illustrated farm assets and collision-free mobile map */
+#farmMap .place-art{background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;overflow:visible;filter:drop-shadow(0 6px 3px #294a2b66)!important}
+#farmMap .place-art:before{content:"";position:absolute;bottom:1px;left:12%;right:12%;height:13px;border-radius:50%;background:#315c2b55;filter:blur(3px);z-index:-1}
+#farmMap .place-art svg{display:block;width:100%;height:100%;overflow:visible}
+#farmMap .animal-sprite{width:46px;height:40px;font-size:0;filter:drop-shadow(0 3px 2px #284c2855)}
+#farmMap .animal-sprite svg{width:100%;height:100%;overflow:visible}
+#farmMap .animal-sprite.baby{width:32px;height:29px}
+#farmMap .animal-sprite .spark{font-size:10px}
+@media(max-width:760px){
+ .farm-map.illustrated-map{height:1480px!important;min-height:1480px!important}
+ .farm-map .map-place{position:absolute!important;width:29%!important;min-width:0!important;max-width:none!important;left:auto;right:auto;top:auto;gap:2px;padding:0 2px;filter:drop-shadow(0 3px 2px #31552c44)}
+ .farm-map .map-place .place-art{display:grid;width:100%!important;height:66px!important;margin:0 auto 1px;font-size:0!important}
+ .farm-map .map-place b{display:flex;align-items:center;justify-content:center;width:100%;min-height:30px;max-width:100%;padding:4px 5px;font-size:10px;line-height:1.12;white-space:normal;text-align:center;overflow-wrap:anywhere;border-radius:9px}
+ .farm-map .map-place small{display:block;width:100%;max-width:100%;min-height:21px;padding:3px 4px;font-size:8px;line-height:1.1;white-space:normal;text-align:center;overflow-wrap:anywhere;border-radius:7px}
+ .farm-map .home-place{top:64px!important;left:35%!important;width:30%!important}
+ .farm-map .mill-place{top:170px!important;left:2%!important}
+ .farm-map .pond-place{top:170px!important;left:69%!important}
+ .farm-map .bakery-place{top:325px!important;left:2%!important}
+ .farm-map .dairy-place{top:325px!important;left:69%!important}
+ .farm-map .field-island{top:485px!important;left:22%!important;width:56%!important;min-height:190px!important;transform:rotate(-2deg);z-index:3}
+ .farm-map .chicken-place{top:635px!important;left:2%!important}
+ .farm-map .cow-place{top:635px!important;left:69%!important}
+ .farm-map .pig-place{top:845px!important;left:2%!important}
+ .farm-map .sheep-place{top:845px!important;left:69%!important}
+ .farm-map .duck-place{top:1055px!important;left:2%!important}
+ .farm-map .goat-place{top:1055px!important;left:69%!important}
+ .farm-map .barn-storage{top:1260px!important;left:2%!important;width:28%!important}
+ .farm-map .market-place{top:1260px!important;left:36%!important;width:28%!important}
+ .farm-map .order-place{top:1260px!important;left:69%!important;width:29%!important}
+ .farm-map .map-legend{left:50%;right:auto;bottom:12px;transform:translateX(-50%);width:max-content;max-width:92%;text-align:center}
+ .farm-map .animal-life-layer{z-index:5}
+}
+
 </style></head>
 <body><div class="app">
 <header class="top"><div class="brand"><div class="logo">🌱</div><div>FARM <span style="color:#68ad55">EMPIRE</span><div style="font-size:10px;color:#829487;letter-spacing:2px">ALPHA 3.5 · BUILD & DECORATE</div></div></div>
@@ -326,7 +360,7 @@ html,body{overscroll-behavior:none}body{overflow-x:hidden}.farm-viewport{overscr
 <button class="map-place chicken-place" data-zone="animals"><span class="place-art coop-art">🐔<span>🐣</span></span><b>Курятник</b><small id="mapChicken">Кур: 0</small></button>
 <button class="map-place cow-place" data-zone="animals"><span class="place-art barn-art">🐄<span>🐮</span></span><b>Коровник</b><small id="mapCow">Коров: 0</small></button>
 <button class="map-place sheep-place" data-zone="animals"><span class="place-art sheep-art">🐑</span><b>Овчарня</b><small id="mapSheep">Овец: 0</small></button>
-<button class="map-place pig-place" data-zone="animals"><span class="place-art pig-art">🐷</span><b>Свинарник</b><small>Свиньи</small></button><button class="map-place" style="left:77%;top:72%;" data-zone="animals"><span class="place-art">🦆</span><b>Утятник</b><small>Уровень 12</small></button><button class="map-place" style="left:64%;top:85%;" data-zone="animals"><span class="place-art">🐐</span><b>Козлятник</b><small>Уровень 16</small></button>
+<button class="map-place pig-place" data-zone="animals"><span class="place-art pig-art">🐷</span><b>Свинарник</b><small>Свиньи</small></button><button class="map-place duck-place" data-zone="animals"><span class="place-art duck-art"></span><b>Утятник</b><small>Уровень 12</small></button><button class="map-place goat-place" data-zone="animals"><span class="place-art goat-art"></span><b>Козлятник</b><small>Уровень 16</small></button>
 <div class="field-island"><div class="field-sign">🌱 ПОЛЯ ФЕРМЫ <span id="plotcountMap">8</span></div><div class="plotgrid" id="plots"></div><div class="field-caption" id="scenehint">Выбери культуру и нажми на пустую грядку 🌱</div></div>
 <button class="map-place barn-storage" data-zone="warehouse"><span class="place-art storage-art">🛖</span><b>Амбар</b><small>Склад урожая</small></button>
 <button class="map-place market-place" data-zone="shop"><span class="place-art market-art">🏪</span><b>Магазин</b><small>Семена и покупки</small></button>
@@ -560,31 +594,88 @@ function addItem(id,n){if(!ITEMS[id])return;let room=state.capacity-totalItems()
 function hasInputs(inputs){return Object.entries(inputs).every(([id,n])=>(state.inventory[id]||0)>=n)}
 function spendInputs(inputs){Object.entries(inputs).forEach(([id,n])=>state.inventory[id]-=n)}
 function fmt(sec){sec=Math.max(0,Math.ceil(sec));if(sec<60)return sec+'с';if(sec<3600)return Math.floor(sec/60)+'м '+(sec%60?sec%60+'с':'');if(sec<86400)return Math.floor(sec/3600)+'ч '+Math.floor(sec%3600/60)+'м';return Math.floor(sec/86400)+'д '+Math.floor(sec%86400/3600)+'ч'}
+
+function farmBuildingSvg(kind){
+ const palettes={
+  house:['#f4c36f','#b9503c','#fff1c5','#89502e'],
+  mill:['#e9d18a','#7d9d4b','#fff0bd','#79552e'],
+  bakery:['#f0bd78','#b95f42','#fff0d0','#87502f'],
+  dairy:['#e8f0e6','#6c9fbd','#fff','#5d7890'],
+  coop:['#f2d18b','#b66a3f','#fff0c7','#80502e'],
+  barn:['#e6a08a','#a83f3d','#fff0df','#6e302d'],
+  sheep:['#e9d6a8','#b48b5c','#fff4dc','#765638'],
+  pigsty:['#f2c0bd','#c8797d','#fff0e8','#92545b'],
+  duck:['#e7ce8d','#a98b51','#fff0c8','#74562f'],
+  goat:['#e8c995','#98704b','#fff0d2','#745333'],
+  storage:['#efc77f','#a86b38','#fff0c6','#714525'],
+  market:['#f4d18d','#bd7940','#fff0cf','#80532e'],
+  orders:['#e5c58a','#9d6a3f','#fff2d1','#714a2d'],
+  pond:['#80d0e8','#328db7','#d9f5ff','#286e91']
+ };
+ const p=palettes[kind]||palettes.storage;
+ if(kind==='pond')return '<svg viewBox="0 0 100 82" aria-hidden="true"><ellipse cx="50" cy="61" rx="43" ry="13" fill="#376b3b" opacity=".28"/><ellipse cx="50" cy="48" rx="44" ry="25" fill="#6ebc67" stroke="#c3e18a" stroke-width="6"/><ellipse cx="50" cy="45" rx="36" ry="19" fill="'+p[0]+'" stroke="'+p[1]+'" stroke-width="3"/><path d="M22 43q12-8 23 0t24 0M30 54q10-6 19 0" fill="none" stroke="#e1fbff" stroke-width="3" stroke-linecap="round"/><path d="M62 32q10-9 16 0-6 8-16 0m8-2 7-7" fill="#fff" stroke="#328b61" stroke-width="2"/></svg>';
+ const roof=kind==='mill'?'M12 31 50 5 88 31Z':kind==='market'?'M10 32 50 8 90 32Z':'M10 32 50 7 90 32Z';
+ const windows='<rect x="22" y="39" width="15" height="14" rx="2" fill="#bde8f2" stroke="'+p[3]+'" stroke-width="2"/><path d="M29.5 39v14M22 46h15" stroke="#fff" stroke-width="1.5"/><rect x="63" y="39" width="15" height="14" rx="2" fill="#bde8f2" stroke="'+p[3]+'" stroke-width="2"/><path d="M70.5 39v14M63 46h15" stroke="#fff" stroke-width="1.5"/>';
+ let extra='';
+ if(kind==='barn')extra='<path d="M39 78V49q11-13 22 0v29" fill="#7e342f" stroke="'+p[2]+'" stroke-width="3"/><path d="M39 53h22M39 61h22M50 49v29" stroke="'+p[2]+'" stroke-width="2"/>';
+ if(kind==='coop')extra='<path d="M42 77V59q8-9 16 0v18" fill="#81512e" stroke="#fff0c7" stroke-width="2"/><path d="M44 59h12M50 59v18" stroke="#fff0c7" stroke-width="2"/>';
+ if(kind==='pigsty'||kind==='sheep'||kind==='duck'||kind==='goat')extra='<path d="M13 72h74M19 64v14M31 64v14M69 64v14M81 64v14" stroke="'+p[3]+'" stroke-width="3" stroke-linecap="round"/>';
+ if(kind==='mill')extra='<path d="M50 27v-9M50 27l-24-8M50 27l24-8M50 27l0 25" stroke="#fff0c7" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="27" r="5" fill="#b8874e"/>';
+ if(kind==='bakery')extra='<path d="M20 32h60v8H20z" fill="#f4a64b"/><path d="M25 32q5 15 10 0 5 15 10 0 5 15 10 0 5 15 10 0 5 15 10 0" fill="#ffe0a3"/>';
+ if(kind==='market')extra='<path d="M17 32h66l-5 13H22Z" fill="#fff0d0"/><path d="M17 32h13l-3 13H22ZM43 32h13v13H40ZM69 32h13l-5 13H66Z" fill="#cf5b4d"/>';
+ if(kind==='orders')extra='<path d="M35 76V46h30v30" fill="#f4e0b0" stroke="'+p[3]+'" stroke-width="3"/><path d="M40 53h20M40 60h20M40 67h14" stroke="'+p[3]+'" stroke-width="2"/>';
+ return '<svg viewBox="0 0 100 88" aria-hidden="true"><ellipse cx="50" cy="78" rx="39" ry="7" fill="#355b32" opacity=".28"/><rect x="14" y="29" width="72" height="49" rx="5" fill="'+p[0]+'" stroke="'+p[3]+'" stroke-width="3"/><path d="'+roof+'" fill="'+p[1]+'" stroke="'+p[3]+'" stroke-width="3" stroke-linejoin="round"/>'+windows+'<rect x="43" y="58" width="14" height="20" rx="2" fill="'+p[3]+'"/><circle cx="53" cy="68" r="1.5" fill="#f6d77d"/>'+extra+'</svg>';
+}
+function farmAnimalSvg(id,baby=false){
+ const colors={
+  chicken:['#fff0c6','#e4a53d','#d94d43','#b85e32'],
+  cow:['#f8f7ec','#343a3b','#edb1a6','#70543c'],
+  sheep:['#fff5dc','#e7d5ad','#55483d','#9b7950'],
+  pig:['#f4b6b5','#d98588','#df8b91','#805d54'],
+  duck:['#ffe28a','#e9b94f','#ed8a32','#8a6a37'],
+  goat:['#d8b47d','#98724d','#e5c49a','#60452f']
+ };
+ const c=colors[id]||colors.chicken, s=baby?.78:1;
+ let body,head,extra='';
+ if(id==='cow'){body='<ellipse cx="37" cy="32" rx="25" ry="15" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><path d="M23 22q8-8 15 1l-4 10-13-1ZM45 33q10-9 17 0l-4 10-12 0Z" fill="'+c[1]+'"/>';head='<path d="M54 25q7-8 12-2l-2 6M70 23q6-7 10-1l-4 7" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><ellipse cx="67" cy="35" rx="12" ry="11" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><ellipse cx="72" cy="40" rx="7" ry="5" fill="'+c[2]+'"/><circle cx="63" cy="33" r="1.7" fill="#26352c"/><circle cx="70" cy="33" r="1.7" fill="#26352c"/>';extra='<path d="M20 44v9M31 44v9M47 44v9M57 43v10" stroke="'+c[3]+'" stroke-width="4" stroke-linecap="round"/><path d="M12 29q-8-4-5-11" fill="none" stroke="'+c[3]+'" stroke-width="2"/>';}
+ else if(id==='pig'){body='<ellipse cx="38" cy="34" rx="27" ry="16" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/>';head='<path d="M56 27 55 14q9 2 12 11M73 26l6-10q7 8 2 14" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><ellipse cx="67" cy="35" rx="14" ry="12" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><ellipse cx="77" cy="39" rx="7" ry="5" fill="'+c[2]+'"/><circle cx="74" cy="39" r="1.2" fill="#a6535c"/><circle cx="80" cy="39" r="1.2" fill="#a6535c"/><circle cx="62" cy="32" r="1.5" fill="#493b36"/>';extra='<path d="M22 46v7M39 47v6M52 45v8" stroke="'+c[3]+'" stroke-width="4" stroke-linecap="round"/><path d="M12 32q-10-5-5 4t-4 4" fill="none" stroke="'+c[3]+'" stroke-width="2"/>';}
+ else if(id==='sheep'){body='<g fill="'+c[0]+'" stroke="'+c[1]+'" stroke-width="1.5"><circle cx="24" cy="31" r="12"/><circle cx="37" cy="26" r="14"/><circle cx="50" cy="32" r="13"/><circle cx="38" cy="39" r="13"/></g>';head='<ellipse cx="66" cy="34" rx="11" ry="13" fill="'+c[2]+'"/><path d="M58 26q-8-10-10-1M72 23q9-9 10 0" fill="none" stroke="'+c[2]+'" stroke-width="4" stroke-linecap="round"/><circle cx="63" cy="32" r="1.5" fill="#fff"/><circle cx="70" cy="32" r="1.5" fill="#fff"/><ellipse cx="67" cy="41" rx="4" ry="2.5" fill="#d79b91"/>';extra='<path d="M25 45v8M48 45v8" stroke="'+c[2]+'" stroke-width="4" stroke-linecap="round"/>';}
+ else if(id==='duck'){body='<ellipse cx="39" cy="35" rx="25" ry="15" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><path d="M27 32q15-13 25 3-12 12-25-3" fill="'+c[1]+'"/>';head='<path d="M57 29q-4-13 8-15 12 1 10 14" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><circle cx="69" cy="27" r="2" fill="#3b392d"/><path d="M75 31 88 35 75 38Z" fill="'+c[2]+'"/>';extra='<path d="M31 47v7M47 47v7" stroke="'+c[2]+'" stroke-width="3" stroke-linecap="round"/>';}
+ else if(id==='goat'){body='<ellipse cx="37" cy="34" rx="24" ry="15" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/>';head='<path d="M59 24q-5-13 2-17M72 24q8-13 11-8" fill="none" stroke="'+c[3]+'" stroke-width="3" stroke-linecap="round"/><path d="M57 27q9-10 19 0l-1 18q-11 8-19-2Z" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><circle cx="63" cy="34" r="1.6" fill="#29251e"/><circle cx="72" cy="34" r="1.6" fill="#29251e"/><path d="M65 44q5 5 9 0" fill="none" stroke="'+c[3]+'" stroke-width="2"/>';extra='<path d="M23 45v9M46 45v9" stroke="'+c[3]+'" stroke-width="3.5" stroke-linecap="round"/>';}
+ else {body='<ellipse cx="39" cy="35" rx="22" ry="16" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/>';head='<circle cx="62" cy="28" r="11" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><path d="M55 18q-4-10 1-11l6 9M66 17q4-11 9-7l-3 10" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><path d="M70 28 82 32 70 36Z" fill="'+c[1]+'"/><circle cx="64" cy="26" r="1.6" fill="#302d25"/><path d="M56 17q-1-9 5-7l1 8" fill="#d94d43"/>';extra='<path d="M26 47v6M44 47v6" stroke="'+c[3]+'" stroke-width="3.5" stroke-linecap="round"/><path d="M19 31q-8-4-6-10" fill="none" stroke="'+c[3]+'" stroke-width="2"/>';}
+ return '<svg viewBox="0 0 92 62" aria-hidden="true"><g transform="translate('+(46-46*s)+' '+(31-31*s)+') scale('+s+')">'+body+head+extra+'</g></svg>';
+}
+function upgradeFarmMapArt(){
+ const map=$('farmMap');if(!map)return;
+ const kinds={'house-art':'house','pond-art':'pond','mill-art':'mill','bakery-art':'bakery','dairy-art':'dairy','coop-art':'coop','barn-art':'barn','sheep-art':'sheep','pig-art':'pigsty','duck-art':'duck','goat-art':'goat','storage-art':'storage','market-art':'market','cart-art':'orders'};
+ map.querySelectorAll('.place-art').forEach(el=>{const kind=Object.keys(kinds).find(k=>el.classList.contains(k));if(kind)el.innerHTML=farmBuildingSvg(kinds[kind]);});
+}
+
 function renderFarmMap(){
+ upgradeFarmMapArt();
  const set=(id,txt)=>{let el=$(id);if(el)el.textContent=txt};
- set('mapChicken','Кур: '+(state.animals.chicken||0)+' · 🐣 '+state.animalHerd.filter(x=>x.id==='chicken'&&animalStage(x,ANIMALS.chicken)!=='adult').length);
- set('mapCow','Коров: '+(state.animals.cow||0)+' · 🐮 '+state.animalHerd.filter(x=>x.id==='cow'&&animalStage(x,ANIMALS.cow)!=='adult').length);
- set('mapSheep','Овец: '+(state.animals.sheep||0)+' · 🐑 '+state.animalHerd.filter(x=>x.id==='sheep'&&animalStage(x,ANIMALS.sheep)!=='adult').length);
- set('mapPig',state.level>=ANIMALS.pig.level?'Свиней: '+(state.animals.pig||0)+' · 🐽 '+state.animalHerd.filter(x=>x.id==='pig'&&animalStage(x,ANIMALS.pig)!=='adult').length:'🔒 Откроется на 8 уровне');
+ set('mapChicken','Кур: '+(state.animals.chicken||0)+' · молодняк: '+state.animalHerd.filter(x=>x.id==='chicken'&&animalStage(x,ANIMALS.chicken)!=='adult').length);
+ set('mapCow','Коров: '+(state.animals.cow||0)+' · молодняк: '+state.animalHerd.filter(x=>x.id==='cow'&&animalStage(x,ANIMALS.cow)!=='adult').length);
+ set('mapSheep','Овец: '+(state.animals.sheep||0)+' · молодняк: '+state.animalHerd.filter(x=>x.id==='sheep'&&animalStage(x,ANIMALS.sheep)!=='adult').length);
+ set('mapPig',state.level>=ANIMALS.pig.level?'Свиней: '+(state.animals.pig||0):'Откроется на 8 уровне');
  renderMapAnimalLife();
 }
 function renderMapAnimalLife(){
  const map=$('farmMap');if(!map)return;
  let layer=map.querySelector('.animal-life-layer');if(!layer){layer=document.createElement('div');layer.className='animal-life-layer';layer.setAttribute('aria-hidden','true');map.appendChild(layer)}
  const herds=[
-  {id:'chicken',x:110,y:492,adult:'🐔',baby:'🐣'},
-  {id:'cow',x:470,y:710,adult:'🐄',baby:'🐮'},
-  {id:'sheep',x:420,y:1000,adult:'🐑',baby:'🐑'},
-  {id:'pig',x:105,y:870,adult:'🐷',baby:'🐽'}
+  {id:'chicken',x:72,y:462},
+  {id:'cow',x:500,y:700},
+  {id:'sheep',x:475,y:930},
+  {id:'pig',x:78,y:885}
  ];
  let html='';
- const signature=herds.map(h=>state.animalHerd.filter(a=>a.id===h.id).slice(0,5).map(a=>h.id+':'+animalStage(a,ANIMALS[h.id])).join(',')).join('|');
  herds.forEach(h=>{
   const animals=state.animalHerd.filter(a=>a.id===h.id).slice(0,5);
   animals.forEach((a,i)=>{
    const baby=animalStage(a,ANIMALS[h.id])!=='adult';
-   const x=h.x+(i%3)*28, y=h.y+Math.floor(i/3)*25;
-   html+=`<span class="animal-sprite ${baby?'baby':''}" style="left:${x}px;top:${y}px;--delay:${-i*.63}s;--walk-time:${4.1+(i%3)*.7}s">${baby?h.baby:h.adult}${i===0?'<i class="spark">✦</i>':''}</span>`;
+   const x=h.x+(i%3)*30, y=h.y+Math.floor(i/3)*26;
+   html+=`<span class="animal-sprite ${baby?'baby':''}" style="left:${x}px;top:${y}px;--delay:${-i*.63}s;--walk-time:${4.1+(i%3)*.7}s">${farmAnimalSvg(h.id,baby)}${i===0?'<i class="spark">✦</i>':''}</span>`;
   });
  });
  layer.innerHTML=html;
