@@ -595,13 +595,13 @@ body.inside-building #backToWorld{display:inline-flex!important}
 /* Inline field expansion: buy three plots at a time, beside the active beds. */
 #farmMap .field-island{padding:7px!important}
 #farmMap .field-island .plot{min-height:46px!important}
-#farmMap .plot-expansion{position:relative;z-index:3;margin:7px auto 0;max-width:100%;display:flex;align-items:center;justify-content:center;gap:7px}
-#farmMap .locked-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;flex:1;min-width:0}
-#farmMap .locked-plot{height:38px;min-width:0;border:1.5px dashed #e6c58a;border-radius:8px;background:linear-gradient(145deg,#765333,#52391f);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#ffe7b5;box-shadow:inset 0 1px 0 #fff3}
+#farmMap .plot-expansion{position:relative;z-index:3;margin:7px auto 0;max-width:100%}
+#farmMap .locked-row{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;width:100%;min-width:0}
+#farmMap .locked-plot{height:38px;min-width:0;border:1.5px dashed #e6c58a;border-radius:8px;background:linear-gradient(145deg,#765333,#52391f);display:flex;align-items:center;justify-content:center;color:#ffe7b5;box-shadow:inset 0 1px 0 #fff3}
 #farmMap .locked-plot span{font-size:15px;line-height:16px}
-#farmMap .locked-plot small{font-size:7px;font-weight:900;line-height:10px}
-#farmMap .open-row-btn{flex:0 0 104px;min-height:38px;padding:4px 6px;border:1px solid #ffe19a;border-radius:9px;background:linear-gradient(180deg,#ffe18a,#e9a936);color:#604016;box-shadow:0 3px 0 #a66b20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:9px;font-weight:1000;line-height:12px}
-#farmMap .open-row-btn strong{font-size:10px}
+#farmMap .open-row-btn{position:absolute;inset:0;width:100%;min-height:38px;padding:4px 8px;border:1px solid #ffe19a;border-radius:9px;background:linear-gradient(180deg,#ffe18aee,#e9a936f2);color:#604016;box-shadow:0 3px 0 #a66b20;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:9px;font-size:11px;font-weight:1000;line-height:14px}
+#farmMap .open-row-btn span{letter-spacing:.35px}
+#farmMap .open-row-btn strong{font-size:11px}
 #farmMap .all-plots-open{font-size:10px;font-weight:1000;color:#fff0bd;text-align:center;padding:6px}
 </style>
 </head>
@@ -1232,7 +1232,7 @@ function initPremium(){
 function update(){
 $('coins').textContent=Math.floor(state.coins);$('gems').textContent=state.gems;$('level').textContent=state.level;$('level2').textContent=state.level;$('xp').textContent=Math.floor(state.xp);$('need').textContent=needXP();$('xpbar').style.width=(state.xp/needXP()*100)+'%';$('xpbar').title='Следующий уровень: '+needXP()+' XP';$('farmlevel').textContent=state.level;$('plotcount').textContent=state.plots.length;$('plotcountMap').textContent=state.plots.length;$('used').textContent=totalItems();$('used2').textContent=totalItems();$('capacity').textContent=state.capacity;$('capacity2').textContent=state.capacity;renderFarmMap();
 $('plots').innerHTML=state.plots.map((p,i)=>{if(!p.crop)return `<button class="plot empty" data-plot="${i}"><span class="crop">🟫</span><small>Пусто · выбрать</small></button>`;let left=Math.max(0,(p.readyAt-now())/1000),ready=left<=0,c=CROPS[p.crop];return `<button class="plot" data-plot="${i}"><span class="crop">${ready?'✨':c.emoji}</span><small>${c.name}</small>${ready?'<span class="timer">СОЗРЕЛО!</span>':`<span class="timer">${fmt(left)}</span>`}</button>`}).join('');
-const expansion=$('plotExpansion');if(expansion){const maxPlots=23,remaining=Math.max(0,maxPlots-state.plots.length),cost=plotExpansionCost();expansion.innerHTML=remaining?`<div class="locked-row">${Array.from({length:Math.min(3,remaining)},()=>'<div class="locked-plot"><span>🔒</span><small>Закрыто</small></div>').join('')}</div><button class="open-row-btn" onclick="openPlotRow()"><span>＋ Открыть ряд</span><strong>${cost.toLocaleString('ru-RU')} 🪙</strong></button>`:'<div class="all-plots-open">✨ Все грядки открыты</div>';}
+const expansion=$('plotExpansion');if(expansion){const maxPlots=23,remaining=Math.max(0,maxPlots-state.plots.length),cost=plotExpansionCost();expansion.innerHTML=remaining?`<div class="locked-row">${Array.from({length:Math.min(4,remaining)},()=>'<div class="locked-plot"><span>🔒</span></div>').join('')}<button class="open-row-btn" onclick="openPlotRow()"><span>＋ ОТКРЫТЬ РЯД</span><strong>${cost.toLocaleString('ru-RU')} 🪙</strong></button></div>`:'<div class="all-plots-open">✨ Все грядки открыты</div>';}
 ensureDaily();renderDailyContracts();renderGoals();renderBuildings();renderBreeding();renderAnimals();renderInventory();renderOrders();renderTrade();renderSocial();renderShop();renderOrchard();renderAchievements();renderTerritory();renderSeason();renderGuild();renderJourneys();renderRegions();renderCrystalRealm();renderDeepCaves();renderMuseum();renderFestival();renderPremium();$('feedCount').textContent=state.inventory.feed||0;
 }
 function updateTick(){
@@ -1498,8 +1498,8 @@ window.completeOrder=i=>{let o=state.orders[i];if(!o||(state.inventory[o.id]||0)
 $('refreshOrders').onclick=()=>{if(state.coins<30){toast('Нужно 30 монет');return}state.coins-=30;makeOrders();save();update();toast('Торговцы прислали новые заказы')};
 function renderShop(){$('shopItems').innerHTML=Object.entries(CROPS).filter(([id,c])=>state.level>=c.level).map(([id,c])=>`<div class="tile"><div class="tileicon">${c.emoji}</div><div class="grow"><h3>${c.name}</h3><p>Время роста: ${fmt(c.time)} · Продажа: ${c.price} 🪙 за единицу</p><button class="btn primary" onclick="chooseCrop('${id}')">Выбрать для посадки</button></div></div>`).join('')+`<div class="tile"><div class="tileicon">📦</div><div class="grow"><h3>Материалы и ресурсы</h3><p>Некоторые ресурсы получаются только из производств и заказов.</p><span class="tag">Постепенное открытие</span></div></div>`}
 
-window.plotExpansionCost=()=>450+Math.floor(Math.max(0,state.plots.length-8)/3)*350;
-window.openPlotRow=()=>{const maxPlots=23,cost=plotExpansionCost();if(state.plots.length>=maxPlots){toast('Все ряды грядок уже открыты!');return}if(state.coins<cost){toast('Для нового ряда нужно '+cost.toLocaleString('ru-RU')+' 🪙');return}state.coins-=cost;for(let n=0;n<3&&state.plots.length<maxPlots;n++)state.plots.push({crop:null,readyAt:0});log('Открыт новый ряд из трёх грядок за '+cost+' монет');save();update();toast('🌱 Новый ряд из трёх грядок открыт!')};
+window.plotExpansionCost=()=>450+Math.floor(Math.max(0,state.plots.length-8)/4)*350;
+window.openPlotRow=()=>{const maxPlots=28,cost=plotExpansionCost();if(state.plots.length>=maxPlots){toast('Все ряды грядок уже открыты!');return}if(state.coins<cost){toast('Для нового ряда нужно '+cost.toLocaleString('ru-RU')+' 🪙');return}state.coins-=cost;for(let n=0;n<4&&state.plots.length<maxPlots;n++)state.plots.push({crop:null,readyAt:0});log('Открыт новый ряд из четырёх грядок за '+cost+' монет');save();update();toast('🌱 Новый ряд из четырёх грядок открыт!')};
 $('friendHelp').onclick=()=>{let p=state.plots.find(p=>p.crop&&p.readyAt>now());if(!p){toast('Нет растущих грядок для помощи');return}p.readyAt=Math.max(now(),p.readyAt-300000);state.friendHelp++;addXP(2);log('Сосед помог: рост ускорен на 5 минут');save();update();toast('💧 Рост ускорен на 5 минут!')};
 $('sendGift').onclick=sendNeighborGift;
 $('fishBtn').onclick=()=>{if(state.coins<10){toast('Нужно 10 монет на наживку');return}state.coins-=10;let rare=Math.random()<.15,n=rare?3:1;addItem('fish',n);addXP(2);log('На рыбалке поймано рыбы: '+n);save();update();toast((rare?'Редкий улов! ':'Рыба поймана! ')+'×'+n)};
