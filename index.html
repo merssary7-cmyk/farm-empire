@@ -513,9 +513,14 @@ body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;co
 .map-controls,#mapZoomIn,#mapZoomOut,#mapZoomReset,#buildModeToggle,#returnDecor,#mapHelpText,.build-toggle,.build-return{display:none!important;visibility:hidden!important;pointer-events:none!important;width:0!important;height:0!important;max-height:0!important;overflow:hidden!important}
 </style>
 <style id="universal-menu-exit">
-#backToWorld{display:none!important;align-items:center!important;justify-content:center!important;flex:0 0 38px!important;width:38px!important;height:38px!important;min-width:38px!important;padding:0!important;margin-left:8px!important;border-radius:50%!important;background:#fff0ed!important;border:1px solid #efb7ad!important;color:#a83e32!important;font-size:22px!important;font-weight:900!important;line-height:1!important;box-shadow:0 2px 8px rgba(90,30,20,.12)!important;cursor:pointer!important;z-index:1000!important}
+#backToWorld{display:none!important;align-items:center!important;justify-content:center!important;flex:0 0 42px!important;width:42px!important;height:42px!important;min-width:42px!important;padding:0!important;margin-left:8px!important;border-radius:50%!important;background:#fff0ed!important;border:2px solid #efb7ad!important;color:#a83e32!important;font-size:23px!important;font-weight:900!important;line-height:1!important;box-shadow:0 3px 10px rgba(90,30,20,.18)!important;cursor:pointer!important;z-index:10000!important}
 body.inside-building #backToWorld{display:inline-flex!important}
-@media(max-width:850px){.top:has(#backToWorld){justify-content:space-between;gap:6px}.top .stats{min-width:0;flex:1;overflow-x:auto;scrollbar-width:none}.top .stats::-webkit-scrollbar{display:none}}
+@media(max-width:850px){
+ body.inside-building #backToWorld{position:fixed!important;top:calc(112px + var(--tg-content-safe-area-inset-top, var(--tg-safe-area-inset-top, env(safe-area-inset-top, 0px))))!important;right:12px!important;margin:0!important;flex:none!important}
+ .top:has(#backToWorld){justify-content:space-between;gap:6px}
+ .top .stats{min-width:0;flex:1;overflow-x:auto;scrollbar-width:none}
+ .top .stats::-webkit-scrollbar{display:none}
+}
 </style>
 </head>
 <body><div class="app">
