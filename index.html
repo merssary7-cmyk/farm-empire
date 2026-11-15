@@ -649,158 +649,170 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.view.active{animation:none}*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
 </style>
 <style id="farm-empire-cozy-farm">
+/* COZY FARM — concrete visual pass, targeting the live game's real structure */
 :root{
- --fe-forest:#355c3d;--fe-leaf:#6eaa61;--fe-leaf-deep:#4d8549;
- --fe-cream:#f7f0df;--fe-paper:#fffdf6;--fe-wood:#986b43;
- --fe-wood-dark:#69472e;--fe-gold:#e8bd62;--fe-sky:#dceef0;
- --fe-ink:#344c38;--fe-muted:#788774;--fe-line:#e7dfc9;
- --fe-soft-shadow:0 3px 0 rgba(117,143,91,.18),0 9px 22px rgba(61,83,48,.09);
- --fe-card-shadow:0 4px 0 rgba(128,151,96,.2),0 10px 24px rgba(61,83,48,.10);
+ --fe-forest:#31583b;--fe-leaf:#76ad61;--fe-leaf-dark:#4e8548;
+ --fe-cream:#f7efdc;--fe-paper:#fffdf5;--fe-wood:#986b43;
+ --fe-wood-dark:#68472f;--fe-gold:#e8bd62;--fe-ink:#354d39;
+ --fe-muted:#788774;--fe-line:#e6ddc6;
 }
-html{background:#e6f0dc}
+html,body{background:#e8efdc!important;color:var(--fe-ink)!important}
 body{
- background:radial-gradient(ellipse at 8% 0%,#fff4d4 0,transparent 34%),
- linear-gradient(180deg,#dceff0 0,#f4f0df 240px,#e7efd9 100%)!important;
- color:var(--fe-ink)!important;font-family:ui-rounded,"Trebuchet MS",system-ui,sans-serif;
+ background:radial-gradient(ellipse at 10% 2%,#fff2cf 0,transparent 32%),
+ linear-gradient(180deg,#d7edf0 0,#f5f0df 230px,#e6efd9 100%)!important;
+ font-family:ui-rounded,"Trebuchet MS",system-ui,sans-serif!important;
 }
-.app{background:transparent!important}
+.app{max-width:560px!important;padding:0 0 30px!important}
 .top{
- background:linear-gradient(180deg,rgba(255,253,246,.98),rgba(247,241,222,.97))!important;
- border-bottom:1px solid #e6d8b7!important;
- box-shadow:0 3px 0 rgba(141,116,76,.08),0 8px 22px rgba(63,83,49,.10)!important;
+ background:linear-gradient(180deg,#fffdf5 0%,#f2ead5 100%)!important;
+ border:0!important;border-bottom:2px solid #e1d2ae!important;
+ box-shadow:0 4px 0 #8d744c16,0 9px 22px #3f53311c!important;
 }
-.brand{color:var(--fe-forest)!important;letter-spacing:-.7px!important}
+.brand{color:#31583b!important;font-size:20px!important;letter-spacing:-.7px!important}
 .brand .logo{
- background:linear-gradient(145deg,#c9e6a4,#76b66a)!important;
- border:2px solid #f5f4d9!important;border-radius:16px!important;
- box-shadow:inset 0 2px 0 #ffffff99,0 4px 0 #54864a,0 7px 13px #42643b26!important;
+ width:42px!important;height:42px!important;min-width:42px!important;
+ display:grid!important;place-items:center!important;border-radius:14px!important;
+ background:linear-gradient(145deg,#d5edb0,#7db96c)!important;
+ border:2px solid #fff5d9!important;
+ box-shadow:inset 0 2px 0 #fff9,0 4px 0 #54864a,0 7px 12px #42643b25!important;
 }
-.stats .pill,.pill{
- border:1px solid #e8dfc9!important;border-radius:13px!important;
- background:linear-gradient(180deg,#fffefa,#f5eedc)!important;
- color:#526447!important;box-shadow:0 2px 0 #ded3b9,0 4px 9px #52643b10!important;
+.stats .pill{
+ border:1px solid #e5d8b9!important;border-radius:12px!important;
+ background:linear-gradient(180deg,#fffef8,#f3e9d1)!important;
+ color:#566b4c!important;box-shadow:0 2px 0 #d6c8a7!important;
+ font-weight:800!important;
 }
-.stats .pill span{font-weight:900;color:#40583b}
+#backToWorld{
+ border:1px solid #e4d3b0!important;border-radius:12px!important;
+ background:linear-gradient(#fff9e9,#eddfc2)!important;color:#73583a!important;
+ box-shadow:0 2px 0 #cbb68d!important;
+}
 .profile{
- background:linear-gradient(115deg,#fffdf4,#f0f7df)!important;
- border:1px solid #e3dfc7!important;border-radius:19px!important;
- box-shadow:0 4px 0 #d4dfbd,0 9px 20px #45623a17!important;
+ margin:9px 10px 12px!important;padding:11px 13px!important;
+ border:1px solid #dce2c7!important;border-radius:19px!important;
+ background:linear-gradient(120deg,#fffdf3 0%,#f3f7e4 100%)!important;
+ box-shadow:inset 0 1px 0 #fff,0 4px 0 #d0ddb9,0 10px 20px #49633a18!important;
 }
 .profile .avatar{
- border:2px solid #fff4d6!important;border-radius:15px!important;
- background:linear-gradient(145deg,#f6df9e,#e9bd67)!important;
- box-shadow:inset 0 2px 0 #fff9,0 3px 0 #c89d50!important;
+ border:2px solid #fff4d8!important;border-radius:15px!important;
+ background:linear-gradient(145deg,#f8e3a9,#e5b967)!important;
+ box-shadow:inset 0 2px 0 #fff9,0 3px 0 #c59b52!important;
 }
-.levelrow{color:#73836a!important;font-size:11px!important}
-.bar{background:#dfe8cf!important;border:1px solid #d1ddbd!important;border-radius:99px!important;overflow:hidden}
-.bar i{background:linear-gradient(90deg,#a7cf70,#5a9a55)!important;border-radius:99px!important;box-shadow:0 1px 3px #4c824955}
+.profile .btn{padding:7px 10px!important;min-height:31px!important}
+.levelrow{color:#708269!important}
+.bar{height:10px!important;border:1px solid #d5dfc0!important;background:#e5ebd7!important;border-radius:99px!important;overflow:hidden}
+.bar i{background:linear-gradient(90deg,#b8dc7c,#65a653)!important;border-radius:99px!important}
 .nav{
- background:linear-gradient(145deg,#805b3a,#60432e)!important;
- border:3px solid #c69a60!important;border-radius:19px!important;
- box-shadow:inset 0 2px 0 #fff3,0 5px 0 #503823,0 11px 22px #304d2d38!important;
+ padding:7px!important;gap:5px!important;
+ background:linear-gradient(145deg,#795536,#543a28)!important;
+ border:3px solid #c49a62!important;border-radius:18px!important;
+ box-shadow:inset 0 2px 0 #fff3,0 5px 0 #493321,0 11px 20px #304d2d35!important;
 }
-.app .nav button{
- border:1px solid #e9d7ae!important;border-radius:12px!important;
- background:linear-gradient(180deg,#fff9e9,#f1dfb9)!important;
+.nav button{
+ border:1px solid #e8d6ad!important;border-radius:11px!important;
+ background:linear-gradient(180deg,#fff9e9,#efdfbd)!important;
  color:#62492f!important;box-shadow:0 2px 0 #c5a574!important;
- font-weight:850!important;transition:transform .16s,filter .16s,background .16s!important;
+ font-weight:850!important;
 }
-.app .nav button.active{
- background:linear-gradient(180deg,#d9edb4,#a8d27e)!important;
- color:#315a36!important;border-color:#f3f6d7!important;
- box-shadow:inset 0 1px 0 #fff9,0 2px 0 #709d5b!important;
+.nav button.active{
+ background:linear-gradient(180deg,#d9efb4,#a6d17c)!important;
+ color:#315a36!important;border:1px solid #f8f6d8!important;
+ box-shadow:inset 0 1px 0 #fff9,0 2px 0 #729b5c!important;
 }
-.app .nav button b{filter:drop-shadow(0 1px 0 #fff8)}
 .panel{
- background:linear-gradient(145deg,#fffef9,#f8f2e3)!important;
- border:1px solid #e8dfca!important;border-radius:22px!important;
- box-shadow:var(--fe-card-shadow)!important;
+ background:linear-gradient(145deg,#fffef9,#f7f0df)!important;
+ border:1px solid #e5dcc5!important;border-radius:21px!important;
+ box-shadow:0 4px 0 #d3dfbd,0 12px 25px #49633a19!important;
 }
 .farmhead,.sectionhead{
- background:linear-gradient(180deg,#fffdf6,#f4eedf)!important;
- border-bottom:1px solid #e9e1ce!important;
+ background:linear-gradient(180deg,#fffdf6,#f1ead8)!important;
+ border-bottom:1px solid #e5dcc6!important;
 }
-.farmhead h2,.sectionhead h2{color:#3d6241!important;letter-spacing:-.35px}
-.sub,.muted{color:var(--fe-muted)!important}
-.tile,.order,.recipe,.task,.achievement,.decor-card,.region-card,.land-card{
- border:1px solid #e7e2d1!important;border-radius:17px!important;
- background:linear-gradient(145deg,#fffefa,#f5f6e9)!important;
- box-shadow:0 3px 0 #e0e7d3,0 7px 16px #48613b0d!important;
+.farmhead h2,.sectionhead h2{color:#3e6843!important;letter-spacing:-.4px!important}
+.tile,.order,.recipe,.task,.achievement,.land-card,.animal-tile,.production-tile{
+ border:1px solid #e3e4d0!important;border-radius:16px!important;
+ background:linear-gradient(145deg,#fffef9,#f1f5e7)!important;
+ box-shadow:0 3px 0 #dce5cf,0 8px 16px #48613b12!important;
 }
-.tileicon,.taskicon,.emoji,.invitem .mi-icon{
- border-radius:14px!important;
- background:linear-gradient(145deg,#f9f1d8,#e7efd9)!important;
- border:1px solid #e9e2ca!important;
+.tileicon{
+ border:1px solid #e5e1ca!important;border-radius:14px!important;
+ background:linear-gradient(145deg,#fbf1d6,#e4efd9)!important;
 }
 .btn{
- border:1px solid #d9dfc6!important;border-radius:12px!important;
- background:linear-gradient(180deg,#fffdf4,#eee8d6)!important;
- color:#536348!important;font-weight:850!important;
- box-shadow:inset 0 1px 0 #fff,0 3px 0 #d5d9c4,0 5px 10px #405c3510!important;
+ border:1px solid #d8dfc7!important;border-radius:12px!important;
+ background:linear-gradient(180deg,#fffdf5,#eee8d7)!important;
+ color:#526447!important;font-weight:850!important;
+ box-shadow:inset 0 1px 0 #fff,0 3px 0 #d3d9c2,0 5px 9px #405c3510!important;
 }
 .btn.primary{
- border-color:#83b36d!important;
- background:linear-gradient(180deg,#a9d77f,#76b75f)!important;
- color:#244e31!important;
- box-shadow:inset 0 1px 0 #ffffff99,0 3px 0 #548e4a,0 6px 11px #416c3b22!important;
+ border-color:#80b16a!important;background:linear-gradient(180deg,#b5dc8c,#78b662)!important;
+ color:#244e31!important;box-shadow:inset 0 1px 0 #fff9,0 3px 0 #548d49!important;
 }
-.btn.secondary{
- border-color:#dfc99b!important;background:linear-gradient(180deg,#fff0c8,#efd59a)!important;
- color:#684c2c!important;box-shadow:inset 0 1px 0 #fff9,0 3px 0 #c5a46b!important;
-}
-.btn.danger{background:linear-gradient(180deg,#f5c5ad,#df987e)!important;color:#713c2d!important}
-button:disabled,.btn:disabled{filter:saturate(.55);opacity:.65}
-input,select,textarea{
- border:1px solid #dddcc7!important;border-radius:11px!important;
- background:#fffef8!important;color:#40543e!important;
- box-shadow:inset 0 1px 3px #51633c0c!important;
-}
-.modalback{background:rgba(39,57,39,.48)!important;backdrop-filter:blur(8px)!important}
+.btn.gold{background:linear-gradient(180deg,#fff0c8,#e9c77d)!important;color:#684c2c!important;border-color:#d9b56d!important}
+.modalback{background:#263c2e88!important;backdrop-filter:blur(8px)!important}
 .modal{
- border:1px solid #e6dcc2!important;border-radius:23px!important;
- background:linear-gradient(145deg,#fffef8,#f4eedf)!important;
- box-shadow:0 8px 0 #b9a47d,0 22px 60px #1e392d45!important;
+ border:1px solid #e5d9bd!important;border-radius:22px!important;
+ background:linear-gradient(145deg,#fffef8,#f4eddd)!important;
+ box-shadow:0 7px 0 #b9a47d,0 22px 55px #1e392d50!important;
 }
 .toast{
- border:1px solid #f1e1b8!important;border-radius:15px!important;
- background:linear-gradient(180deg,#fffdf1,#f5ebd1)!important;color:#4a603e!important;
- box-shadow:0 4px 0 #d8c69f,0 9px 22px #304d2d30!important;
+ border:1px solid #ecdfbd!important;border-radius:14px!important;
+ background:linear-gradient(180deg,#fffdf2,#f2e8cf)!important;color:#405c3e!important;
+ box-shadow:0 4px 0 #d7c59e,0 9px 20px #304d2d30!important;
 }
-#farmViewport{
- border:5px solid #f7edcf!important;border-radius:21px!important;
- box-shadow:inset 0 0 0 1px #b7cf8e,0 5px 0 #b4c98d,0 12px 22px #45633b20!important;
+/* The map is the game's hero: softer meadow, warmer paths, readable landmark depth */
+.farm-viewport{
+ border:5px solid #f7edcf!important;border-radius:20px!important;
+ background:#b6d98a!important;
+ box-shadow:inset 0 0 0 2px #a9c987,0 5px 0 #b2c88e,0 13px 24px #45633b25!important;
 }
-#farmMap .map-place .place-art{filter:drop-shadow(0 10px 5px #31512c55)!important}
+#farmMap.illustrated-map{filter:saturate(.91) contrast(1.015)!important}
+#farmMap .world-art{filter:saturate(.88)!important}
+#farmMap .map-place{filter:drop-shadow(0 5px 4px #34532e35)!important}
+#farmMap .map-place .place-art{filter:drop-shadow(0 7px 5px #31512c55)!important}
 #farmMap .map-place b{
- border:1px solid #e7c88c!important;border-radius:10px!important;
- background:linear-gradient(180deg,#916a43,#65452d)!important;
- box-shadow:inset 0 1px 0 #ffffff40,0 3px 0 #50351f,0 6px 12px #29472b33!important;
+ border:1px solid #e7c88c!important;border-radius:9px!important;
+ background:linear-gradient(180deg,#916a43,#65452d)!important;color:#fff8e6!important;
+ box-shadow:inset 0 1px 0 #ffffff40,0 3px 0 #50351f,0 5px 10px #29472b30!important;
+}
+#farmMap .map-place small{
+ border:1px solid #d8dfbb!important;border-radius:8px!important;
+ background:#fff9e7ed!important;color:#536748!important;
+ box-shadow:0 2px 0 #a5b88b!important;
 }
 #farmMap .field-island{
- border:5px solid #e9c98c!important;
- background:linear-gradient(145deg,#bd8954,#805333 68%,#68452e)!important;
- box-shadow:inset 0 0 0 3px #d7a66a,0 7px 0 #4b743d,0 14px 22px #31552c55!important;
+ border:5px solid #efd19a!important;border-radius:17px!important;
+ background:linear-gradient(145deg,#c18b57,#8a5b36 68%,#70472e)!important;
+ box-shadow:inset 0 0 0 3px #d9aa70,0 7px 0 #4b743d,0 14px 22px #31552c55!important;
+}
+#farmMap .field-sign{
+ border:2px solid #f2d99d!important;border-radius:10px!important;
+ background:linear-gradient(180deg,#a87543,#704a2e)!important;color:#fff4d7!important;
+ box-shadow:0 3px 0 #50351f!important;
 }
 #farmMap .field-island .plot{
- border-color:#d7b078!important;
- background:linear-gradient(145deg,#bd8954,#815232)!important;
+ border:2px solid #d8ad76!important;border-radius:9px!important;
+ background:linear-gradient(145deg,#b77e49,#80502f)!important;
  box-shadow:inset 0 2px 0 #f6d49a55,0 3px 0 #56351f!important;
 }
-#farmMap .map-legend{box-shadow:0 3px 0 #b8c99b,0 7px 12px #31552c25!important}
-.view.active{animation:fe-cozy-enter .2s ease-out both}
-@keyframes fe-cozy-enter{from{opacity:.7;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+#farmMap .plot-expansion,#farmMap .map-legend{
+ border:1px solid #e7d6ac!important;border-radius:12px!important;
+ background:linear-gradient(180deg,#fff9e8,#f0e2c2)!important;
+ box-shadow:0 3px 0 #b7a078,0 7px 12px #31552c25!important;
+}
+#farmMap .map-extension{filter:drop-shadow(0 5px 4px #31552c40)!important}
+.view.active{animation:fe-cozy-enter .18s ease-out both}
+@keyframes fe-cozy-enter{from{opacity:.78;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
 @media(hover:hover) and (pointer:fine){
- .app .nav button:hover,.btn:not(:disabled):hover{filter:brightness(1.04)!important;transform:translateY(-1px)}
- .tile:hover{transform:translateY(-2px);box-shadow:0 5px 0 #dce5cd,0 11px 19px #48613b14!important}
+ .nav button:hover,.btn:not(:disabled):hover{filter:brightness(1.05)!important;transform:translateY(-1px)}
+ .tile:hover{transform:translateY(-2px);box-shadow:0 5px 0 #dce5cd,0 11px 19px #48613b18!important}
 }
 @media(max-width:520px){
- .top{box-shadow:0 3px 0 #a6bb8730,0 7px 18px #3d59301a!important}
+ .app{max-width:520px!important;padding-bottom:26px!important}
  .profile{margin-left:9px!important;margin-right:9px!important}
  .nav{padding:6px!important;gap:5px!important}
- .app .nav button{border-radius:10px!important;min-height:57px!important}
+ .nav button{border-radius:10px!important}
  .panel{border-radius:18px!important}
- .tile{border-radius:15px!important}
- .modal{border-radius:20px!important}
 }
 @media(prefers-reduced-motion:reduce){.view.active{animation:none!important}}
 </style>
@@ -815,8 +827,8 @@ input,select,textarea{
 <div class="farm-viewport" id="farmViewport" aria-label="Прокручиваемая карта фермы"><div class="scene farm-map illustrated-map" id="farmMap">
 <svg class="world-art" viewBox="0 0 640 1680" role="img" aria-label="Цельная зелёная долина фермы с дорожками, прудом, садами и загонами" xmlns="http://www.w3.org/2000/svg">
 <defs>
- <linearGradient id="farm-meadow" x1="0" y1="0" x2="0.2" y2="1"><stop stop-color="#c9ee9b"/><stop offset=".45" stop-color="#9bd66f"/><stop offset="1" stop-color="#68b957"/></linearGradient>
- <linearGradient id="farm-road" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f4dca8"/><stop offset="1" stop-color="#c99a62"/></linearGradient>
+ <linearGradient id="farm-meadow" x1="0" y1="0" x2="0.2" y2="1"><stop stop-color="#d2edaa"/><stop offset=".45" stop-color="#a7d77f"/><stop offset="1" stop-color="#78bd68"/></linearGradient>
+ <linearGradient id="farm-road" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f8e7bd"/><stop offset="1" stop-color="#d6ad78"/></linearGradient>
  <pattern id="farm-grass" width="42" height="42" patternUnits="userSpaceOnUse"><circle cx="7" cy="9" r="1.5" fill="#f4ffd2" opacity=".5"/><circle cx="31" cy="28" r="2" fill="#438d43" opacity=".18"/><path d="m17 37 3-5 3 5" fill="none" stroke="#f3f8b5" opacity=".3"/></pattern>
  <g id="farm-tree"><ellipse cy="31" rx="27" ry="8" fill="#356f37" opacity=".2"/><path d="M-4 12h8v25h-8z" fill="#8b6138"/><circle cx="-12" cy="0" r="18" fill="#438e47" stroke="#34763d" stroke-width="2.5"/><circle cx="10" cy="-8" r="21" fill="#65ad50" stroke="#34763d" stroke-width="2.5"/><circle cx="8" cy="10" r="16" fill="#8acb59" stroke="#4d9340" stroke-width="2"/></g>
  <g id="farm-pine"><ellipse cy="30" rx="22" ry="7" fill="#356f37" opacity=".2"/><path d="M0-38-25 9h13L-29 27h58L12 9h13Z" fill="#347b4a" stroke="#28633d" stroke-width="2.5"/><path d="M0-25-17 7h34Z" fill="#58a95a"/><rect x="-4" y="25" width="8" height="12" fill="#8a633e"/></g>
