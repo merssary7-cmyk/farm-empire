@@ -1114,12 +1114,6 @@ body{
  box-shadow:0 8px 0 #c5d9b0,0 25px 70px #10201855!important;
 }
 .toast{border:2px solid #fff4d7!important;border-radius:15px!important}
-#farmInteriorExit{
- border:2px solid #fff!important;border-radius:14px!important;
- background:linear-gradient(#fffef6,#f7edda)!important;
- box-shadow:0 4px 0 #d9c8a5!important;color:#48613d!important;
- font-weight:950!important;
-}
 .footer{color:#819177!important}
 @media(max-width:850px){
  .app{padding:10px!important}
@@ -1240,7 +1234,6 @@ body{background:linear-gradient(180deg,#b9e1f0 0,#e8f0d9 28%,#e0ebcb 100%) fixed
 .btn:focus-visible,#nav button:focus-visible,.map-place:focus-visible{outline:3px solid #f1bb48!important;outline-offset:3px}
 .modal{border:3px solid #fff!important;background:linear-gradient(145deg,#fffef8,#f8f0dc)!important;box-shadow:0 8px 0 #c5d9b0,0 25px 70px #10201855!important}
 .toast{background:linear-gradient(110deg,#315e3b,#477e46)!important;border:2px solid #f5e4bd!important;box-shadow:0 5px 0 #244c31,0 12px 25px #193b2750!important}
-#farmInteriorExit{z-index:15!important}
 @media(max-width:850px){
  .app{padding:9px!important}
  .top{gap:8px!important}
@@ -1447,7 +1440,7 @@ body{background:linear-gradient(180deg,#b9e1f0 0,#e8f0d9 28%,#e0ebcb 100%) fixed
 <div class="stats"><div class="pill cloud-pill" id="cloudStatus">☁️ Подключение…</div><div class="pill">🪙 <span id="coins">0</span></div><div class="pill">💎 <span id="gems">0</span></div><div class="pill">⭐ Ур. <span id="level">1</span></div><div class="pill">📦 <span id="used">0</span>/<span id="capacity">80</span></div></div><button id="backToWorld" type="button" aria-label="Выйти из меню и вернуться на ферму" title="Выйти">✕</button></header>
 <section class="profile"><div class="avatar" aria-label="Аватар игрока">🧑‍🌾</div><div class="grow"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px"><strong id="playerNickname" style="font-size:16px">Фермер</strong><button class="btn small" id="changeNicknameBtn" data-price="0" type="button">✏️ Сменить бесплатно</button></div><div class="levelrow"><span>Моя ферма · Уровень <b id="level2">1</b></span><span><span id="xp">0</span> / <span id="need">30</span> XP</span></div><div class="bar"><i id="xpbar" style="width:0%"></i></div></div><div style="font-size:25px">🏅</div></section>
 <nav class="nav" id="nav"><button class="active" data-tab="farm"><b>🏡</b>Ферма</button><button data-tab="animals"><b>🐄</b>Животные</button><button data-tab="production"><b>🏭</b>Производства</button><button data-tab="warehouse"><b>📦</b>Склад</button><button data-tab="orders"><b>🚚</b>Заказы</button><button data-tab="trade"><b>🧭</b>Торговля</button><button data-tab="shop"><b>🛒</b>Магазин</button><button data-tab="orchard"><b>🍎</b>Сад</button><button data-tab="achievements"><b>🏆</b>Награды</button><button data-tab="territory"><b>🗺️</b>Участок</button><button data-tab="season"><b>🍂</b>Сезон</button><button data-tab="guild"><b>🏰</b>Гильдия</button><button data-tab="journeys"><b>🚂</b>Путешествия</button><button data-tab="regions"><b>🏞️</b>Регионы</button><button data-tab="crystal"><b>🔮</b>Пещеры</button><button data-tab="museum"><b>🏛️</b>Музей</button><button data-tab="festival"><b>🎪</b>Фестиваль</button><button data-tab="social"><b>👥</b>Друзья</button><button data-tab="more"><b>🌟</b>Ещё</button><button data-tab="premium"><b>⭐</b>Премиум</button></nav>
-<main><button id="farmInteriorExit" type="button" aria-label="Вернуться на карту фермы" onclick="closeFarmInterior()">← На ферму</button>
+<main>
 <section class="view active" id="view-farm"><div class="layout"><section class="panel"><div class="farmhead"><h2>🌻 Живая ферма · Долина</h2><span class="sub">Участок <b id="farmlevel">1</b> · <span id="plotcount">8</span> грядок</span></div><div class="tutorial-card" id="tutorialCard" hidden aria-live="polite"></div>
 <div class="farm-viewport" id="farmViewport" aria-label="Прокручиваемая карта фермы"><div class="scene farm-map illustrated-map" id="farmMap">
 <svg class="world-art" viewBox="0 0 640 1680" role="img" aria-label="Цельная зелёная долина фермы с дорожками, прудом, садами и загонами" xmlns="http://www.w3.org/2000/svg">
