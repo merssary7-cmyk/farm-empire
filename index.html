@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8"><meta name="theme-color" content="#f5f7e8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Farm Empire — Enchanted World Art Update</title>
+<title>Farm Empire — Grand Glow-Up</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 :root{--ink:#294333;--muted:#718477;--green:#4f9b58;--green2:#79c968;--cream:#fffaf0;--line:#e8e2d2;--gold:#f3bd45;--shadow:0 10px 28px #314b3020}
@@ -1853,9 +1853,80 @@ body{
  #farmMap .farm-building-art,#farmMap .farm-nature-art,.farm-animal-art{animation:none!important;transition:none!important}
 }
 </style>
+
+<style id="farm-empire-grand-glowup-v12">
+/* ALPHA 4.5 — GRAND GLOW-UP: storybook polish across the whole farm UI */
+:root{
+ --fe-ink:#294936;--fe-leaf:#4e9850;--fe-mint:#e9f5df;--fe-cream:#fffaf0;
+ --fe-gold:#e8b957;--fe-wood:#865333;--fe-line:#e6e9d7;
+}
+body{
+ background:
+  radial-gradient(ellipse at 8% 4%,#fff8d9 0,transparent 32rem),
+  radial-gradient(ellipse at 94% 18%,#d9efcf 0,transparent 34rem),
+  linear-gradient(160deg,#eaf6ed 0%,#f8f4e6 48%,#e5f0df 100%)!important;
+ color:var(--fe-ink);
+}
+.app{max-width:1320px!important;padding:clamp(9px,1.8vw,20px)!important}
+.top{padding:8px 11px;border:1px solid #ffffffc9;border-radius:20px;background:linear-gradient(110deg,#fffdf4eF,#f0f8e9ed);box-shadow:0 7px 24px #365b3415,inset 0 1px #fff}
+.logo{border:2px solid #d8f0c5;box-shadow:0 4px 0 #347a49,0 7px 15px #376a3d30!important}
+.stats .pill{border-color:#e4e9d9;box-shadow:0 3px 9px #365b3410,inset 0 1px #fff}
+.nav{gap:8px!important;margin:14px 0 17px!important;padding:7px;border:1px solid #ffffffc9;border-radius:20px;background:#f5f8edcc;box-shadow:0 7px 20px #365b3410}
+.nav button{position:relative;overflow:hidden;border:1px solid #e7eadb!important;border-radius:14px!important;background:linear-gradient(180deg,#fff,#f8f8ed)!important;box-shadow:0 3px 0 #dce4d2,0 5px 12px #385c3510!important;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+.nav button b{filter:drop-shadow(0 2px 1px #425b3222);transition:transform .18s ease}
+.nav button.active{background:linear-gradient(145deg,#e5f6d9,#cceab9)!important;border:1px solid #8bc576!important;box-shadow:inset 0 1px #fff,0 3px 0 #91bd79,0 7px 14px #4b8a3c20!important}
+.nav button.active:after{content:"";position:absolute;left:30%;right:30%;bottom:4px;height:3px;border-radius:4px;background:#6da951}
+.nav button:focus-visible,.btn:focus-visible,.map-place:focus-visible{outline:3px solid #e5ad43!important;outline-offset:3px}
+.panel{border:1px solid #e7e9d9!important;border-radius:23px!important;background:linear-gradient(145deg,#fffefa,#fffdf6)!important;box-shadow:0 2px 0 #fff,0 8px 0 #e5ead9,0 15px 34px #365b3418!important}
+.farmhead,.sectionhead{position:relative;background:linear-gradient(105deg,#fff8df,#f1f8e7)!important;border-bottom:1px solid #e9ecd9}
+.farmhead:after,.sectionhead:after{content:"";position:absolute;left:17px;right:17px;bottom:0;height:2px;background:linear-gradient(90deg,#e7c46f,#a9ce83,transparent);opacity:.7}
+.farmhead h2,.sectionhead h2{letter-spacing:-.35px;color:#365d3b}
+.tile{position:relative;border:1px solid #e7eadc!important;border-radius:19px!important;background:linear-gradient(145deg,#fff,#fbfcf5)!important;box-shadow:0 3px 0 #edf0e4,0 8px 18px #385b3510!important;transition:transform .2s ease,box-shadow .2s ease}
+.tileicon{border:1px solid #e6eddc;background:linear-gradient(145deg,#edf8e4,#fff9e8)!important;box-shadow:inset 0 1px #fff}
+.tile h3{color:#385f3e;letter-spacing:-.15px}
+.recipe,.invitem,.item{border-color:#e6eadb!important;background:linear-gradient(145deg,#fff,#f5f8ed)!important;box-shadow:inset 0 1px #fff}
+.tag{border:1px solid #dfebd4;background:linear-gradient(180deg,#f3faed,#e8f4df)!important;color:#477c43!important}
+.btn{border:1px solid #e1e9d9!important;transition:transform .15s ease,filter .15s ease,box-shadow .15s ease}
+.btn.primary{background:linear-gradient(180deg,#8bd56e,#54a34c)!important;border-color:#5eaa53!important;box-shadow:inset 0 1px #ffffff75,0 4px 0 #398445,0 7px 14px #39844525!important}
+.btn.gold{background:linear-gradient(180deg,#ffe69a,#f1bb4d)!important;border-color:#e7b34c!important;box-shadow:inset 0 1px #fff8d9,0 4px 0 #ce9630,0 7px 14px #bd8b3022!important}
+.btn.danger{border-color:#f0d8ce!important}
+.modalback{backdrop-filter:blur(7px);background:#20352880!important}
+.modal{border:1px solid #fff!important;background:linear-gradient(145deg,#fffefa,#f8f7e9)!important;box-shadow:0 24px 80px #10201855,inset 0 1px #fff!important}
+.toast{border:1px solid #ffffff35;background:linear-gradient(110deg,#315b3c,#477b48)!important;box-shadow:0 8px 24px #24452f44!important}
+#farmMap{filter:saturate(1.045) contrast(1.015)}
+#farmMap .map-place{transition:filter .2s ease!important}
+#farmMap .map-place b{border-color:#f1d48e!important;box-shadow:0 3px 0 #392515,0 6px 13px #34200b55,inset 0 1px #ffffff55!important}
+#farmMap .map-place small{filter:drop-shadow(0 1px 1px #fff8)}
+#farmMap .place-art svg{filter:drop-shadow(0 5px 3px #284b2c40);transition:filter .2s ease,transform .2s ease}
+#farmMap .field-island{box-shadow:0 8px 0 #65462c,0 18px 28px #28492b55,inset 0 2px #ffdfa0!important}
+#farmMap .field-island .plot{border-color:#704329!important;box-shadow:inset 0 3px 0 #dca56b,0 3px 0 #573820,0 5px 8px #38251935!important}
+.animal-interior-card{position:relative;overflow:hidden;border:1px solid #dce9d2!important;background:radial-gradient(ellipse at 100% 0%,#fff2c8 0,transparent 45%),linear-gradient(135deg,#f1f9e8,#fffefa 72%)!important;box-shadow:0 5px 0 #e5eddc,0 12px 25px #385b3512!important}
+.animal-interior-card:after{content:"";position:absolute;right:-24px;bottom:-44px;width:140px;height:110px;border:15px solid #d8e9c455;border-radius:50%;pointer-events:none}
+.animal-interior-icon{border:1px solid #dce9d2!important;background:linear-gradient(145deg,#e2f3d6,#fff9e9)!important;box-shadow:inset 0 1px #fff,0 4px 10px #476d3518}
+.animal-interior-icon svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 3px 2px #315b3830)}
+.animal-interior-stats span,.animal-interior-facts span{border-color:#e3ead9!important;background:#ffffffd9!important;box-shadow:0 2px 5px #365b3409}
+@media(hover:hover){
+ .nav button:hover{transform:translateY(-2px);box-shadow:0 5px 0 #dce4d2,0 9px 16px #385c3518!important}
+ .nav button:hover b{transform:translateY(-2px) scale(1.06)}
+ .tile:hover{transform:translateY(-2px);box-shadow:0 5px 0 #e8eddf,0 13px 24px #385b3518!important}
+ .btn:hover{filter:brightness(1.035)}
+ #farmMap .map-place:hover .place-art svg{transform:translateY(-3px) scale(1.025);filter:drop-shadow(0 8px 4px #284b2c55)}
+}
+@media(max-width:760px){
+ .app{padding:7px!important}
+ .nav{gap:6px!important;padding:5px!important;border-radius:16px!important}
+ .nav button{border-radius:11px!important;padding:7px 2px!important;font-size:11px!important}
+ .nav button b{font-size:20px!important}
+ .panel{border-radius:18px!important}
+ .tile{border-radius:16px!important;padding:11px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .nav button,.nav button b,.tile,.btn,#farmMap .place-art svg{transition:none!important}
+}
+</style>
 </head>
 <body><div id="bootScreen" role="status" aria-live="polite"><div class="boot-loading-ui"><div class="boot-status" id="bootStatus">Загружаем твою ферму…</div><div class="boot-progress"><i id="bootProgressFill"></i></div></div></div><div class="app">
-<header class="top"><div class="brand"><div class="logo">🌱</div><div>FARM <span style="color:#68ad55">EMPIRE</span><div style="font-size:10px;color:#829487;letter-spacing:2px">ALPHA 4.4 · ENCHANTED WORLD</div></div></div>
+<header class="top"><div class="brand"><div class="logo">🌱</div><div>FARM <span style="color:#68ad55">EMPIRE</span><div style="font-size:10px;color:#829487;letter-spacing:2px">ALPHA 4.5 · GRAND GLOW-UP</div></div></div>
 <div class="stats"><div class="pill cloud-pill" id="cloudStatus">☁️ Подключение…</div><div class="pill">🪙 <span id="coins">0</span></div><div class="pill">💎 <span id="gems">0</span></div><div class="pill">⭐ Ур. <span id="level">1</span></div><div class="pill">📦 <span id="used">0</span>/<span id="capacity">80</span></div></div><button id="backToWorld" type="button" aria-label="Выйти из меню и вернуться на ферму" title="Выйти">✕</button></header>
 <section class="profile"><div class="avatar" aria-label="Аватар игрока">🧑‍🌾</div><div class="grow"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px"><strong id="playerNickname" style="font-size:16px">Фермер</strong><button class="btn small" id="changeNicknameBtn" data-price="0" type="button">✏️ Сменить бесплатно</button></div><div class="levelrow"><span>Моя ферма · Уровень <b id="level2">1</b></span><span><span id="xp">0</span> / <span id="need">30</span> XP</span></div><div class="bar"><i id="xpbar" style="width:0%"></i></div></div><div style="font-size:25px">🏅</div></section>
 <nav class="nav" id="nav"><button class="active" data-tab="farm"><b>🏡</b>Ферма</button><button data-tab="animals"><b>🐄</b>Животные</button><button data-tab="production"><b>🏭</b>Производства</button><button data-tab="warehouse"><b>📦</b>Склад</button><button data-tab="orders"><b>🚚</b>Заказы</button><button data-tab="trade"><b>🧭</b>Торговля</button><button data-tab="shop"><b>🛒</b>Магазин</button><button data-tab="orchard"><b>🍎</b>Сад</button><button data-tab="achievements"><b>🏆</b>Награды</button><button data-tab="territory"><b>🗺️</b>Участок</button><button data-tab="season"><b>🍂</b>Сезон</button><button data-tab="guild"><b>🏰</b>Гильдия</button><button data-tab="journeys"><b>🚂</b>Путешествия</button><button data-tab="regions"><b>🏞️</b>Регионы</button><button data-tab="crystal"><b>🔮</b>Пещеры</button><button data-tab="museum"><b>🏛️</b>Музей</button><button data-tab="festival"><b>🎪</b>Фестиваль</button><button data-tab="social"><b>👥</b>Друзья</button><button data-tab="more"><b>🌟</b>Ещё</button><button data-tab="premium"><b>⭐</b>Премиум</button></nav>
