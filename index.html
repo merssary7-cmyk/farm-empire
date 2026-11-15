@@ -339,6 +339,25 @@ html,body{overscroll-behavior:none}body{overflow-x:hidden}.farm-viewport{overscr
  .farm-map .animal-life-layer{z-index:5}
 }
 
+
+/* ALPHA 4.0 — make map illustrations visible at every viewport size */
+#farmMap .map-place{display:flex!important;flex-direction:column;align-items:center;justify-content:flex-start;min-width:0!important;gap:3px!important}
+#farmMap .map-place .place-art{display:grid!important;place-items:center;width:100%!important;height:78px!important;min-height:78px!important;margin:0 auto!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;font-size:0!important;line-height:0!important;overflow:visible!important}
+#farmMap .map-place .place-art svg{display:block!important;width:100%!important;height:100%!important;max-width:112px;overflow:visible}
+#farmMap .map-place b{display:block!important;width:100%!important;max-width:100%!important;white-space:normal!important;text-align:center!important;line-height:1.15!important;overflow-wrap:anywhere!important}
+#farmMap .map-place small{display:block!important;width:100%!important;max-width:100%!important;white-space:normal!important;text-align:center!important;line-height:1.15!important;overflow-wrap:anywhere!important}
+#farmMap .animal-life-layer{position:absolute;inset:0;z-index:8;pointer-events:none;overflow:visible}
+#farmMap .animal-sprite{position:absolute;display:grid;place-items:center;width:48px;height:42px;font-size:0;line-height:0;filter:drop-shadow(0 3px 2px #284c2855);transform-origin:50% 85%;animation:animalWander var(--walk-time,4.6s) ease-in-out infinite;animation-delay:var(--delay,0s)}
+#farmMap .animal-sprite svg{display:block;width:100%;height:100%;overflow:visible}
+#farmMap .animal-sprite.baby{width:34px;height:30px}
+#farmMap .animal-sprite .spark{font-size:10px;line-height:1}
+@media(max-width:850px){
+ #farmMap.illustrated-map{height:1480px!important;min-height:1480px!important}
+ #farmMap .map-place .place-art{height:72px!important;min-height:72px!important}
+ #farmMap .map-place b{font-size:10px!important;padding:4px 5px!important}
+ #farmMap .map-place small{font-size:8px!important;padding:3px 4px!important}
+}
+
 </style></head>
 <body><div class="app">
 <header class="top"><div class="brand"><div class="logo">🌱</div><div>FARM <span style="color:#68ad55">EMPIRE</span><div style="font-size:10px;color:#829487;letter-spacing:2px">ALPHA 3.5 · BUILD & DECORATE</div></div></div>
@@ -663,20 +682,24 @@ function renderFarmMap(){
 }
 function renderMapAnimalLife(){
  const map=$('farmMap');if(!map)return;
- let layer=map.querySelector('.animal-life-layer');if(!layer){layer=document.createElement('div');layer.className='animal-life-layer';layer.setAttribute('aria-hidden','true');map.appendChild(layer)}
+ let layer=map.querySelector('.animal-life-layer');
+ if(!layer){layer=document.createElement('div');layer.className='animal-life-layer';layer.setAttribute('aria-hidden','true');map.appendChild(layer)}
  const herds=[
-  {id:'chicken',x:72,y:462},
-  {id:'cow',x:500,y:700},
-  {id:'sheep',x:475,y:930},
-  {id:'pig',x:78,y:885}
+  {id:'chicken',x:16,y:48},
+  {id:'cow',x:73,y:48},
+  {id:'pig',x:16,y:64},
+  {id:'sheep',x:73,y:64},
+  {id:'duck',x:17,y:78},
+  {id:'goat',x:73,y:78}
  ];
  let html='';
  herds.forEach(h=>{
-  const animals=state.animalHerd.filter(a=>a.id===h.id).slice(0,5);
+  const animals=state.animalHerd.filter(a=>a.id===h.id).slice(0,4);
   animals.forEach((a,i)=>{
    const baby=animalStage(a,ANIMALS[h.id])!=='adult';
-   const x=h.x+(i%3)*30, y=h.y+Math.floor(i/3)*26;
-   html+=`<span class="animal-sprite ${baby?'baby':''}" style="left:${x}px;top:${y}px;--delay:${-i*.63}s;--walk-time:${4.1+(i%3)*.7}s">${farmAnimalSvg(h.id,baby)}${i===0?'<i class="spark">✦</i>':''}</span>`;
+   const col=i%2,row=Math.floor(i/2);
+   const left=h.x+col*7,top=h.y+row*3.2;
+   html+=`<span class="animal-sprite ${baby?'baby':''}" style="left:${left}%;top:${top}%;--delay:${-i*.63}s;--walk-time:${4.1+(i%3)*.7}s">${farmAnimalSvg(h.id,baby)}${i===0?'<i class="spark">✦</i>':''}</span>`;
   });
  });
  layer.innerHTML=html;
@@ -915,7 +938,7 @@ function initPremium(){
  $('spinWheel')?.addEventListener('click',()=>{const cost=500;if(state.coins<cost){toast('Для вращения нужно 500 монет');return;}state.coins-=cost;let r=Math.random()*100,prize=r<35?100:r<65?300:r<85?500:r<95?1000:r<99?2500:10000;state.coins+=prize;$('wheelResult').textContent='Выпало: +'+prize.toLocaleString('ru-RU')+' 🪙';log('🎡 Колесо удачи: '+prize+' монет');save();update();});
 }
 function update(){
-$('coins').textContent=Math.floor(state.coins);$('gems').textContent=state.gems;$('level').textContent=state.level;$('level2').textContent=state.level;$('xp').textContent=Math.floor(state.xp);$('need').textContent=needXP();$('xpbar').style.width=(state.xp/needXP()*100)+'%';$('xpbar').title='Следующий уровень: '+needXP()+' XP';$('farmlevel').textContent=state.level;$('plotcount').textContent=state.plots.length;$('plotcountMap').textContent=state.plots.length;$('used').textContent=totalItems();$('used2').textContent=totalItems();$('capacity').textContent=state.capacity;$('capacity2').textContent=state.capacity;$('farmhouse').textContent=state.house;renderFarmMap();
+$('coins').textContent=Math.floor(state.coins);$('gems').textContent=state.gems;$('level').textContent=state.level;$('level2').textContent=state.level;$('xp').textContent=Math.floor(state.xp);$('need').textContent=needXP();$('xpbar').style.width=(state.xp/needXP()*100)+'%';$('xpbar').title='Следующий уровень: '+needXP()+' XP';$('farmlevel').textContent=state.level;$('plotcount').textContent=state.plots.length;$('plotcountMap').textContent=state.plots.length;$('used').textContent=totalItems();$('used2').textContent=totalItems();$('capacity').textContent=state.capacity;$('capacity2').textContent=state.capacity;renderFarmMap();
 $('plots').innerHTML=state.plots.map((p,i)=>{if(!p.crop)return `<button class="plot empty" data-plot="${i}"><span class="crop">🟫</span><small>Пусто · выбрать</small></button>`;let left=Math.max(0,(p.readyAt-now())/1000),ready=left<=0,c=CROPS[p.crop];return `<button class="plot" data-plot="${i}"><span class="crop">${ready?'✨':c.emoji}</span><small>${c.name}</small>${ready?'<span class="timer">СОЗРЕЛО!</span>':`<span class="timer">${fmt(left)}</span>`}</button>`}).join('');
 ensureDaily();renderDailyContracts();renderGoals();renderBuildings();renderBreeding();renderAnimals();renderInventory();renderOrders();renderTrade();renderSocial();renderShop();renderOrchard();renderAchievements();renderTerritory();renderSeason();renderGuild();renderJourneys();renderRegions();renderCrystalRealm();renderDeepCaves();renderMuseum();renderFestival();renderPremium();$('feedCount').textContent=state.inventory.feed||0;
 }
