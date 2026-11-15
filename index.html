@@ -948,6 +948,21 @@ button{ -webkit-tap-highlight-color:transparent }
    pointer-events:none!important;position:absolute!important;left:-10000px!important;bottom:auto!important;
  }
 }
+</style><style id="farm-empire-hide-mobile-bottom-navigation-v6">
+/* User-requested: remove the bottom row of navigation buttons on phones. */
+@media(max-width:850px){
+ html body .app>nav#nav,
+ html body nav#nav,
+ html body #nav.nav{
+   display:none!important;
+   visibility:hidden!important;
+   opacity:0!important;
+   pointer-events:none!important;
+   transform:translateY(200%)!important;
+   height:0!important;min-height:0!important;
+   padding:0!important;margin:0!important;border:0!important;
+ }
+}
 </style></head>
 <body><div id="bootScreen" role="status" aria-live="polite"><div class="boot-loading-ui"><div class="boot-status" id="bootStatus">Загружаем твою ферму…</div><div class="boot-progress"><i id="bootProgressFill"></i></div></div></div><div class="app">
 <header class="top"><div class="brand"><div class="logo">🌱</div><div>FARM <span style="color:#68ad55">EMPIRE</span><div style="font-size:10px;color:#829487;letter-spacing:2px">ALPHA 3.5 · BUILD & DECORATE</div></div></div>
