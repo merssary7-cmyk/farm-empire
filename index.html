@@ -866,7 +866,7 @@ async function pushCloudSave(){
    }
    if(result.save){
     state={...fresh(),...result.save};normalize();ensureDaily();
-    const adopted=JSON.stringify(state);localStorage.setItem(KEY,adopted);lastLocalSerialized=adopted;lastCloudSyncedSerialized=adopted;localSavedAt=serverUpdatedAt||Date.now();writeCloudMeta(serverUpdatedAt);update();toast('☁️ Загружен более новый прогресс с другого устройства');
+    const adopted=JSON.stringify(state);try{localStorage.setItem(KEY,adopted)}catch(e){localStorageSaveBlocked=true;console.warn('[Farm Empire] Cloud save kept in IndexedDB because localStorage is full',e)}lastLocalSerialized=adopted;lastCloudSyncedSerialized=adopted;localSavedAt=serverUpdatedAt||Date.now();writeCloudMeta(serverUpdatedAt);writeIndexedSave(adopted,localSavedAt).catch(e=>console.error('[Farm Empire] Could not back up cloud save',e));update();toast('☁️ Загружен более новый прогресс с другого устройства');
    }else{lastCloudSyncedSerialized='';queueCloudSave();}
    cloudStatus('☁️ Синхронизировано');return;
   }
@@ -893,7 +893,7 @@ async function initCloudSave(){
   const localHasUnsynced=!!(result.save&&((meta&&Number(meta.revision)===serverRevision&&Number(meta.localSavedAt)>Number(result.updatedAt||0)+1000)||(indexedSaveBackup&&Number(indexedSaveBackup.updatedAt)>Number(result.updatedAt||0)+1000)));
   if(result.save&&!localHasUnsynced){
    state={...fresh(),...result.save};migrateTutorialChoice(state);normalize();ensureDaily();
-   const adopted=JSON.stringify(state);localStorage.setItem(KEY,adopted);lastLocalSerialized=adopted;lastCloudSyncedSerialized=adopted;localSavedAt=Number(result.updatedAt)||Date.now();writeCloudMeta(Number(result.updatedAt)||0);phase='обновление интерфейса';update();
+   const adopted=JSON.stringify(state);try{localStorage.setItem(KEY,adopted)}catch(e){localStorageSaveBlocked=true;console.warn('[Farm Empire] Cloud save kept in IndexedDB because localStorage is full',e)}lastLocalSerialized=adopted;lastCloudSyncedSerialized=adopted;localSavedAt=Number(result.updatedAt)||Date.now();writeCloudMeta(Number(result.updatedAt)||0);writeIndexedSave(adopted,localSavedAt).catch(e=>console.error('[Farm Empire] Could not back up cloud save',e));phase='обновление интерфейса';update();
   }else{
    lastCloudSyncedSerialized=result.save?JSON.stringify(result.save):'';
    if(!lastLocalSerialized)lastLocalSerialized=JSON.stringify(state);
