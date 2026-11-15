@@ -1700,6 +1700,129 @@ body{
  #farmMap .map-place,.btn,.tile{transition:none!important}
  .view,.plot .crop{animation:none!important}
 }
+
+<style id="farm-empire-enchanted-world-v10">
+/* ALPHA 4.3 — ENCHANTED HOMESTEAD: richer landscape, architecture, creatures and tactile surfaces */
+:root{
+ --fe-v10-forest:#315d3d;--fe-v10-leaf:#76b85b;--fe-v10-light:#c8e98a;
+ --fe-v10-wood:#855333;--fe-v10-stone:#d7d0b5;--fe-v10-sun:#f7d783;
+}
+#farmMap{
+ background:
+  radial-gradient(ellipse at 18% 21%,#fff7c966 0 5%,transparent 24%),
+  radial-gradient(ellipse at 82% 36%,#d6f2a044 0 9%,transparent 28%),
+  linear-gradient(180deg,#a7def2 0 8%,#a9d982 8%,#78c363 52%,#86cc70 100%)!important;
+}
+#farmMap:after{
+ content:"";position:absolute;inset:125px 0 0;z-index:0;pointer-events:none;opacity:.23;
+ background-image:radial-gradient(ellipse,#f8f1bd 0 1px,transparent 2px),radial-gradient(ellipse,#397d42 0 1px,transparent 2px);
+ background-size:31px 37px,47px 53px;background-position:2px 4px,17px 23px;
+ mask-image:linear-gradient(180deg,transparent,#000 14%,#000 88%,transparent);
+}
+#farmMap .map-path{
+ border-color:#986e42!important;
+ background:
+  radial-gradient(ellipse at 20% 30%,#fff0c8 0 2px,transparent 3px),
+  radial-gradient(ellipse at 75% 70%,#b98c56 0 2px,transparent 3px),
+  linear-gradient(90deg,#d9b982,#f0d7a1 48%,#d1ae76)!important;
+ background-size:22px 25px,29px 31px,100% 100%!important;
+ box-shadow:inset 0 0 0 3px #f7e4b6,0 5px 0 #5c88483b!important;
+}
+#farmMap .map-place{
+ filter:drop-shadow(0 7px 3px #244d2e50)!important;
+ transition:transform .22s cubic-bezier(.2,.8,.2,1),filter .22s!important;
+}
+#farmMap .map-place:hover{transform:translateY(-5px) scale(1.045);filter:drop-shadow(0 11px 5px #244d2e55)!important}
+#farmMap .map-place:focus-visible{outline:3px solid #fff2a8;outline-offset:5px;border-radius:18px}
+#farmMap .map-place b{
+ background:linear-gradient(180deg,#91653c,#694126)!important;
+ border:2px solid #f4d99a!important;border-radius:10px!important;
+ box-shadow:inset 0 1px #fff7,0 3px 0 #4b3826,0 6px 10px #294c2c35!important;
+ letter-spacing:.1px;
+}
+#farmMap .map-place small{
+ background:linear-gradient(180deg,#68a94b,#3e7a3d)!important;
+ border:1.5px solid #d5ef9b!important;box-shadow:0 2px 0 #315d37!important;
+}
+#farmMap .place-art{
+ filter:drop-shadow(0 8px 3px #31512c55)!important;
+ transform-origin:50% 90%;
+ animation:fe-v10-breathe 4.8s ease-in-out infinite;
+}
+#farmMap .place-art:before{
+ background:radial-gradient(ellipse at 35% 25%,#a9d96b,#568d3d 72%)!important;
+ border:3px solid #c9e58a!important;box-shadow:0 5px 0 #47783a, inset 0 2px 3px #fff5!important;
+}
+#farmMap .home-place .place-art{filter:drop-shadow(0 9px 4px #71472b66)!important}
+#farmMap .house-art{
+ border-radius:18px 18px 13px 13px;
+ background:linear-gradient(145deg,#fff0c8 0 48%,#d89a62 49% 100%);
+ border:4px solid #fff0c7;box-shadow:0 7px 0 #875332,0 11px 18px #31512c38;
+}
+#farmMap .mill-art,#farmMap .bakery-art,#farmMap .dairy-art,#farmMap .coop-art,
+#farmMap .barn-art,#farmMap .sheep-art,#farmMap .pig-art,#farmMap .storage-art,
+#farmMap .market-art,#farmMap .cart-art,#farmMap .duck-art,#farmMap .goat-art{
+ border-width:4px!important;border-color:#fff0c8!important;
+ box-shadow:inset 0 2px 0 #fff9,0 7px 0 #805333,0 12px 18px #31512c3b!important;
+}
+#farmMap .pond-art{
+ box-shadow:inset 0 0 0 4px #e3f1b5,0 7px 0 #648b45,0 0 20px #72cce655!important;
+}
+#farmMap .field-island{
+ background:linear-gradient(145deg,#8fca5e,#579b49)!important;
+ border:7px solid #d7ed9b!important;
+ box-shadow:0 9px 0 #4c813d,0 17px 25px #244c2c3d,inset 0 0 0 3px #fff4!important;
+}
+#farmMap .field-sign{
+ background:linear-gradient(180deg,#fff4d2,#e9d39b)!important;
+ border:2px solid #fff9df!important;color:#5c5736!important;
+ box-shadow:0 4px 0 #ad8c55!important;
+}
+#farmMap .field-island .plot{
+ border:3px solid #e9d3a0!important;
+ box-shadow:inset 0 3px 5px #533b2340,0 3px 0 #477d3d!important;
+}
+#farmMap .map-decor{filter:drop-shadow(0 5px 2px #31552c44)}
+#farmMap .tree{transform-origin:50% 90%;animation:fe-v10-tree 5.5s ease-in-out infinite}
+#farmMap .tree2{animation-delay:-2.7s}
+#farmMap .flower{filter:drop-shadow(0 2px 1px #365b3444);animation:fe-v10-flower 3.4s ease-in-out infinite}
+@keyframes fe-v10-breathe{0%,100%{translate:0 0}50%{translate:0 -2px}}
+@keyframes fe-v10-tree{0%,100%{rotate:-1deg}50%{rotate:1deg}}
+@keyframes fe-v10-flower{0%,100%{scale:1}50%{scale:1.08}}
+/* Cards and interiors: make every visit feel like a handcrafted place */
+.tile,.animal-interior-card,.production-card,.building-card{
+ border:1.5px solid #e5d5b5!important;
+ background:linear-gradient(145deg,#fffef8,#f4ecd9)!important;
+ box-shadow:inset 0 1px 0 #fff,0 4px 0 #dfd0ad,0 9px 18px #425c3515!important;
+ border-radius:18px!important;
+}
+.tileicon,.animal-big,.animal-interior-icon{
+ filter:drop-shadow(0 4px 2px #6c593344);
+}
+.animal-sprite,.herd-animal,.farm-animal-art{
+ filter:drop-shadow(0 4px 2px #385b3344);
+}
+.btn,.map-place,.tile{ -webkit-tap-highlight-color:transparent }
+.btn{
+ border-radius:13px!important;
+ box-shadow:inset 0 1px 0 #ffffff65,0 3px 0 #3e7742,0 6px 12px #345a321b!important;
+}
+.btn:active{transform:translateY(2px)!important;box-shadow:inset 0 1px 0 #ffffff55,0 1px 0 #3e7742!important}
+.panel{
+ border:2px solid #fff!important;
+ box-shadow:inset 0 1px 0 #fff,0 5px 0 #d6dfc1,0 13px 26px #385c3518!important;
+}
+.farmhead,.sectionhead{
+ background:linear-gradient(100deg,#fffdf4,#f0f5e3)!important;
+}
+@media(max-width:760px){
+ #farmMap .map-place:hover{transform:none}
+ #farmMap .place-art{animation-duration:6s}
+}
+@media(prefers-reduced-motion:reduce){
+ #farmMap .place-art,#farmMap .tree,#farmMap .flower{animation:none!important}
+}
+</style>
 </style>
 </head>
 <body><div id="bootScreen" role="status" aria-live="polite"><div class="boot-loading-ui"><div class="boot-status" id="bootStatus">Загружаем твою ферму…</div><div class="boot-progress"><i id="bootProgressFill"></i></div></div></div><div class="app">
