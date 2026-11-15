@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1600">
+<defs>
+ <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#70c9f1"/><stop offset=".62" stop-color="#c8edec"/><stop offset="1" stop-color="#f7e4ae"/></linearGradient>
+ <linearGradient id="hill" x2="0" y2="1"><stop stop-color="#9bd45e"/><stop offset="1" stop-color="#438b45"/></linearGradient>
+ <linearGradient id="roof" x2="0" y2="1"><stop stop-color="#e76b4b"/><stop offset="1" stop-color="#a93632"/></linearGradient>
+ <linearGradient id="wood" x2="0" y2="1"><stop stop-color="#f4c77c"/><stop offset="1" stop-color="#d9944c"/></linearGradient>
+ <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%"><feGaussianBlur stdDeviation="18"/></filter>
+</defs>
+<rect width="900" height="1600" fill="url(#sky)"/>
+<circle cx="710" cy="235" r="92" fill="#fff4b8" opacity=".95"/>
+<g fill="#fff" opacity=".82"><ellipse cx="170" cy="290" rx="90" ry="28"/><ellipse cx="215" cy="270" rx="58" ry="42"/><ellipse cx="270" cy="292" rx="75" ry="27"/><ellipse cx="570" cy="405" rx="76" ry="24"/><ellipse cx="610" cy="383" rx="50" ry="35"/><ellipse cx="660" cy="405" rx="65" ry="22"/></g>
+<path d="M0 700 Q180 520 355 670 T720 625 T1000 660 V1600 H0Z" fill="#a9d77b"/>
+<path d="M0 850 Q170 690 360 810 T720 760 T1000 810 V1600 H0Z" fill="url(#hill)"/>
+<path d="M0 1030 Q180 840 390 1000 T780 930 T1000 980 V1600 H0Z" fill="#347b3e"/>
+<ellipse cx="470" cy="1300" rx="340" ry="90" fill="#1d512f" opacity=".28" filter="url(#shadow)"/>
+<!-- distant trees -->
+<g><g fill="#3f8d4b"><circle cx="90" cy="790" r="65"/><circle cx="145" cy="750" r="74"/><circle cx="205" cy="795" r="62"/><circle cx="740" cy="755" r="70"/><circle cx="805" cy="790" r="75"/><circle cx="865" cy="750" r="58"/></g><g fill="#6eae55"><circle cx="120" cy="740" r="38"/><circle cx="180" cy="770" r="34"/><circle cx="770" cy="715" r="42"/><circle cx="835" cy="750" r="38"/></g></g>
+<!-- barn -->
+<g transform="translate(260 700)">
+ <ellipse cx="200" cy="540" rx="250" ry="44" fill="#234f30" opacity=".3"/>
+ <path d="M40 205 L200 65 L360 205 V510 H40Z" fill="url(#wood)" stroke="#9c6038" stroke-width="12"/>
+ <path d="M10 215 L200 48 L390 215 L365 245 L200 105 L35 245Z" fill="url(#roof)" stroke="#983b32" stroke-width="10" stroke-linejoin="round"/>
+ <path d="M145 510 V310 Q200 245 255 310 V510Z" fill="#8b4932" stroke="#f8d99c" stroke-width="12"/>
+ <path d="M200 270 V510" stroke="#f8d99c" stroke-width="9"/>
+ <path d="M70 275 H125 V345 H70Z M275 275 H330 V345 H275Z" fill="#8bc9d7" stroke="#fff0c7" stroke-width="10"/>
+ <path d="M200 65 V20" stroke="#8b4932" stroke-width="15"/>
+ <path d="M185 20 H215" stroke="#fff0c7" stroke-width="10"/>
+</g>
+<!-- windmill -->
+<g transform="translate(680 610)">
+ <path d="M-45 420 L-20 90 H30 L55 420Z" fill="#f4e2bd" stroke="#9a714b" stroke-width="9"/>
+ <circle cy="110" r="20" fill="#8c5836"/>
+ <g fill="#fff1c9" stroke="#9b6c42" stroke-width="8" stroke-linejoin="round"><path d="M0 100 L-18 -105 L18 -105 L12 95Z"/><path d="M0 100 L205 80 L205 115 L10 120Z"/><path d="M0 100 L-10 310 L-45 310 L-20 110Z"/><path d="M0 100 L-205 120 L-205 85 L-10 80Z"/></g>
+</g>
+<!-- foreground field rows -->
+<path d="M0 1190 Q220 1050 450 1190 T900 1160 V1600 H0Z" fill="#5eaa43"/>
+<g stroke="#b4d96a" stroke-width="13" fill="none" opacity=".8"><path d="M-60 1330 Q220 1170 470 1320 T960 1280"/><path d="M-60 1420 Q220 1260 470 1410 T960 1370"/><path d="M-60 1510 Q220 1350 470 1500 T960 1460"/></g>
+<!-- crop tufts -->
+<g fill="#f4d56e"><path d="M95 1250q-30-60 0-95q30 35 0 95m-18-30q-38-42-25-75q42 22 25 75m34-5q-5-50 32-67q16 38-32 67"/><path d="M790 1210q-30-60 0-95q30 35 0 95m-18-30q-38-42-25-75q42 22 25 75m34-5q-5-50 32-67q16 38-32 67"/></g>
+<!-- fence -->
+<g stroke="#f4d7a1" stroke-width="16" stroke-linecap="round"><path d="M35 1120 V1240 M120 1090 V1210 M35 1150 L120 1120 M35 1200 L120 1170"/></g>
+<g fill="#fff2d1" opacity=".9"><circle cx="145" cy="1010" r="8"/><circle cx="165" cy="980" r="7"/><circle cx="180" cy="1018" r="9"/><circle cx="745" cy="1060" r="8"/><circle cx="765" cy="1035" r="7"/></g>
+<rect y="1510" width="900" height="90" fill="#214f34" opacity=".16"/>
+</svg>
