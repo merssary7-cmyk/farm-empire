@@ -358,6 +358,55 @@ html,body{overscroll-behavior:none}body{overflow-x:hidden}.farm-viewport{overscr
  #farmMap .map-place small{font-size:8px!important;padding:3px 4px!important}
 }
 
+
+/* FULL WORLD MODE — first safe navigation/camera shell */
+@media(max-width:850px){
+ html,body{width:100%;height:100%;min-height:100%;overflow:hidden;overscroll-behavior:none}
+ body{position:fixed;inset:0}
+ .app{position:fixed;inset:0;width:100%;height:100dvh;max-width:none;margin:0;padding:0;overflow:hidden}
+ .top{position:fixed;z-index:80;left:0;right:0;top:0;height:calc(48px + env(safe-area-inset-top,0px));padding:calc(5px + env(safe-area-inset-top,0px)) 10px 4px;background:linear-gradient(180deg,#fffdf2f5,#fff9e8ed);border-bottom:1px solid #e7d8b7;backdrop-filter:blur(12px);margin:0;gap:7px;flex-wrap:nowrap;justify-content:flex-end}
+ .top .brand{display:none}
+ .stats{width:100%;justify-content:flex-end;gap:5px;flex-wrap:nowrap;overflow:hidden}
+ .stats .pill{padding:6px 8px;font-size:11px;border-radius:11px;box-shadow:0 2px 0 #d9cba8;min-width:0}
+ .cloud-pill{display:none}
+ .profile{position:fixed;z-index:79;left:8px;right:8px;top:calc(50px + env(safe-area-inset-top,0px));height:65px;min-height:65px;margin:0;padding:6px 9px;border-radius:15px;gap:8px;box-shadow:0 3px 0 #c8dfb2,0 6px 14px #42633a18}
+ .profile .avatar{width:43px;height:43px;min-width:43px;border-radius:12px}
+ .profile .grow>div:first-child{margin-bottom:3px!important}
+ .profile #playerNickname{font-size:13px!important}
+ .profile #changeNicknameBtn{font-size:10px;padding:4px 6px}
+ .profile .levelrow{font-size:10px;margin-bottom:3px}
+ .profile .bar{height:6px}
+ .profile>div:last-child{font-size:18px!important}
+ .nav{display:none!important}
+ main{position:fixed;z-index:2;left:0;right:0;top:calc(120px + env(safe-area-inset-top,0px));bottom:0;margin:0;padding:0;overflow:hidden}
+ #view-farm{height:100%;overflow:hidden}
+ #view-farm .layout{display:block;height:100%;margin:0}
+ #view-farm .layout>.panel{height:100%;border:0;border-radius:0;box-shadow:none;background:transparent;display:flex;flex-direction:column;overflow:hidden}
+ #view-farm .farmhead{display:none}
+ #farmViewport{height:100%;min-height:0;flex:1;border-radius:0;border:0;box-shadow:none;touch-action:none;overscroll-behavior:contain}
+ #farmMap{width:640px!important;height:1680px!important;min-height:1680px!important}
+ #farmMap .world-art{width:640px!important;height:1680px!important}
+ #view-farm .side{display:none!important}
+ #view-farm .actions{position:fixed;z-index:65;left:8px;right:8px;bottom:calc(7px + env(safe-area-inset-bottom,0px));padding:6px;display:flex;flex-wrap:nowrap;gap:5px;overflow-x:auto;border:1px solid #e7d8b7;border-radius:14px;background:#fffaf0ed;backdrop-filter:blur(10px);box-shadow:0 4px 14px #28452f30}
+ #view-farm .actions .btn{flex:0 0 auto;font-size:10px;padding:8px 9px;white-space:nowrap}
+ .map-controls{position:fixed!important;z-index:64!important;left:8px!important;right:8px!important;bottom:calc(57px + env(safe-area-inset-bottom,0px))!important;display:flex!important;justify-content:flex-end!important;gap:5px!important;pointer-events:none}
+ .map-controls>*{pointer-events:auto}
+ #mapHelpText{display:none!important}
+ .map-controls button{min-width:34px;min-height:34px;border-radius:11px}
+ .inside-building main{overflow-y:auto;overflow-x:hidden;padding:10px 9px calc(14px + env(safe-area-inset-bottom,0px));}
+ .inside-building #view-farm{display:none!important}
+ .inside-building .view.active{display:block;min-height:100%;overflow:visible}
+ .inside-building .view.active>.panel,.inside-building .view.active .panel{max-width:100%}
+ .inside-building .profile{display:none}
+ .inside-building main{top:calc(54px + env(safe-area-inset-top,0px))}
+ #backToWorld{display:none}
+ .inside-building #backToWorld{display:inline-flex}
+}
+@media(min-width:851px){
+ #backToWorld{display:none!important}
+}
+#backToWorld{align-items:center;justify-content:center;gap:5px;padding:7px 10px;border-radius:11px;background:#e8f5df;border:1px solid #c9dfb7;color:#31543a;font-weight:900;font-size:12px;white-space:nowrap}
+@media(max-width:850px){.top:has(#backToWorld){justify-content:space-between}}
 </style><style>
 
 /* VISUAL & PERFORMANCE PASS — warm illustrated farm, crisp labels, light map rendering */
@@ -459,7 +508,7 @@ body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;co
 </head>
 <body><div class="app">
 <header class="top"><div class="brand"><div class="logo">🌱</div><div>FARM <span style="color:#68ad55">EMPIRE</span><div style="font-size:10px;color:#829487;letter-spacing:2px">ALPHA 3.5 · BUILD & DECORATE</div></div></div>
-<div class="stats"><div class="pill cloud-pill" id="cloudStatus">☁️ Подключение…</div><div class="pill">🪙 <span id="coins">0</span></div><div class="pill">💎 <span id="gems">0</span></div><div class="pill">⭐ Ур. <span id="level">1</span></div><div class="pill">📦 <span id="used">0</span>/<span id="capacity">80</span></div></div></header>
+<div class="stats"><div class="pill cloud-pill" id="cloudStatus">☁️ Подключение…</div><div class="pill">🪙 <span id="coins">0</span></div><div class="pill">💎 <span id="gems">0</span></div><div class="pill">⭐ Ур. <span id="level">1</span></div><div class="pill">📦 <span id="used">0</span>/<span id="capacity">80</span></div></div><button id="backToWorld" type="button" aria-label="Вернуться на карту">← На ферму</button></header>
 <section class="profile"><div class="avatar" aria-label="Аватар игрока">🧑‍🌾</div><div class="grow"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px"><strong id="playerNickname" style="font-size:16px">Фермер</strong><button class="btn small" id="changeNicknameBtn" data-price="0" type="button">✏️ Сменить бесплатно</button></div><div class="levelrow"><span>Моя ферма · Уровень <b id="level2">1</b></span><span><span id="xp">0</span> / <span id="need">30</span> XP</span></div><div class="bar"><i id="xpbar" style="width:0%"></i></div></div><div style="font-size:25px">🏅</div></section>
 <nav class="nav" id="nav"><button class="active" data-tab="farm"><b>🏡</b>Ферма</button><button data-tab="animals"><b>🐄</b>Животные</button><button data-tab="production"><b>🏭</b>Производства</button><button data-tab="warehouse"><b>📦</b>Склад</button><button data-tab="orders"><b>🚚</b>Заказы</button><button data-tab="trade"><b>🧭</b>Торговля</button><button data-tab="shop"><b>🛒</b>Магазин</button><button data-tab="orchard"><b>🍎</b>Сад</button><button data-tab="achievements"><b>🏆</b>Награды</button><button data-tab="territory"><b>🗺️</b>Участок</button><button data-tab="season"><b>🍂</b>Сезон</button><button data-tab="guild"><b>🏰</b>Гильдия</button><button data-tab="journeys"><b>🚂</b>Путешествия</button><button data-tab="regions"><b>🏞️</b>Регионы</button><button data-tab="crystal"><b>🔮</b>Пещеры</button><button data-tab="museum"><b>🏛️</b>Музей</button><button data-tab="festival"><b>🎪</b>Фестиваль</button><button data-tab="social"><b>👥</b>Друзья</button><button data-tab="more"><b>🌟</b>Ещё</button><button data-tab="premium"><b>⭐</b>Премиум</button></nav>
 <main>
@@ -1371,7 +1420,8 @@ $('farmMap').addEventListener('click',e=>{let b=e.target.closest('[data-zone]');
  $('returnDecor')?.addEventListener('click',window.returnSelectedDecor);
 })();
 
-$('nav').addEventListener('click',e=>{let b=e.target.closest('[data-tab]');if(!b)return;document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+b.dataset.tab));update()});
+$('nav').addEventListener('click',e=>{let b=e.target.closest('[data-tab]');if(!b)return;document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+b.dataset.tab));document.body.classList.toggle('inside-building',b.dataset.tab!=='farm');update()});
+$('backToWorld')?.addEventListener('click',()=>document.querySelector('#nav [data-tab="farm"]')?.click());
 document.querySelectorAll('.hub-link').forEach(b=>b.addEventListener('click',()=>{let target=document.querySelector(`#nav [data-tab="${b.dataset.tab}"]`);if(target)target.click()}));
 $('exportSave').onclick=()=>{let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='farm-empire-save.json';a.click();URL.revokeObjectURL(a.href);toast('Файл сохранения подготовлен')};
 $('resetSave').onclick=()=>{if(!confirm('Точно сбросить прогресс? Сначала экспортируй сохранение.'))return;localStorage.removeItem(KEY);state=fresh();makeOrders();save();update();toast('Новая ферма создана')};
