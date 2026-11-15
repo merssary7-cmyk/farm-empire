@@ -1542,11 +1542,21 @@ $('farmMap').addEventListener('click',e=>{
  let tab=z==='animals'?'animals':z==='production'?'production':z;
  let navButton=document.querySelector(`[data-tab="${tab}"]`);
  if(!navButton)return;
+ let lockedHint='';
+ if(b.dataset.building){
+  const building=BUILDINGS.find(x=>x.id===b.dataset.building);
+  if(building&&state.level<building.level)lockedHint=`${building.name} откроется на ${building.level} уровне. Сейчас у тебя ${state.level} уровень.`;
+  window.mapInteriorFocus={type:'building',id:b.dataset.building};
+ }
+ if(b.dataset.animal){
+  const animal=ANIMALS[b.dataset.animal];
+  if(animal&&state.level<animal.level)lockedHint=`${animal.name} откроется на ${animal.level} уровне. Сейчас у тебя ${state.level} уровень.`;
+  window.mapInteriorFocus={type:'animal',id:b.dataset.animal};
+ }
  navButton.click();
- if(b.dataset.building)window.mapInteriorFocus={type:'building',id:b.dataset.building};
  if(b.dataset.building==='mill'&&state.tutorial&&!state.tutorial.completed&&state.tutorial.step===2){state.tutorial.step=3;state.tutorial.completed=true;save();toast('🎉 Обучение пройдено! Добро пожаловать на ферму!')}
- else if(b.dataset.animal)window.mapInteriorFocus={type:'animal',id:b.dataset.animal};
  if(window.mapInteriorFocus)update();
+ if(lockedHint)toast('🔒 '+lockedHint);
 });
 
 // Alpha 3.8: stable one-finger pan and two-finger pinch for the farm map.
