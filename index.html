@@ -1924,6 +1924,37 @@ body{
  .nav button,.nav button b,.tile,.btn,#farmMap .place-art svg{transition:none!important}
 }
 </style>
+
+<style id="farm-empire-live-animal-pens-v13">
+/* Each livestock building owns a real, live paddock on the world map. */
+#farmMap .animal-life-layer{z-index:5;pointer-events:none;overflow:visible}
+#farmMap .animal-pen{
+ position:absolute;height:48px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;
+ border:3px solid #9b7044;border-radius:13px;
+ background:linear-gradient(160deg,#b9df83 0%,#8fc66a 52%,#75b85d 100%);
+ box-shadow:inset 0 2px 0 #efffc4a8,inset 0 -4px 0 #4e8a4544,0 3px 0 #6e4b30,0 5px 8px #294b2d30;
+}
+#farmMap .animal-pen:before{content:"";position:absolute;inset:3px;border:1px dashed #f5dfa0;border-radius:8px;opacity:.9}
+#farmMap .animal-pen:after{content:"";position:absolute;left:8px;right:8px;top:50%;height:2px;background:#a77848;opacity:.35}
+#farmMap .animal-pen .pen-post{position:absolute;width:6px;height:8px;border-radius:2px;background:linear-gradient(90deg,#9a6337,#d8aa6a,#8d5c32);box-shadow:0 1px 1px #3c2a1d66;z-index:2}
+#farmMap .animal-pen .post-a{left:-3px;top:5px}#farmMap .animal-pen .post-b{right:-3px;top:5px}
+#farmMap .animal-pen .post-c{left:-3px;bottom:5px}#farmMap .animal-pen .post-d{right:-3px;bottom:5px}
+#farmMap .animal-pen .pen-herd{position:relative;z-index:3;width:100%;height:100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,1fr);align-items:center;justify-items:center;gap:0 1px;padding:1px 4px;box-sizing:border-box}
+#farmMap .animal-pen .animal-sprite{position:relative!important;left:auto!important;top:auto!important;width:23px;height:21px;display:grid;place-items:center;filter:drop-shadow(0 2px 1px #294b2d55);animation:penAnimalIdle 2.8s ease-in-out infinite;animation-delay:var(--delay,0s)}
+#farmMap .animal-pen .animal-sprite.baby{width:19px;height:18px;animation-duration:2.2s}
+#farmMap .animal-pen .animal-sprite svg{display:block;width:100%;height:100%;overflow:visible}
+#farmMap .animal-pen .animal-sprite:after{content:none}
+#farmMap .animal-pen .pen-overflow{align-self:center;justify-self:center;z-index:4;padding:2px 4px;border-radius:8px;background:#fff7d9;color:#674a27;border:1px solid #d9b96e;font-size:9px;font-weight:1000;box-shadow:0 1px 2px #294b2d33}
+#farmMap .animal-pen .pen-empty{grid-column:1/-1;align-self:center;color:#426b39;font-size:9px;font-weight:900;text-shadow:0 1px #e9f7c9}
+@keyframes penAnimalIdle{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-2px) rotate(2deg)}}
+@media(max-width:650px){
+ #farmMap .animal-pen{height:44px;border-width:2px;border-radius:10px}
+ #farmMap .animal-pen .pen-herd{padding:1px 2px}
+ #farmMap .animal-pen .animal-sprite{width:21px;height:19px}
+ #farmMap .animal-pen .animal-sprite.baby{width:17px;height:16px}
+}
+@media(prefers-reduced-motion:reduce){#farmMap .animal-pen .animal-sprite{animation:none!important}}
+</style>
 </head>
 <body><div id="bootScreen" role="status" aria-live="polite"><div class="boot-loading-ui"><div class="boot-status" id="bootStatus">Загружаем твою ферму…</div><div class="boot-progress"><i id="bootProgressFill"></i></div></div></div><div class="app">
 <header class="top"><div class="brand"><div class="logo">🌱</div><div>FARM <span style="color:#68ad55">EMPIRE</span><div style="font-size:10px;color:#829487;letter-spacing:2px">ALPHA 4.5 · GRAND GLOW-UP</div></div></div>
@@ -2062,7 +2093,7 @@ body{
 <button class="map-place chicken-place" data-zone="animals" data-animal="chicken"><span class="place-art coop-art">🐔<span>🐣</span></span><b>Курятник</b><small id="mapChicken">Кур: 0</small></button>
 <button class="map-place cow-place" data-zone="animals" data-animal="cow"><span class="place-art barn-art">🐄<span>🐮</span></span><b>Коровник</b><small id="mapCow">Коров: 0</small></button>
 <button class="map-place sheep-place" data-zone="animals" data-animal="sheep"><span class="place-art sheep-art">🐑</span><b>Овчарня</b><small id="mapSheep">Овец: 0</small></button>
-<button class="map-place pig-place" data-zone="animals" data-animal="pig"><span class="place-art pig-art">🐷</span><b>Свинарник</b><small>Свиньи</small></button><button class="map-place duck-place" data-zone="animals" data-animal="duck"><span class="place-art duck-art"></span><b>Утятник</b><small>Уровень 12</small></button><button class="map-place goat-place" data-zone="animals" data-animal="goat"><span class="place-art goat-art"></span><b>Козлятник</b><small>Уровень 16</small></button>
+<button class="map-place pig-place" data-zone="animals" data-animal="pig"><span class="place-art pig-art">🐷</span><b>Свинарник</b><small id="mapPig">Свиней: 0</small></button><button class="map-place duck-place" data-zone="animals" data-animal="duck"><span class="place-art duck-art"></span><b>Утятник</b><small id="mapDuck">Откроется на 12 уровне</small></button><button class="map-place goat-place" data-zone="animals" data-animal="goat"><span class="place-art goat-art"></span><b>Козлятник</b><small id="mapGoat">Откроется на 16 уровне</small></button>
 <div class="field-island"><div class="field-sign">🌱 ПОЛЯ ФЕРМЫ <span id="plotcountMap">8</span></div><div class="plotgrid" id="plots"></div><div class="plot-expansion" id="plotExpansion"></div><div class="field-caption" id="scenehint">Нажми на пустую грядку, чтобы выбрать семена 🌱</div></div>
 <button class="map-place barn-storage" data-zone="warehouse"><span class="place-art storage-art">🛖</span><b>Амбар</b><small>Склад урожая</small></button>
 <button class="map-place market-place" data-zone="shop"><span class="place-art market-art">🏪</span><b>Магазин</b><small>Семена и покупки</small></button>
@@ -2341,28 +2372,37 @@ function renderFarmMap(){
  set('mapCow','Коров: '+(state.animals.cow||0)+' · молодняк: '+young('cow'));
  set('mapSheep','Овец: '+(state.animals.sheep||0)+' · молодняк: '+young('sheep'));
  set('mapPig',state.level>=ANIMALS.pig.level?'Свиней: '+(state.animals.pig||0):'Откроется на 8 уровне');
+ set('mapDuck',state.level>=ANIMALS.duck.level?'Уток: '+(state.animals.duck||0):'Откроется на 12 уровне');
+ set('mapGoat',state.level>=ANIMALS.goat.level?'Коз: '+(state.animals.goat||0):'Откроется на 16 уровне');
  renderMapAnimalLife();
 }
 function renderMapAnimalLife(){
  const map=$('farmMap');if(!map)return;
  let layer=map.querySelector('.animal-life-layer');
  if(!layer){layer=document.createElement('div');layer.className='animal-life-layer';layer.setAttribute('aria-hidden','true');map.appendChild(layer)}
- const herds=[
-  {id:'chicken',x:30,y:48},{id:'cow',x:64,y:48},
-  {id:'pig',x:30,y:64},{id:'sheep',x:64,y:64},
-  {id:'duck',x:30,y:78},{id:'goat',x:64,y:78}
+ const mapRect=map.getBoundingClientRect();if(!mapRect.width||!mapRect.height)return;
+ const pens=[
+  {id:'chicken',label:'Курятник'},{id:'cow',label:'Коровник'},
+  {id:'sheep',label:'Овчарня'},{id:'pig',label:'Свинарник'},
+  {id:'duck',label:'Утятник'},{id:'goat',label:'Козлятник'}
  ];
- const signature=herds.map(h=>state.animalHerd.filter(a=>a.id===h.id).slice(0,4).map(a=>h.id+':'+animalStage(a,ANIMALS[h.id])).join(',')).join('|');
- if(signature===farmMapAnimalSignature)return;
- farmMapAnimalSignature=signature;
  let html='';
- herds.forEach(h=>{
-  const animals=state.animalHerd.filter(a=>a.id===h.id).slice(0,4);
-  animals.forEach((a,i)=>{
-   const baby=animalStage(a,ANIMALS[h.id])!=='adult';
-   const col=i%2,row=Math.floor(i/2),left=h.x+col*5.5,top=h.y+row*2.5;
-   html+=`<span class="animal-sprite ${baby?'baby':''}" style="left:${left}%;top:${top}%">${farmAnimalSvg(h.id,baby)}</span>`;
-  });
+ pens.forEach(p=>{
+  const building=map.querySelector('[data-animal="'+p.id+'"]');if(!building)return;
+  const r=building.getBoundingClientRect();
+  const widthPct=28;
+  const left=Math.max(0,Math.min(100-widthPct,((r.left-mapRect.left+r.width/2)/mapRect.width-widthPct/200)*100));
+  const topPx=Math.max(0,r.top-mapRect.top+Math.min(76,r.height*.66));
+  const topPct=Math.min(96,topPx/mapRect.height*100);
+  const herd=state.animalHerd.filter(a=>a.id===p.id);
+  const visible=herd.slice(0,8);
+  const animals=visible.map((a,i)=>{
+   const baby=animalStage(a,ANIMALS[p.id])!=='adult';
+   return '<span class="animal-sprite '+(baby?'baby':'adult')+'" style="--delay:'+((i%4)*-.37)+'s" title="'+(baby?'Молодняк':'Взрослое животное')+'">'+farmAnimalSvg(p.id,baby)+'</span>';
+  }).join('');
+  const overflow=herd.length>8?'<span class="pen-overflow">+'+(herd.length-8)+'</span>':'';
+  const empty=herd.length===0?'<span class="pen-empty">Пока пусто</span>':'';
+  html+='<div class="animal-pen '+p.id+'-pen" style="left:'+left.toFixed(2)+'%;top:'+topPct.toFixed(2)+'%;width:'+widthPct+'%" aria-label="'+p.label+': '+herd.length+' животных"><span class="pen-post post-a"></span><span class="pen-post post-b"></span><span class="pen-post post-c"></span><span class="pen-post post-d"></span><div class="pen-herd">'+animals+overflow+empty+'</div></div>';
  });
  layer.innerHTML=html;
 }
