@@ -530,9 +530,34 @@ body.inside-building #backToWorld{display:inline-flex!important}
 .animal-interior-stats,.animal-interior-facts{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
 .animal-interior-stats span,.animal-interior-facts span{padding:7px 9px;border-radius:10px;background:#fff;border:1px solid #e4ebdc;font-size:11px;color:#53674d}
 @media(max-width:850px){.animal-interior-card{padding:12px;gap:10px}.animal-interior-icon{flex-basis:58px;height:58px;border-radius:16px;font-size:34px}.animal-interior-copy h2{font-size:18px}.animal-interior-stats span,.animal-interior-facts span{font-size:10px;padding:6px 7px}}
+
+/* ALPHA 3.9 — animated game boot screen */
+#bootScreen{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:calc(24px + env(safe-area-inset-top,0px)) 22px calc(24px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,#79c8ef 0%,#c6ecf6 35%,#eaf6c9 66%,#83c96b 100%);opacity:1;visibility:visible;transition:opacity .55s ease,visibility .55s ease}
+#bootScreen:before{content:"";position:absolute;left:-15%;right:-15%;bottom:-12%;height:48%;border-radius:50% 50% 0 0;background:linear-gradient(180deg,#a7df79,#55ad55);box-shadow:0 -12px 35px #fff8}
+#bootScreen:after{content:"";position:absolute;left:-12%;right:-12%;bottom:-22%;height:42%;border-radius:50% 50% 0 0;background:linear-gradient(180deg,#80c85e,#398c4d);transform:rotate(-5deg)}
+#bootScreen.boot-hidden{opacity:0;visibility:hidden;pointer-events:none}
+.boot-cloud{position:absolute;top:12%;font-size:clamp(34px,8vw,62px);filter:drop-shadow(0 5px 3px #477b3930);animation:bootCloud 8s ease-in-out infinite alternate}
+.boot-cloud.left{left:8%}.boot-cloud.right{right:9%;top:21%;animation-delay:-4s}
+.boot-sun{position:absolute;right:13%;top:8%;font-size:clamp(42px,9vw,70px);filter:drop-shadow(0 0 18px #fff0a4);animation:bootSun 4s ease-in-out infinite}
+.boot-card{position:relative;z-index:2;width:min(420px,100%);padding:30px 24px 25px;border:3px solid #fff;border-radius:30px;background:linear-gradient(145deg,#fffef5f5,#f3ffdef2);box-shadow:0 9px 0 #83b86a,0 22px 55px #315b3840;text-align:center}
+.boot-logo{width:94px;height:94px;margin:0 auto 15px;display:grid;place-items:center;border:5px solid #fff;border-radius:29px;background:linear-gradient(145deg,#c9f27f,#4aa852);box-shadow:0 7px 0 #347d43,0 12px 20px #315b3830;font-size:52px;animation:bootBob 2.8s ease-in-out infinite}
+.boot-title{font-size:clamp(27px,7vw,37px);font-weight:1000;letter-spacing:-1.4px;color:#315b38;text-shadow:0 2px #fff}
+.boot-title span{color:#67b34d}
+.boot-subtitle{margin:6px 0 23px;color:#81916e;font-size:10px;font-weight:1000;letter-spacing:3px}
+.boot-scene{display:flex;justify-content:center;align-items:flex-end;gap:17px;margin:0 auto 21px;font-size:clamp(27px,8vw,40px)}
+.boot-scene span:nth-child(odd){animation:bootBob 2s ease-in-out infinite}
+.boot-scene span:nth-child(even){animation:bootBob 2.3s ease-in-out -1s infinite}
+.boot-progress{height:13px;padding:2px;border:1px solid #d6e6c5;border-radius:99px;background:#e5edd9;box-shadow:inset 0 2px 3px #526d3a20;overflow:hidden}
+.boot-progress i{display:block;width:8%;height:100%;border-radius:99px;background:linear-gradient(90deg,#9bdd63,#4da64e,#f2c65a);box-shadow:0 0 9px #7fbe62;transition:width .45s ease}
+.boot-status{min-height:20px;margin:12px 0 0;color:#607a53;font-size:12px;font-weight:850}
+.boot-tip{margin:13px 0 0;color:#91a083;font-size:10px;font-weight:700}
+@keyframes bootBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(2deg)}}
+@keyframes bootCloud{from{transform:translateX(-8px)}to{transform:translateX(18px)}}
+@keyframes bootSun{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(7px) rotate(5deg)}}
+@media(prefers-reduced-motion:reduce){#bootScreen *,#bootScreen:before,#bootScreen:after{animation:none!important;transition:none!important}}
 </style>
 </head>
-<body><div class="app">
+<body><div id="bootScreen" role="status" aria-live="polite"><span class="boot-cloud left">☁️</span><span class="boot-cloud right">☁️</span><span class="boot-sun">☀️</span><div class="boot-card"><div class="boot-logo">🌱</div><div class="boot-title">FARM <span>EMPIRE</span></div><div class="boot-subtitle">ТВОЯ ФЕРМА · ТВОЯ ИСТОРИЯ</div><div class="boot-scene"><span>🐔</span><span>🌻</span><span>🏡</span><span>🌾</span><span>🐮</span></div><div class="boot-progress"><i id="bootProgressFill"></i></div><div class="boot-status" id="bootStatus">Пробуждаем ферму…</div><div class="boot-tip">Собирай урожай · Развивай хозяйство · Открывай новые земли</div></div></div><div class="app">
 <header class="top"><div class="brand"><div class="logo">🌱</div><div>FARM <span style="color:#68ad55">EMPIRE</span><div style="font-size:10px;color:#829487;letter-spacing:2px">ALPHA 3.5 · BUILD & DECORATE</div></div></div>
 <div class="stats"><div class="pill cloud-pill" id="cloudStatus">☁️ Подключение…</div><div class="pill">🪙 <span id="coins">0</span></div><div class="pill">💎 <span id="gems">0</span></div><div class="pill">⭐ Ур. <span id="level">1</span></div><div class="pill">📦 <span id="used">0</span>/<span id="capacity">80</span></div></div><button id="backToWorld" type="button" aria-label="Выйти из меню и вернуться на ферму" title="Выйти">✕</button></header>
 <section class="profile"><div class="avatar" aria-label="Аватар игрока">🧑‍🌾</div><div class="grow"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px"><strong id="playerNickname" style="font-size:16px">Фермер</strong><button class="btn small" id="changeNicknameBtn" data-price="0" type="button">✏️ Сменить бесплатно</button></div><div class="levelrow"><span>Моя ферма · Уровень <b id="level2">1</b></span><span><span id="xp">0</span> / <span id="need">30</span> XP</span></div><div class="bar"><i id="xpbar" style="width:0%"></i></div></div><div style="font-size:25px">🏅</div></section>
@@ -1477,5 +1502,30 @@ if(window.Telegram?.WebApp){try{
  if(typeof tg.enableClosingConfirmation==='function')tg.enableClosingConfirmation();
  if(typeof tg.requestFullscreen==='function'&&tg.isVersionAtLeast?.('8.0'))tg.requestFullscreen().catch(()=>tg.expand());
 }catch(_){try{window.Telegram.WebApp.expand()}catch(__){}}}
-load();initCloudSave();initPremium();update();syncStarsEntitlements();autoFarmTick();setInterval(()=>{finishJobs();tickAnimals();tickBreeding();tickOrchard();autoFarmTick();updateTick();save()},1000);
+async function startFarmEmpire(){
+ const screen=$('bootScreen'),status=$('bootStatus'),fill=$('bootProgressFill');
+ const stage=(pct,message)=>{if(fill)fill.style.width=pct+'%';if(status)status.textContent=message};
+ try{
+  stage(18,'Загружаем твоё сохранение…');
+  load();
+  stage(42,'Расставляем постройки и урожай…');
+  initPremium();
+  update();
+  syncStarsEntitlements();
+  autoFarmTick();
+  setInterval(()=>{finishJobs();tickAnimals();tickBreeding();tickOrchard();autoFarmTick();updateTick();save()},1000);
+  stage(72,'Подключаем облачное сохранение…');
+  const cloudTask=initCloudSave().catch(error=>console.warn('[Farm Empire] Cloud startup:',error));
+  await Promise.race([cloudTask,new Promise(resolve=>setTimeout(resolve,1800))]);
+  stage(100,'Ферма готова! Добро пожаловать 🌻');
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+ }catch(error){
+  console.error('[Farm Empire] Startup failed:',error);
+  try{if(!lastLocalSerialized){load();update()}}catch(_){}
+  stage(100,'Ферма открыта — приятной игры!');
+ }finally{
+  if(screen){setTimeout(()=>screen.classList.add('boot-hidden'),420);setTimeout(()=>screen.remove(),1100)}
+ }
+}
+startFarmEmpire();
 </script></body></html>
