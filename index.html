@@ -1663,10 +1663,10 @@ async function startFarmEmpire(){
   let autosavePulse=0;setInterval(()=>{finishJobs();tickAnimals();tickBreeding();tickOrchard();autoFarmTick();updateTick();if(++autosavePulse>=5){autosavePulse=0;save()}},1000);
   stage(72,'Подключаем облачное сохранение…');
   const cloudTask=initCloudSave().catch(error=>console.warn('[Farm Empire] Cloud startup:',error));
+  cloudTask.finally(()=>{if(state.tutorial?.choice==='pending')setTimeout(showTutorialOffer,550)});
   await Promise.race([cloudTask,new Promise(resolve=>setTimeout(resolve,1800))]);
   stage(100,'Ферма готова! Добро пожаловать 🌻');
   await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
-  if(state.tutorial?.choice==='pending')setTimeout(showTutorialOffer,550);
  }catch(error){
   console.error('[Farm Empire] Startup failed:',error);
   try{if(!lastLocalSerialized){load();update()}}catch(_){}
