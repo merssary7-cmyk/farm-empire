@@ -1486,6 +1486,8 @@ if(window.Telegram?.WebApp){try{
  if(typeof tg.enableClosingConfirmation==='function')tg.enableClosingConfirmation();
  if(typeof tg.requestFullscreen==='function'&&tg.isVersionAtLeast?.('8.0'))tg.requestFullscreen().catch(()=>tg.expand());
 }catch(_){try{window.Telegram.WebApp.expand()}catch(__){}}}
+window.addEventListener('pagehide',()=>{try{save()}catch(e){console.warn('[Farm Empire] Final local save failed',e)}});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'){try{save()}catch(e){console.warn('[Farm Empire] Background local save failed',e)}}});
 async function startFarmEmpire(){
  const screen=$('bootScreen'),status=$('bootStatus'),fill=$('bootProgressFill');
  const stage=(pct,message)=>{if(fill)fill.style.width=pct+'%';if(status)status.textContent=message};
@@ -1497,7 +1499,7 @@ async function startFarmEmpire(){
   update();
   syncStarsEntitlements();
   autoFarmTick();
-  setInterval(()=>{finishJobs();tickAnimals();tickBreeding();tickOrchard();autoFarmTick();updateTick();save()},1000);
+  let autosavePulse=0;setInterval(()=>{finishJobs();tickAnimals();tickBreeding();tickOrchard();autoFarmTick();updateTick();if(++autosavePulse>=5){autosavePulse=0;save()}},1000);
   stage(72,'Подключаем облачное сохранение…');
   const cloudTask=initCloudSave().catch(error=>console.warn('[Farm Empire] Cloud startup:',error));
   await Promise.race([cloudTask,new Promise(resolve=>setTimeout(resolve,1800))]);
