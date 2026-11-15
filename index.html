@@ -623,6 +623,7 @@ function farmBuildingSvg(kind){
  if(kind==='mill')extra='<path d="M50 27v-9M50 27l-24-8M50 27l24-8M50 27l0 25" stroke="#fff0c7" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="27" r="5" fill="#b8874e"/>';
  if(kind==='bakery')extra='<path d="M20 32h60v8H20z" fill="#f4a64b"/><path d="M25 32q5 15 10 0 5 15 10 0 5 15 10 0 5 15 10 0 5 15 10 0" fill="#ffe0a3"/>';
  if(kind==='market')extra='<path d="M17 32h66l-5 13H22Z" fill="#fff0d0"/><path d="M17 32h13l-3 13H22ZM43 32h13v13H40ZM69 32h13l-5 13H66Z" fill="#cf5b4d"/>';
+ if(kind==='storage')extra='<path d="M29 78V47h42v31" fill="#8c542f" stroke="#fff0c6" stroke-width="3"/><path d="M29 53h42M50 47v31M33 59l15 14M67 59 52 74" stroke="#e9c17b" stroke-width="2.5"/><circle cx="46" cy="64" r="1.8" fill="#ffe5a2"/><circle cx="54" cy="64" r="1.8" fill="#ffe5a2"/>';
  if(kind==='orders')extra='<path d="M35 76V46h30v30" fill="#f4e0b0" stroke="'+p[3]+'" stroke-width="3"/><path d="M40 53h20M40 60h20M40 67h14" stroke="'+p[3]+'" stroke-width="2"/>';
  return '<svg viewBox="0 0 100 88" aria-hidden="true"><ellipse cx="50" cy="78" rx="39" ry="7" fill="#355b32" opacity=".28"/><rect x="14" y="29" width="72" height="49" rx="5" fill="'+p[0]+'" stroke="'+p[3]+'" stroke-width="3"/><path d="'+roof+'" fill="'+p[1]+'" stroke="'+p[3]+'" stroke-width="3" stroke-linejoin="round"/>'+windows+'<rect x="43" y="58" width="14" height="20" rx="2" fill="'+p[3]+'"/><circle cx="53" cy="68" r="1.5" fill="#f6d77d"/>'+extra+'</svg>';
 }
@@ -635,7 +636,7 @@ function farmAnimalSvg(id,baby=false){
   duck:['#ffe28a','#e9b94f','#ed8a32','#8a6a37'],
   goat:['#d8b47d','#98724d','#e5c49a','#60452f']
  };
- const c=colors[id]||colors.chicken, s=baby?.78:1;
+ const c=colors[id]||colors.chicken, s=baby ? .78 : 1;
  let body,head,extra='';
  if(id==='cow'){body='<ellipse cx="37" cy="32" rx="25" ry="15" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><path d="M23 22q8-8 15 1l-4 10-13-1ZM45 33q10-9 17 0l-4 10-12 0Z" fill="'+c[1]+'"/>';head='<path d="M54 25q7-8 12-2l-2 6M70 23q6-7 10-1l-4 7" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><ellipse cx="67" cy="35" rx="12" ry="11" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><ellipse cx="72" cy="40" rx="7" ry="5" fill="'+c[2]+'"/><circle cx="63" cy="33" r="1.7" fill="#26352c"/><circle cx="70" cy="33" r="1.7" fill="#26352c"/>';extra='<path d="M20 44v9M31 44v9M47 44v9M57 43v10" stroke="'+c[3]+'" stroke-width="4" stroke-linecap="round"/><path d="M12 29q-8-4-5-11" fill="none" stroke="'+c[3]+'" stroke-width="2"/>';}
  else if(id==='pig'){body='<ellipse cx="38" cy="34" rx="27" ry="16" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/>';head='<path d="M56 27 55 14q9 2 12 11M73 26l6-10q7 8 2 14" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><ellipse cx="67" cy="35" rx="14" ry="12" fill="'+c[0]+'" stroke="'+c[3]+'" stroke-width="2"/><ellipse cx="77" cy="39" rx="7" ry="5" fill="'+c[2]+'"/><circle cx="74" cy="39" r="1.2" fill="#a6535c"/><circle cx="80" cy="39" r="1.2" fill="#a6535c"/><circle cx="62" cy="32" r="1.5" fill="#493b36"/>';extra='<path d="M22 46v7M39 47v6M52 45v8" stroke="'+c[3]+'" stroke-width="4" stroke-linecap="round"/><path d="M12 32q-10-5-5 4t-4 4" fill="none" stroke="'+c[3]+'" stroke-width="2"/>';}
