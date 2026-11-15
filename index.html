@@ -1420,7 +1420,8 @@ body{background:linear-gradient(180deg,#b9e1f0 0,#e8f0d9 28%,#e0ebcb 100%) fixed
 /* Keep the resource strip and player card physically adjacent on phones. */
 @media(max-width:850px){
  .top{
-  height:calc(43px + env(safe-area-inset-top,0px))!important;
+  height:calc(40px + env(safe-area-inset-top,0px))!important;
+  box-sizing:border-box!important;
   min-height:0!important;
   padding:calc(3px + env(safe-area-inset-top,0px)) 8px 2px!important;
   gap:3px!important;
@@ -1428,9 +1429,11 @@ body{background:linear-gradient(180deg,#b9e1f0 0,#e8f0d9 28%,#e0ebcb 100%) fixed
  .stats{justify-content:flex-start!important;gap:4px!important;padding:0!important}
  .stats .pill{padding:4px 7px!important;font-size:10px!important;line-height:1.15!important;border-radius:9px!important}
  .profile{
-  top:calc(45px + env(safe-area-inset-top,0px))!important;
+  position:fixed!important;
+  top:calc(40px + env(safe-area-inset-top,0px))!important;
   left:6px!important;right:6px!important;
   height:55px!important;min-height:55px!important;
+  margin:0!important;
   padding:4px 7px!important;gap:7px!important;
  }
  .profile .avatar{width:39px!important;height:39px!important;min-width:39px!important}
