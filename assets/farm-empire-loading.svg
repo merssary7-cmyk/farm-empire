@@ -9,7 +9,15 @@
 <rect width="900" height="1600" fill="url(#sky)"/>
 <circle cx="710" cy="235" r="92" fill="#fff4b8" opacity=".95"/>
 <g fill="#fff" opacity=".82"><ellipse cx="170" cy="290" rx="90" ry="28"/><ellipse cx="215" cy="270" rx="58" ry="42"/><ellipse cx="270" cy="292" rx="75" ry="27"/><ellipse cx="570" cy="405" rx="76" ry="24"/><ellipse cx="610" cy="383" rx="50" ry="35"/><ellipse cx="660" cy="405" rx="65" ry="22"/></g>
-<path d="M0 700 Q180 520 355 670 T720 625 T1000 660 V1600 H0Z" fill="#a9d77b"/>
+
+<!-- game title and tagline -->
+<g text-anchor="middle" font-family="Trebuchet MS, Arial, sans-serif">
+ <text x="450" y="535" font-size="76" font-weight="1000" letter-spacing="3" fill="#244d35" opacity=".28" stroke="#244d35" stroke-width="13" stroke-linejoin="round">FARM EMPIRE</text>
+ <text x="450" y="525" font-size="76" font-weight="1000" letter-spacing="3" fill="#fff5d4" stroke="#80502e" stroke-width="7" stroke-linejoin="round" paint-order="stroke fill">FARM EMPIRE</text>
+ <path d="M230 558 Q450 580 670 558" fill="none" stroke="#fff0c7" stroke-width="5" stroke-linecap="round" opacity=".95"/>
+ <text x="450" y="615" font-size="25" font-weight="900" letter-spacing="2.1" fill="#fff8df" stroke="#416b3b" stroke-width="5" stroke-linejoin="round" paint-order="stroke fill">ФЕРМА • ДОХОД • НОВЫЙ УРОВЕНЬ</text>
+</g>
+\n<path d="M0 700 Q180 520 355 670 T720 625 T1000 660 V1600 H0Z" fill="#a9d77b"/>
 <path d="M0 850 Q170 690 360 810 T720 760 T1000 810 V1600 H0Z" fill="url(#hill)"/>
 <path d="M0 1030 Q180 840 390 1000 T780 930 T1000 980 V1600 H0Z" fill="#347b3e"/>
 <ellipse cx="470" cy="1300" rx="340" ry="90" fill="#1d512f" opacity=".28" filter="url(#shadow)"/>
