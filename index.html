@@ -1556,10 +1556,10 @@ $('farmMap').addEventListener('click',e=>{
   if(animal&&state.level<animal.level)lockedHint=`${animal.name} откроется на ${animal.level} уровне. Сейчас у тебя ${state.level} уровень.`;
   window.mapInteriorFocus={type:'animal',id:b.dataset.animal};
  }
+ if(lockedHint){window.mapInteriorFocus=null;toast('🔒 '+lockedHint);return;}
  navButton.click();
  if(b.dataset.building==='mill'&&state.tutorial&&!state.tutorial.completed&&state.tutorial.step===2){state.tutorial.step=3;state.tutorial.completed=true;save();toast('🎉 Обучение пройдено! Добро пожаловать на ферму!')}
  if(window.mapInteriorFocus)update();
- if(lockedHint)toast('🔒 '+lockedHint);
 });
 
 // Alpha 3.8: stable one-finger pan and two-finger pinch for the farm map.
