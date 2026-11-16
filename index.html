@@ -2221,6 +2221,9 @@ button:focus-visible,.btn:focus-visible,.nav button:focus-visible{outline:3px so
 @media(max-width:760px){.top{border-radius:16px!important}.profile{border-radius:16px!important}.nav{border-radius:16px!important;padding:6px!important}.nav button{min-height:43px}.panel{border-radius:17px!important}.farm-viewport{border-radius:16px!important}.tile,.animal-interior-card,.animal-tile{border-radius:15px!important}}
 @media(prefers-reduced-motion:reduce){.nav button,.tile,.animal-interior-card,.animal-tile,.btn{transition:none!important}.animal-sprite{animation:none!important}}
 </style>
+<style id="farm-empire-fishing-mixed-v15">
+.fishing-scene{text-align:center;padding:12px 6px;min-height:210px}.fishing-water{font-size:32px;padding:16px 8px;border-radius:22px;background:linear-gradient(135deg,#bdebf0,#5bb4cf);box-shadow:inset 0 -7px 0 #398aa8;margin:8px 0 18px;animation:fishingRipple 2.4s ease-in-out infinite}.fishing-bobber{font-size:34px;margin:12px auto;animation:fishingFloat 1.1s ease-in-out infinite}.fishing-scene.bite .fishing-water{background:linear-gradient(135deg,#a7e7ee,#248db8);animation:fishingSplash .45s ease-in-out infinite alternate}.fishing-scene.bite .fishing-bobber{animation:fishingBite .22s ease-in-out infinite alternate}.fishing-scene.catch .fishing-water{background:linear-gradient(135deg,#c9edaa,#66b98b)}@keyframes fishingFloat{50%{transform:translateY(7px)}}@keyframes fishingRipple{50%{filter:brightness(1.08)}}@keyframes fishingSplash{to{transform:scale(1.025)}}@keyframes fishingBite{to{transform:translateY(9px) rotate(9deg)}}@media(prefers-reduced-motion:reduce){.fishing-water,.fishing-bobber{animation:none!important}}
+</style>
 <script>
 const $=id=>document.getElementById(id), now=()=>Date.now();
 const CROPS={
@@ -3029,9 +3032,39 @@ window.plotExpansionCost=()=>450+Math.floor(Math.max(0,state.plots.length-8)/4)*
 window.openPlotRow=()=>{const maxPlots=28,cost=plotExpansionCost();if(state.plots.length>=maxPlots){toast('Все ряды грядок уже открыты!');return}if(state.coins<cost){toast('Для нового ряда нужно '+cost.toLocaleString('ru-RU')+' 🪙');return}state.coins-=cost;for(let n=0;n<4&&state.plots.length<maxPlots;n++)state.plots.push({crop:null,readyAt:0});log('Открыт новый ряд из четырёх грядок за '+cost+' монет');save();update();toast('🌱 Новый ряд из четырёх грядок открыт!')};
 $('friendHelp').onclick=()=>{let p=state.plots.find(p=>p.crop&&p.readyAt>now());if(!p){toast('Нет растущих грядок для помощи');return}p.readyAt=Math.max(now(),p.readyAt-300000);state.friendHelp++;addXP(2);log('Сосед помог: рост ускорен на 5 минут');save();update();toast('💧 Рост ускорен на 5 минут!')};
 $('sendGift').onclick=sendNeighborGift;
-$('fishBtn').onclick=()=>{if(state.coins<10){toast('Нужно 10 монет на наживку');return}state.coins-=10;let rare=Math.random()<.15,n=rare?3:1;addItem('fish',n);addXP(2);log('На рыбалке поймано рыбы: '+n);save();update();toast((rare?'Редкий улов! ':'Рыба поймана! ')+'×'+n)};
+$('fishBtn').onclick=startFishing;
+window.fishingTimer=null;window.fishingActive=false;
+function fishingStopTimer(){if(window.fishingTimer){clearTimeout(window.fishingTimer);window.fishingTimer=null}}
+function startFishing(){
+ if(window.fishingActive){toast('Удочка уже закинута!');return}
+ if(state.coins<10){toast('Нужно 10 монет на наживку');return}
+ state.coins-=10;save();update();window.fishingActive=true;
+ openModal('🎣 Рыбалка у пруда', '<div class="fishing-scene"><div class="fishing-water">🌊　🫧　🌊</div><h3>Ты закинул удочку…</h3><p>Смотри на поплавок. Поклёвка может произойти в любой момент!</p><div class="fishing-bobber">🔴</div><p class="muted">Наживка: 10 🪙</p></div>');
+ window.fishingTimer=setTimeout(fishingBite,3500+Math.random()*4500);
+}
+function fishingBite(){
+ if(!window.fishingActive)return;
+ $('modalContent').innerHTML='<div class="fishing-scene bite"><div class="fishing-water">💦　🌊　💦</div><h3>🐟 КЛЮЁТ!</h3><p>Быстро нажми «Подсечь!»</p><div class="fishing-bobber">🔴</div><button class="btn primary" onclick="fishingHook()">Подсечь!</button><p class="muted">Не прозевай момент!</p></div>';
+ window.fishingTimer=setTimeout(fishingMiss,2600);
+}
+function fishingMiss(){
+ if(!window.fishingActive)return;
+ window.fishingActive=false;window.fishingTimer=null;
+ $('modalContent').innerHTML='<div class="fishing-scene"><h3>🐟 Рыба сорвалась!</h3><p>В следующий раз следи за поплавком внимательнее.</p><button class="btn primary" onclick="closeModal()">Понятно</button></div>';
+}
+function fishingHook(){
+ if(!window.fishingActive)return;
+ fishingStopTimer();window.fishingActive=false;
+ const rare=Math.random()<.16;const big=!rare&&Math.random()<.24;const amount=rare?3:big?2:1;
+ addItem('fish',amount);addXP(rare?8:big?5:3);
+ log((rare?'Редкий улов':big?'Крупная рыба':'Рыба')+': '+amount+' шт.');
+ save();update();
+ $('modalContent').innerHTML='<div class="fishing-scene catch"><div class="fishing-water">🌊　🐟　🌊</div><h3>'+(rare?'✨ Редкий улов!':big?'🎣 Отличная рыба!':'🐟 Есть улов!')+'</h3><p>Получено рыбы: <b>×'+amount+'</b></p><p>Рыба отправлена на склад — её можно продать.</p><button class="btn primary" onclick="closeModal()">Отлично!</button></div>';
+}
+function fishingCancel(){fishingStopTimer();window.fishingActive=false}
+
 document.querySelectorAll('[data-house]').forEach(b=>b.onclick=()=>{let h=b.dataset.house,cost=h==='🏡'?0:h==='🏠'?50:120;if(state.coins<cost){toast('Не хватает монет');return}state.coins-=cost;state.house=h;save();update();toast('Дом обновлён')});
-function openModal(title,content){$('modalTitle').textContent=title;$('modalContent').innerHTML=content;$('modal').classList.add('open')}function closeModal(){$('modal').classList.remove('open')}
+function openModal(title,content){$('modalTitle').textContent=title;$('modalContent').innerHTML=content;$('modal').classList.add('open')}function closeModal(){if(window.fishingActive)fishingCancel();$('modal').classList.remove('open')}
 $('closeModal').onclick=closeModal;$('modal').onclick=e=>{if(e.target===$('modal'))closeModal()};
 window.mapInteriorFocus=null;
 $('farmMap').addEventListener('click',e=>{
