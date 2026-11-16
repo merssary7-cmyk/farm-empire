@@ -3214,4 +3214,132 @@ function showTutorialOffer(){const t=state.tutorial;if(!t||t.choice!=='pending')
 window.acceptTutorial=()=>{if(!state.tutorial||state.tutorial.choice!=='pending')return;state.tutorial.choice='accepted';state.tutorial.choiceVersion=1;state.tutorial.step=0;state.tutorial.completed=false;closeModal();save();update();toast('📘 Начинаем обучение! Посади первую пшеницу.')};
 window.skipTutorial=()=>{if(!state.tutorial||state.tutorial.choice!=='pending')return;state.tutorial.choice='skipped';state.tutorial.choiceVersion=1;state.tutorial.step=3;state.tutorial.completed=true;closeModal();save();update();toast('🌻 Хорошей игры! Обучение можно пропустить.')};
 startFarmEmpire();
-</script></body></html>
+</script>
+<style id="farm-empire-world-reborn-v21">
+/* WORLD REBORN 2.1 — immersive storybook farm, richer depth and tactile UI */
+:root{
+ --wr-forest:#234c37;--wr-leaf:#4e9b50;--wr-lime:#a6d66d;--wr-sun:#f6c75d;
+ --wr-paper:#fffdf3;--wr-edge:#dce8d2;--wr-shadow:0 16px 38px #244b3020;
+}
+html{scroll-behavior:smooth}
+body{
+ background:
+  radial-gradient(ellipse at 4% 9%,#fff4c9 0,transparent 25rem),
+  radial-gradient(ellipse at 98% 28%,#c9e8c2 0,transparent 29rem),
+  linear-gradient(160deg,#dceff0 0%,#f5f0dc 46%,#dcebd5 100%)!important;
+}
+.app{max-width:1450px!important;padding:clamp(10px,2vw,24px)!important}
+.top{
+ min-height:76px;padding:12px 16px!important;border-radius:25px!important;
+ background:linear-gradient(110deg,#fffef8 0%,#f5f8e8 55%,#e3f2d9 100%)!important;
+ border:1px solid #fff!important;box-shadow:0 5px 0 #d9e6d1,0 14px 30px #284b3218,inset 0 1px #fff!important;
+}
+.logo{width:48px!important;height:48px!important;border-radius:17px!important;background:linear-gradient(145deg,#b8e68b,#62b86b)!important;box-shadow:0 4px 0 #347a49,0 9px 17px #347a4935!important}
+.brand{font-weight:1000;letter-spacing:.8px}
+.stats{gap:7px!important}
+.stats .pill{padding:8px 12px!important;border-radius:14px!important;background:linear-gradient(180deg,#fffefb,#edf4e5)!important;border:1px solid #dce8d5!important;box-shadow:0 3px 0 #dce7d3,inset 0 1px white!important;font-weight:850}
+.profile{
+ padding:14px 18px!important;border-radius:23px!important;
+ background:linear-gradient(110deg,#fffdf4,#f2f8e8 62%,#e0f0d7)!important;
+ border:1px solid #fff!important;box-shadow:0 5px 0 #dbe7d1,0 13px 26px #2b513017!important;
+}
+.profile .avatar{width:58px!important;height:58px!important;border:3px solid #fff!important;background:linear-gradient(145deg,#f8dc8d,#f5b95e)!important;box-shadow:0 4px 0 #dfc17b,0 8px 18px #775a2730!important}
+.bar{height:12px!important;border:2px solid #fff!important;background:#dce9d3!important;box-shadow:inset 0 2px 4px #31533318!important}
+.bar i{background:linear-gradient(90deg,#71c96b,#b6df65)!important;box-shadow:0 0 12px #8bd66b80!important}
+.nav{
+ display:flex;gap:9px!important;padding:9px!important;margin:16px 0 20px!important;
+ border:1px solid #ffffffd9!important;border-radius:22px!important;
+ background:linear-gradient(110deg,#f8faefed,#e9f3e4ed)!important;
+ box-shadow:0 5px 0 #dce8d5,0 12px 24px #294c3014!important;
+}
+.nav button{
+ min-height:58px!important;padding:8px 12px!important;border-radius:16px!important;
+ border:1px solid #e2e9d9!important;background:linear-gradient(180deg,#fffefa,#f1f5e9)!important;
+ box-shadow:0 3px 0 #dce5d5,0 5px 12px #294c3010!important;
+ font-weight:850!important;transition:transform .18s ease,filter .18s ease,box-shadow .18s ease!important;
+}
+.nav button b{display:block;font-size:21px!important;margin-bottom:3px;filter:drop-shadow(0 2px 1px #315b3322)}
+.nav button.active{background:linear-gradient(145deg,#d8f2bd,#a9dc8d)!important;border:1px solid #7ebc68!important;box-shadow:inset 0 1px #fff,0 4px 0 #72aa5d,0 8px 16px #477d3b22!important;color:#244c32!important}
+.nav button:active,.btn:active{transform:translateY(2px)!important}
+.view{animation:wr-view-in .34s ease both}
+@keyframes wr-view-in{from{opacity:.45;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.panel,.cardhead,.cardbody,.orchard-card,.land-card,.decor-card,.journey-card,.region-card,.animal-interior-card,.panel.crystal-panel{
+ border:1px solid #fff!important;border-radius:22px!important;
+ background:linear-gradient(145deg,#fffef9 0%,#f8f8ed 70%,#f0f5e8 100%)!important;
+ box-shadow:0 4px 0 #e0e8d8,0 13px 27px #2d523014,inset 0 1px #fff!important;
+}
+.panel{padding:clamp(13px,1.7vw,21px)!important}
+.panel h2,.panel h3,.farmhead h2{color:#315b3d!important;text-shadow:0 1px #fff}
+.farmhead{padding:2px 2px 12px!important}
+.farmhead h2{font-size:clamp(19px,2.2vw,26px)!important;font-weight:1000!important;letter-spacing:-.5px}
+.sub{color:#718a70!important;font-weight:750}
+.farm-viewport{
+ border:7px solid #fff!important;border-radius:27px!important;
+ background:#9bcf7c!important;box-shadow:0 6px 0 #d9e4d1,0 18px 35px #254b3028!important;
+}
+#farmMap{
+ border-radius:19px!important;isolation:isolate;
+ filter:saturate(1.08) contrast(1.015);
+}
+#farmMap:after{
+ content:"";position:absolute;inset:0;pointer-events:none;z-index:5;border-radius:inherit;
+ background:linear-gradient(180deg,#fff7d51c 0%,transparent 17%,transparent 78%,#285a2b16 100%);
+ box-shadow:inset 0 0 0 1px #ffffff55,inset 0 0 45px #285d2b12;
+}
+#farmMap .world-art{filter:saturate(1.12) drop-shadow(0 2px 1px #315a2810)}
+#farmMap [data-building],#farmMap .building,#farmMap .farm-building-art{
+ filter:drop-shadow(0 5px 3px #24472a35);
+ transition:filter .2s ease,transform .2s ease;
+}
+#farmMap [data-building]:active,#farmMap .building:active{filter:drop-shadow(0 2px 1px #24472a55);transform:translateY(2px)}
+#farmMap .animal-pen{filter:drop-shadow(0 4px 3px #23472b35)}
+#farmMap .animal-sprite{filter:drop-shadow(0 2px 1px #24472a55)}
+.tutorial-card{border-radius:17px!important;border:1px solid #f0d78e!important;background:linear-gradient(110deg,#fff8d9,#fffef0)!important;box-shadow:0 4px 0 #eadba9,0 8px 18px #745b2315!important}
+.btn,button.btn{
+ border-radius:13px!important;font-weight:850!important;
+ box-shadow:0 3px 0 #d5e1d0,0 6px 13px #31563713!important;
+ transition:transform .16s ease,filter .16s ease,box-shadow .16s ease!important;
+}
+.btn.primary,.btn.green,.btn.success{background:linear-gradient(145deg,#83cf6e,#4b9c58)!important;color:#fff!important;box-shadow:0 4px 0 #367e48,0 8px 16px #3c82452b!important;text-shadow:0 1px 1px #245d36}
+.btn.gold,.btn.warning{background:linear-gradient(145deg,#ffe49a,#f2bd4e)!important;color:#65481a!important;box-shadow:0 4px 0 #d5a33e,0 8px 16px #9a702322!important}
+input,select,textarea{border-radius:12px!important;border:1px solid #dce6d5!important;background:#fffef9!important;box-shadow:inset 0 2px 4px #365b3410!important}
+.modalback{backdrop-filter:blur(7px)!important;background:#173a2d77!important}
+.modal{border:1px solid #fff!important;border-radius:25px!important;background:linear-gradient(145deg,#fffef9,#f2f7e9)!important;box-shadow:0 25px 80px #183a2d55,0 5px 0 #dbe7d2!important}
+.modal h3{color:#315b3d!important;font-weight:1000!important}
+.toast{border:1px solid #ffffff!important;border-radius:15px!important;box-shadow:0 8px 25px #1e3e2c35!important}
+.sectionhead{border-bottom:1px solid #e3eadb!important}
+.event-hero,.guild-hero,.journey-hero,.region-hero,.crystal-hero,.festival-hero,.social-hero,.mobile-screen-hero{
+ border:1px solid #ffffffb8!important;border-radius:24px!important;
+ box-shadow:0 5px 0 #dce7d4,0 15px 30px #2b50301b!important;overflow:hidden;
+}
+.event-hero,.festival-hero{position:relative}
+.event-hero:after,.festival-hero:after,.guild-hero:after,.journey-hero:after,.region-hero:after{
+ content:"✦　✧　✦";position:absolute;right:18px;top:12px;color:#fff9;font-size:20px;letter-spacing:9px;pointer-events:none
+}
+.log{border-radius:15px!important;background:linear-gradient(110deg,#f5f8ec,#fffdf5)!important;border:1px solid #e7ecdf!important}
+@media(hover:hover){
+ .nav button:hover,.btn:hover{transform:translateY(-2px);filter:saturate(1.08);box-shadow:0 5px 0 #d4e2ce,0 10px 17px #3156371d!important}
+ #farmMap [data-building]:hover,#farmMap .building:hover{filter:drop-shadow(0 7px 4px #24472a55)}
+}
+@media(max-width:700px){
+ .app{padding:8px!important}
+ .top{padding:9px!important;border-radius:18px!important;gap:7px!important}
+ .brand{font-size:13px!important}
+ .logo{width:39px!important;height:39px!important}
+ .stats{gap:5px!important}
+ .stats .pill{padding:6px 8px!important;font-size:11px!important;border-radius:11px!important}
+ .profile{padding:11px!important;border-radius:18px!important}
+ .profile .avatar{width:46px!important;height:46px!important}
+ .nav{gap:7px!important;padding:7px!important;margin:12px 0 15px!important;border-radius:17px!important}
+ .nav button{min-height:53px!important;padding:6px 9px!important;border-radius:13px!important;font-size:11px!important}
+ .nav button b{font-size:19px!important}
+ .farm-viewport{border-width:4px!important;border-radius:20px!important}
+ .panel{border-radius:18px!important;padding:12px!important}
+ .modal{border-radius:20px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .view{animation:none!important}
+ .nav button,.btn,#farmMap [data-building]{transition:none!important}
+}
+</style>
+</body></html>
