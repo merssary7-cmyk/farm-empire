@@ -1974,12 +1974,71 @@ body{
 #universalExitAll .exit-symbol{font-size:21px;line-height:1}
 @media(min-width:851px){#universalExitAll{top:14px!important;right:14px!important}}
 body.inside-building #backToWorld{display:none!important}
+
+/* FARM EMPIRE — mobile-first game shell, phase 1 */
+:root{--fe-forest:#315b3b;--fe-leaf:#72b957;--fe-cream:#fff9e9;--fe-gold:#e9b94f}
+html{scroll-padding-top:90px;scroll-padding-bottom:100px}
+body{padding-bottom:env(safe-area-inset-bottom,0px)}
+.app{max-width:1180px;padding:clamp(8px,1.8vw,18px)}
+.top{position:relative;z-index:30;gap:8px}
+.brand{min-width:150px}
+.stats{justify-content:flex-end;gap:6px}
+.stats .pill{padding:7px 10px;font-size:12px}
+.profile{margin-bottom:10px}
+.nav{position:relative;z-index:35;display:flex;align-items:stretch;gap:7px;padding:7px;margin:10px 0 14px;border:1px solid #e8dfc8;border-radius:20px;background:linear-gradient(180deg,#fffdf5,#f5efd9);box-shadow:0 5px 0 #d8cba9,0 9px 20px #385d3814}
+.nav>button,.nav-more-toggle{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 5px;border:1px solid #e9e3d2;border-radius:14px;background:linear-gradient(#fffef9,#f8f1df);color:#526b4f;font-size:11px;font-weight:900;white-space:nowrap;box-shadow:0 2px 0 #e0d6bd}
+.nav>button b,.nav-more-toggle b{font-size:21px;line-height:1.1}
+.nav>button.active{background:linear-gradient(#eaffd9,#d4f0bb);border-color:#8fc56f;color:#315e38;box-shadow:inset 0 0 0 1px #c7e7ae,0 3px 0 #9fc987}
+.nav-more-toggle{flex:0 0 58px;background:linear-gradient(#fff5d8,#f3dfad)}
+.nav-more{display:none;position:absolute;right:0;top:calc(100% + 10px);width:min(430px,calc(100vw - 24px));padding:10px;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;border:2px solid #fff;border-radius:20px;background:linear-gradient(145deg,#fffdf5,#f2f7e8);box-shadow:0 8px 0 #c9d9b7,0 18px 45px #20352845}
+.nav.more-open .nav-more{display:grid}
+.nav-more button{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:9px 4px;border:1px solid #e2e9d8;border-radius:13px;background:#fffef8;color:#49664a;font-size:10px;font-weight:850}
+.nav-more button b{font-size:21px}
+.nav-more button.active{background:#e7f6dc;border-color:#8fc56f;color:#315e38}
+.view{animation:feScreenIn .22s ease-out}
+@keyframes feScreenIn{from{opacity:.65;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.view:not(#view-farm)>.panel,.view:not(#view-farm) .panel{border-radius:24px}
+.view:not(#view-farm) .sectionhead{background:linear-gradient(100deg,#fff9e8,#f1f8e8);border-bottom:1px solid #eee5d1}
+.tile,.recipe,.order,.invitem{transition:transform .16s ease,box-shadow .16s ease}
+.tile:active,.invitem:active{transform:scale(.985)}
+#view-farm .farmhead{background:linear-gradient(100deg,#fff8e5,#f0f8e7)}
+#view-farm .farm-viewport{border:3px solid #fff;border-top:0;box-shadow:inset 0 0 25px #315b3825,0 4px 0 #b5d69a}
+#universalExitAll{z-index:2147483000}
+@media(max-width:760px){
+ html,body{min-height:100%;padding-bottom:calc(82px + env(safe-area-inset-bottom,0px))}
+ .app{padding:8px 8px calc(12px + env(safe-area-inset-bottom,0px))}
+ .top{align-items:center;margin-bottom:8px;padding-right:56px}
+ .brand{font-size:20px;min-width:0;gap:7px}
+ .brand .logo{width:42px;height:42px;min-width:42px;border-radius:14px;font-size:23px}
+ .brand>div:last-child>div{font-size:8px!important;letter-spacing:1.2px!important}
+ .stats{flex:1 1 100%;justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;padding:2px 1px 5px;scrollbar-width:none}
+ .stats::-webkit-scrollbar{display:none}
+ .stats .pill{flex:0 0 auto;font-size:11px;padding:6px 8px}
+ .profile{padding:9px 11px;border-radius:17px;margin-bottom:8px;gap:8px}
+ .profile .avatar{width:42px;height:42px;min-width:42px;font-size:23px}
+ .profile #changeNicknameBtn{font-size:10px;padding:5px 7px}
+ .profile .levelrow{font-size:10px}
+ .nav{position:fixed;left:8px;right:8px;bottom:calc(7px + env(safe-area-inset-bottom,0px));margin:0;padding:6px;gap:5px;border-radius:19px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));box-shadow:0 5px 0 #cdbf9c,0 10px 28px #20352835;background:#fffaf0ed;backdrop-filter:blur(14px)}
+ .nav>button,.nav-more-toggle{min-height:54px;padding:5px 2px;font-size:9px;border-radius:13px}
+ .nav>button b,.nav-more-toggle b{font-size:20px}
+ .nav-more-toggle{flex:initial;min-width:0}
+ .nav-more{position:absolute;right:0;bottom:calc(100% + 10px);top:auto;width:min(420px,calc(100vw - 16px));max-height:min(62dvh,520px);overflow:auto;grid-template-columns:repeat(4,minmax(0,1fr));box-shadow:0 8px 0 #c9d9b7,0 18px 45px #20352855}
+ .nav-more button{min-height:58px;font-size:10px}
+ #universalExitAll{top:8px!important;right:8px!important;min-width:45px!important;height:43px!important;padding:0 10px!important}
+ main{padding:0 1px}
+ .view{scroll-margin-top:10px}
+}
+@media(min-width:761px){
+ .nav-more{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .nav.more-open .nav-more{z-index:60}
+}
+@media(prefers-reduced-motion:reduce){.view{animation:none}.tile,.invitem{transition:none}}
 </style></head>
 <body><div id="bootScreen" role="status" aria-live="polite"><div class="boot-loading-ui"><div class="boot-status" id="bootStatus">Загружаем твою ферму…</div><div class="boot-progress"><i id="bootProgressFill"></i></div></div></div><div class="app">
 <header class="top"><div class="brand"><div class="logo">🌱</div><div>FARM <span style="color:#68ad55">EMPIRE</span><div style="font-size:10px;color:#829487;letter-spacing:2px">ALPHA 4.5 · GRAND GLOW-UP</div></div></div>
 <div class="stats"><div class="pill cloud-pill" id="cloudStatus">☁️ Подключение…</div><div class="pill">🪙 <span id="coins">0</span></div><div class="pill">💎 <span id="gems">0</span></div><div class="pill">⭐ Ур. <span id="level">1</span></div><div class="pill">📦 <span id="used">0</span>/<span id="capacity">80</span></div></div><button id="backToWorld" type="button" aria-label="Выйти из меню и вернуться на ферму" title="Выйти">✕</button></header>
 <section class="profile"><div class="avatar" aria-label="Аватар игрока">🧑‍🌾</div><div class="grow"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px"><strong id="playerNickname" style="font-size:16px">Фермер</strong><button class="btn small" id="changeNicknameBtn" data-price="0" type="button">✏️ Сменить бесплатно</button></div><div class="levelrow"><span>Моя ферма · Уровень <b id="level2">1</b></span><span><span id="xp">0</span> / <span id="need">30</span> XP</span></div><div class="bar"><i id="xpbar" style="width:0%"></i></div></div><div style="font-size:25px">🏅</div></section>
-<nav class="nav" id="nav"><button class="active" data-tab="farm"><b>🏡</b>Ферма</button><button data-tab="animals"><b>🐄</b>Животные</button><button data-tab="production"><b>🏭</b>Производства</button><button data-tab="warehouse"><b>📦</b>Склад</button><button data-tab="orders"><b>🚚</b>Заказы</button><button data-tab="trade"><b>🧭</b>Торговля</button><button data-tab="shop"><b>🛒</b>Магазин</button><button data-tab="orchard"><b>🍎</b>Сад</button><button data-tab="achievements"><b>🏆</b>Награды</button><button data-tab="territory"><b>🗺️</b>Участок</button><button data-tab="season"><b>🍂</b>Сезон</button><button data-tab="guild"><b>🏰</b>Гильдия</button><button data-tab="journeys"><b>🚂</b>Путешествия</button><button data-tab="regions"><b>🏞️</b>Регионы</button><button data-tab="crystal"><b>🔮</b>Пещеры</button><button data-tab="museum"><b>🏛️</b>Музей</button><button data-tab="festival"><b>🎪</b>Фестиваль</button><button data-tab="social"><b>👥</b>Друзья</button><button data-tab="more"><b>🌟</b>Ещё</button><button data-tab="premium"><b>⭐</b>Премиум</button></nav>
+<nav class="nav" id="nav" aria-label="Основная навигация"><button class="active" data-tab="farm"><b>🏡</b>Ферма</button><button data-tab="animals"><b>🐄</b>Животные</button><button data-tab="production"><b>🏭</b>Производства</button><button data-tab="warehouse"><b>📦</b>Склад</button><button data-tab="orders"><b>🚚</b>Заказы</button><button class="nav-more-toggle" id="navMoreToggle" type="button" aria-expanded="false" aria-controls="navMore"><b>☰</b>Ещё</button><div class="nav-more" id="navMore" aria-label="Дополнительные разделы"><button data-tab="trade"><b>🧭</b>Торговля</button><button data-tab="shop"><b>🛒</b>Магазин</button><button data-tab="orchard"><b>🍎</b>Сад</button><button data-tab="achievements"><b>🏆</b>Награды</button><button data-tab="territory"><b>🗺️</b>Участок</button><button data-tab="season"><b>🍂</b>Сезон</button><button data-tab="guild"><b>🏰</b>Гильдия</button><button data-tab="journeys"><b>🚂</b>Путешествия</button><button data-tab="regions"><b>🏞️</b>Регионы</button><button data-tab="crystal"><b>🔮</b>Пещеры</button><button data-tab="museum"><b>🏛️</b>Музей</button><button data-tab="festival"><b>🎪</b>Фестиваль</button><button data-tab="social"><b>👥</b>Друзья</button><button data-tab="more"><b>🌟</b>Ещё</button><button data-tab="premium"><b>⭐</b>Премиум</button></div></nav>
 <main>
 <section class="view active" id="view-farm"><div class="layout"><section class="panel"><div class="farmhead"><h2>🌻 Живая ферма · Долина</h2><span class="sub">Участок <b id="farmlevel">1</b> · <span id="plotcount">8</span> грядок</span></div><div class="tutorial-card" id="tutorialCard" hidden aria-live="polite"></div>
 <div class="farm-viewport" id="farmViewport" aria-label="Прокручиваемая карта фермы"><div class="scene farm-map illustrated-map" id="farmMap">
@@ -3205,7 +3264,8 @@ $('farmMap').addEventListener('click',e=>{
  $('returnDecor')?.addEventListener('click',window.returnSelectedDecor);
 })();
 
-$('nav').addEventListener('click',e=>{let b=e.target.closest('[data-tab]');if(!b)return;if(!window.openingMapInterior)window.mapInteriorFocus=null;window.openingMapInterior=false;document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+b.dataset.tab));document.body.classList.toggle('inside-building',b.dataset.tab!=='farm');update()});
+$('navMoreToggle')?.addEventListener('click',()=>{const nav=$('nav'),toggle=$('navMoreToggle');const open=nav.classList.toggle('more-open');toggle.setAttribute('aria-expanded',String(open));});
+$('nav').addEventListener('click',e=>{let b=e.target.closest('[data-tab]');if(!b)return;$('nav').classList.remove('more-open');$('navMoreToggle')?.setAttribute('aria-expanded','false');if(!window.openingMapInterior)window.mapInteriorFocus=null;window.openingMapInterior=false;document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+b.dataset.tab));document.body.classList.toggle('inside-building',b.dataset.tab!=='farm');update()});
 $('backToWorld')?.addEventListener('click',()=>document.querySelector('#nav [data-tab="farm"]')?.click());
 (function installUniversalExit(){
  const old=document.getElementById('universalExitAll');if(old)old.remove();
