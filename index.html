@@ -3171,7 +3171,7 @@ window.completeOrder=i=>{let o=state.orders[i];if(!o||(state.inventory[o.id]||0)
 $('refreshOrders').onclick=()=>{if(state.coins<30){toast('Нужно 30 монет');return}state.coins-=30;makeOrders();save();update();toast('Торговцы прислали новые заказы')};
 window.shopFilter=window.shopFilter||'all';window.shopQuery=window.shopQuery||'';
 window.setShopFilter=v=>{window.shopFilter=v;renderShop()};
-window.setShopQuery=v=>{window.shopQuery=String(v||'').toLocaleLowerCase('ru');renderShop()};
+window.setShopQuery=v=>{window.shopQuery=String(v||'').toLocaleLowerCase('ru');renderShop();const input=$('shopItems')?.querySelector('.market-search input');if(input){input.focus();input.setSelectionRange(input.value.length,input.value.length)}};
 function renderShop(){
  const root=$('shopItems');if(!root)return;
  const entries=Object.entries(CROPS).filter(([id,c])=>{
