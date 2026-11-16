@@ -407,6 +407,20 @@ html,body{overscroll-behavior:none}body{overflow-x:hidden}.farm-viewport{overscr
 }
 #backToWorld{align-items:center;justify-content:center;gap:5px;padding:7px 10px;border-radius:11px;background:#e8f5df;border:1px solid #c9dfb7;color:#31543a;font-weight:900;font-size:12px;white-space:nowrap}
 @media(max-width:850px){.top:has(#backToWorld){justify-content:space-between}}
+</style>
+<style id="farm-empire-navigation-wheel-fix-v22">
+/* Global exit control: visible on every interior screen and every viewport */
+body.inside-building #backToWorld{display:inline-flex!important;position:fixed!important;top:calc(14px + env(safe-area-inset-top,0px))!important;right:14px!important;z-index:10050!important;align-items:center!important;justify-content:center!important;min-width:42px!important;min-height:42px!important;border-radius:14px!important;background:#fff4d8!important;border:2px solid #d8a94f!important;color:#69451f!important;box-shadow:0 4px 14px rgba(60,45,20,.22)!important;font-size:19px!important;cursor:pointer!important}
+@media(max-width:850px){body.inside-building #backToWorld{top:calc(112px + var(--tg-content-safe-area-inset-top, var(--tg-safe-area-inset-top, env(safe-area-inset-top,0px))))!important;right:12px!important}}
+@media(min-width:851px){body.inside-building #backToWorld{display:inline-flex!important}}
+.farm-wheel-wrap{display:flex;justify-content:center;align-items:center;padding:18px 8px 22px;position:relative}
+.farm-wheel-pointer{position:absolute;top:5px;z-index:2;font-size:28px;filter:drop-shadow(0 2px 2px #765)}
+.farm-wheel{width:min( min(72vw,260px),260px);aspect-ratio:1;border:9px solid #f4d17a;border-radius:50%;background:conic-gradient(#e87958 0 35%,#f3c45e 35% 65%,#76bd79 65% 85%,#66b6d0 85% 95%,#9c83ce 95% 99%,#f5e7a0 99% 100%);box-shadow:0 7px 0 #b8863c,0 12px 22px #3a4c3333;display:grid;place-items:center;transition:transform 4.8s cubic-bezier(.12,.72,.08,1);position:relative}
+.farm-wheel:after{content:"🎡";display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#fff8df;border:4px solid #d9ad56;font-size:23px;box-shadow:0 2px 5px #765}
+.farm-wheel-labels{position:absolute;inset:0;border-radius:50%;pointer-events:none;font-size:11px;font-weight:900;color:#fff;text-shadow:0 1px 3px #654; }
+.farm-wheel-labels span{position:absolute;left:50%;top:50%;transform-origin:0 0}
+.farm-wheel.spinning{filter:saturate(1.12)}
+#spinWheel:disabled{opacity:.65;cursor:wait}
 </style><style>
 
 /* VISUAL & PERFORMANCE PASS — warm illustrated farm, crisp labels, light map rendering */
@@ -2171,7 +2185,7 @@ body{
 <section class="view" id="view-premium">
  <div class="mobile-screen-hero shop-hero"><div class="screen-hero-icon">⭐</div><div><span class="screen-kicker">УДОБСТВО И ПОДДЕРЖКА ИГРЫ</span><h2>Премиум-возможности</h2><p>Ускоряй рутину, не пропуская обычное развитие фермы.</p></div></div>
  <div class="contentgrid">
-  <section class="panel"><div class="sectionhead"><h2>🎡 Колесо удачи</h2><span class="tag">Игровые монеты</span></div><div class="cardbody"><p class="muted">Крути за монеты и получай монеты обратно. Шансы указаны заранее; платных случайных призов в этой версии нет.</p><div class="tile"><div class="tileicon">🎡</div><div class="grow"><h3>Один оборот — 500 🪙</h3><p>Призы: 100 (35%), 300 (30%), 500 (20%), 1 000 (10%), 2 500 (4%), 10 000 (1%). Премиум-оборот за 15 Stars использует те же открытые шансы; итог должен определять сервер.</p><button class="btn gold" id="spinWheel">Крутить за 500 🪙</button> <button class="btn primary" id="paidSpinWheel" disabled title="Будет включено после проверки правил Telegram и требований законодательства">Платная рулетка временно отключена</button><div id="wheelResult" class="tag" style="display:inline-block;margin-top:8px">Удачи, фермер!</div></div></div></div></section>
+  <section class="panel"><div class="sectionhead"><h2>🎡 Колесо удачи</h2><span class="tag">Игровые монеты</span></div><div class="cardbody"><p class="muted">Крути за монеты и получай монеты обратно. Шансы указаны заранее; платных случайных призов в этой версии нет.</p><div class="tile"><div class="tileicon">🎡</div><div class="grow"><h3>Один оборот — 500 🪙</h3><p>Призы: 100 (35%), 300 (30%), 500 (20%), 1 000 (10%), 2 500 (4%), 10 000 (1%). Премиум-оборот за 15 Stars использует те же открытые шансы; итог должен определять сервер.</p><div class="farm-wheel-wrap"><div class="farm-wheel-pointer">🔻</div><div class="farm-wheel" id="farmWheel" role="img" aria-label="Колесо призов"></div></div><button class="btn gold" id="spinWheel">🎡 Крутить за 500 🪙</button> <button class="btn primary" id="paidSpinWheel" disabled title="Будет включено после проверки правил Telegram и требований законодательства">Платная рулетка временно отключена</button><div id="wheelResult" class="tag" style="display:inline-block;margin-top:8px">Удачи, фермер!</div></div></div></div></section>
   <section class="panel"><div class="sectionhead"><h2>🤖 Автоферма</h2><span class="tag" id="autoFarmStatus">Не активна</span></div><div class="cardbody"><p class="muted">Пока подписка активна, помощник может собирать и пересаживать выбранную культуру, продавать её, запускать выбранный рецепт и выполнять доступные заказы.</p><div class="auto-settings">
    <label class="task"><span>🌱</span><span class="grow"><b>Автопосадка и сбор</b><small>Работает с выбранной культурой</small></span><input type="checkbox" id="autoCrops"></label>
    <label class="task"><span>💰</span><span class="grow"><b>Автопродажа урожая</b><small>Продаёт только урожай, который собрала автоферма</small></span><input type="checkbox" id="autoSell"></label>
@@ -2676,7 +2690,25 @@ function initPremium(){
  $('autoCropChoice')?.addEventListener('change',e=>{state.autoFarm.settings.crop=e.target.value;save()});$('autoRecipeChoice')?.addEventListener('change',e=>{state.autoFarm.settings.recipe=e.target.value;save()});
  document.querySelectorAll('[data-autodays]').forEach(b=>b.addEventListener('click',()=>{let days=Number(b.dataset.autodays),prices={1:25,3:60,7:120};requestStarsInvoice('autofarm',{days,stars:prices[days]});}));
  // Paid chance-based spins remain disabled pending Telegram policy and legal review.
- $('spinWheel')?.addEventListener('click',()=>{const cost=500;if(state.coins<cost){toast('Для вращения нужно 500 монет');return;}state.coins-=cost;let r=Math.random()*100,prize=r<35?100:r<65?300:r<85?500:r<95?1000:r<99?2500:10000;state.coins+=prize;$('wheelResult').textContent='Выпало: +'+prize.toLocaleString('ru-RU')+' 🪙';log('🎡 Колесо удачи: '+prize+' монет');save();update();});
+ $('spinWheel')?.addEventListener('click',()=>{
+  const cost=500,button=$('spinWheel'),wheel=$('farmWheel'),result=$('wheelResult');
+  if(button.disabled)return;
+  if(state.coins<cost){toast('Для вращения нужно 500 монет');return;}
+  state.coins-=cost;save();update();button.disabled=true;button.textContent='Колесо вращается…';
+  const r=Math.random()*100;
+  const slices=[{max:35,prize:100,center:17.5},{max:65,prize:300,center:50},{max:85,prize:500,center:75},{max:95,prize:1000,center:90},{max:99,prize:2500,center:97},{max:100,prize:10000,center:99.5}];
+  const chosen=slices.find(x=>r<x.max)||slices[slices.length-1];
+  const rotation=6*360+(360-chosen.center*3.6);
+  if(wheel){wheel.classList.add('spinning');wheel.style.transform='rotate('+rotation+'deg)';}
+  result.textContent='🎡 Колесо крутится…';
+  window.setTimeout(()=>{
+    state.coins+=chosen.prize;
+    if(wheel)wheel.classList.remove('spinning');
+    result.textContent='✨ Выпало: +'+chosen.prize.toLocaleString('ru-RU')+' 🪙';
+    log('🎡 Колесо удачи: '+chosen.prize+' монет');
+    save();update();button.disabled=false;button.textContent='🎡 Крутить за 500 🪙';
+  },5000);
+});
 }
 function update(){
 $('coins').textContent=Math.floor(state.coins);$('gems').textContent=state.gems;$('level').textContent=state.level;$('level2').textContent=state.level;$('xp').textContent=Math.floor(state.xp);$('need').textContent=needXP();$('xpbar').style.width=(state.xp/needXP()*100)+'%';$('xpbar').title='Следующий уровень: '+needXP()+' XP';$('farmlevel').textContent=state.level;$('plotcount').textContent=state.plots.length;$('plotcountMap').textContent=state.plots.length;$('used').textContent=totalItems();$('used2').textContent=totalItems();$('capacity').textContent=state.capacity;$('capacity2').textContent=state.capacity;renderFarmMap();renderTutorial();
