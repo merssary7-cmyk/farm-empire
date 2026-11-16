@@ -2759,14 +2759,14 @@ function autoFarmTick(){
  }
  // Orders can only be completed with goods actually present in the warehouse.
  if(cfg.orders){
-  for(let i=state.orders.length-1;i>=0;i--){const o=state.orders[i];if(o&&(state.inventory[o.id]||0)>=o.qty){state.inventory[o.id]-=o.qty;state.daily.orders++;state.coins+=o.reward;addXP(o.xp);state.orders.splice(i,1);changed=true;}}
+  for(let i=state.orders.length-1;i>=0;i--){const o=state.orders[i];if(o&&(state.inventory[o.id]||0)>=o.qty){state.inventory[o.id]-=o.qty;state.daily.orders++;storyProgress('orders');state.coins+=o.reward;addXP(o.xp);state.orders.splice(i,1);changed=true;}}
   if(state.orders.length<3){const missing=3-state.orders.length;const previous=state.orders.slice();makeOrders();const generated=state.orders.slice(0,missing);state.orders=previous.concat(generated);changed=true;}
  }
  // Start at most one eligible production job per active tick; production timers themselves persist offline.
  if(cfg.production&&nowAt<a.expiresAt){
   const selected=String(cfg.recipe||'bread').split(':'),b=BUILDINGS.find(x=>x.id===selected[0]),r=b?.recipes.find(x=>x.id===selected[1]);
   if(b&&r&&state.level>=b.level&&(state.jobs[b.id]||[]).filter(Boolean).length<2&&hasInputs(r.inputs)){
-   spendInputs(r.inputs);(state.jobs[b.id]||(state.jobs[b.id]=[])).push({recipe:r.id,finishAt:nowAt+r.time*1000});state.daily.produced++;changed=true;
+   spendInputs(r.inputs);(state.jobs[b.id]||(state.jobs[b.id]=[])).push({recipe:r.id,finishAt:nowAt+r.time*1000});state.daily.produced++;storyProgress('production');changed=true;
   }
  }
  a.lastRun=endAt;
