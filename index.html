@@ -1969,7 +1969,13 @@ body{
 }
 @media(prefers-reduced-motion:reduce){#farmMap .animal-pen .animal-sprite{animation:none!important}}
 </style>
-</head>
+<style id="farm-empire-exit-everywhere-v23">
+#universalExitAll{position:fixed!important;right:14px!important;top:calc(14px + env(safe-area-inset-top,0px))!important;z-index:100000!important;display:none;align-items:center!important;justify-content:center!important;gap:7px!important;min-width:48px!important;height:48px!important;padding:0 14px!important;border-radius:16px!important;background:linear-gradient(180deg,#fff8e8,#f3dfb9)!important;border:2px solid #d5ad69!important;color:#684a28!important;font-size:14px!important;font-weight:950!important;box-shadow:0 4px 0 #bd9656,0 8px 22px #39280e35!important;cursor:pointer!important}
+#universalExitAll.visible{display:inline-flex!important}
+#universalExitAll .exit-symbol{font-size:21px;line-height:1}
+@media(max-width:850px){#universalExitAll{top:calc(116px + var(--tg-content-safe-area-inset-top, var(--tg-safe-area-inset-top, env(safe-area-inset-top,0px))))!important;right:12px!important;min-width:46px!important;height:46px!important;padding:0 12px!important}}
+body.inside-building #backToWorld{display:none!important}
+</style></head>
 <body><div id="bootScreen" role="status" aria-live="polite"><div class="boot-loading-ui"><div class="boot-status" id="bootStatus">Загружаем твою ферму…</div><div class="boot-progress"><i id="bootProgressFill"></i></div></div></div><div class="app">
 <header class="top"><div class="brand"><div class="logo">🌱</div><div>FARM <span style="color:#68ad55">EMPIRE</span><div style="font-size:10px;color:#829487;letter-spacing:2px">ALPHA 4.5 · GRAND GLOW-UP</div></div></div>
 <div class="stats"><div class="pill cloud-pill" id="cloudStatus">☁️ Подключение…</div><div class="pill">🪙 <span id="coins">0</span></div><div class="pill">💎 <span id="gems">0</span></div><div class="pill">⭐ Ур. <span id="level">1</span></div><div class="pill">📦 <span id="used">0</span>/<span id="capacity">80</span></div></div><button id="backToWorld" type="button" aria-label="Выйти из меню и вернуться на ферму" title="Выйти">✕</button></header>
@@ -3202,6 +3208,16 @@ $('farmMap').addEventListener('click',e=>{
 
 $('nav').addEventListener('click',e=>{let b=e.target.closest('[data-tab]');if(!b)return;if(!window.openingMapInterior)window.mapInteriorFocus=null;window.openingMapInterior=false;document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+b.dataset.tab));document.body.classList.toggle('inside-building',b.dataset.tab!=='farm');update()});
 $('backToWorld')?.addEventListener('click',()=>document.querySelector('#nav [data-tab="farm"]')?.click());
+(function installUniversalExit(){
+ const old=document.getElementById('universalExitAll');if(old)old.remove();
+ const btn=document.createElement('button');btn.id='universalExitAll';btn.type='button';btn.setAttribute('aria-label','Выйти из текущего раздела на ферму');btn.innerHTML='<span class="exit-symbol">↩</span><span>На ферму</span>';document.body.appendChild(btn);
+ const farm=document.querySelector('#nav [data-tab="farm"]');
+ const refresh=()=>{const active=document.querySelector('.view.active');const isAway=!!active&&active.id!=='view-farm';btn.classList.toggle('visible',isAway);btn.setAttribute('aria-hidden',isAway?'false':'true');};
+ btn.addEventListener('click',()=>{window.mapInteriorFocus=null;window.openingMapInterior=false;if(farm)farm.click();else{document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-farm'));document.body.classList.remove('inside-building');if(typeof renderBuildings==='function')renderBuildings();if(typeof renderAnimals==='function')renderAnimals();}refresh();});
+ document.querySelectorAll('#nav [data-tab]').forEach(tab=>tab.addEventListener('click',()=>requestAnimationFrame(refresh)));
+ const observer=new MutationObserver(refresh);document.querySelectorAll('.view').forEach(v=>observer.observe(v,{attributes:true,attributeFilter:['class']}));observer.observe(document.body,{attributes:true,attributeFilter:['class']});
+ refresh();
+})();
 document.querySelectorAll('.hub-link').forEach(b=>b.addEventListener('click',()=>{let target=document.querySelector(`#nav [data-tab="${b.dataset.tab}"]`);if(target)target.click()}));
 $('exportSave').onclick=()=>{let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='farm-empire-save.json';a.click();URL.revokeObjectURL(a.href);toast('Файл сохранения подготовлен')};
 $('resetSave').onclick=()=>{if(!confirm('Точно сбросить прогресс? Сначала экспортируй сохранение.'))return;localStorage.removeItem(KEY);state=fresh();makeOrders();save();update();toast('Новая ферма создана')};
