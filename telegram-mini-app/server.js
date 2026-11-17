@@ -66,6 +66,59 @@ app.post("/api/save", auth, wrap(async (req, res) => {
   res.json({ ok: true });
 }));
 
+
+app.get("/api/game/save", auth, wrap(async (req, res) => {
+  const { rows } = await db.query(
+    "select state, revision, extract(epoch from updated_at)*1000 as ts from players where tg_id=$1",
+    [req.user.id]
+  );
+  res.json(rows[0]
+    ? { save: rows[0].state, revision: Number(rows[0].revision) || 0, updatedAt: Number(rows[0].ts) || 0 }
+    : { save: null, revision: 0, updatedAt: 0 });
+}));
+
+app.put("/api/game/save", auth, wrap(async (req, res) => {
+  const save = req.body?.save;
+  const expectedRevision = Number(req.body?.expectedRevision ?? 0);
+  if (!save || typeof save !== "object" || Array.isArray(save) || !Number.isInteger(expectedRevision) || expectedRevision < 0)
+    return res.status(400).json({ error: "bad_save" });
+
+  const client = await db.connect();
+  try {
+    await client.query("begin");
+    const current = await client.query(
+      "select state, revision, extract(epoch from updated_at)*1000 as ts from players where tg_id=$1 for update",
+      [req.user.id]
+    );
+    const row = current.rows[0];
+    const revision = row ? Number(row.revision) || 0 : 0;
+    if (revision !== expectedRevision) {
+      await client.query("rollback");
+      return res.status(409).json({
+        error: "revision_conflict",
+        save: row?.state ?? null,
+        revision,
+        updatedAt: row ? Number(row.ts) || 0 : 0
+      });
+    }
+    const nextRevision = revision + 1;
+    const result = await client.query(
+      `insert into players(tg_id,name,state,revision) values($1,$2,$3,$4)
+       on conflict(tg_id) do update set name=excluded.name, state=excluded.state,
+       revision=excluded.revision, updated_at=now()
+       returning revision, extract(epoch from updated_at)*1000 as ts`,
+      [req.user.id, req.user.first_name || "", save, nextRevision]
+    );
+    await client.query("commit");
+    res.json({ ok: true, revision: Number(result.rows[0].revision), updatedAt: Number(result.rows[0].ts) || Date.now() });
+  } catch (error) {
+    await client.query("rollback").catch(() => {});
+    throw error;
+  } finally {
+    client.release();
+  }
+}));
+
 app.use((err, _req, res, _next) => {
   console.error(err);
   res.status(500).json({ error: "server" });
