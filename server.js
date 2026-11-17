@@ -79,6 +79,81 @@ const page = fs
 })();
 document.addEventListener("click",e=>{const el=e.target instanceof Element?e.target:e.target?.parentElement;const node=el?.closest("[data-a]");if(!node)return;setTimeout(()=>{if(!node.isConnected)return;const opts={bubbles:true,cancelable:true,clientX:e.clientX,clientY:e.clientY,pointerId:1,pointerType:"mouse",isPrimary:true};node.dispatchEvent(new PointerEvent("pointerdown",opts));node.dispatchEvent(new PointerEvent("pointerup",opts));},0)},true);
 </script></body>`);
+  .replace("</body>", `<script>
+(() => {
+  const tg = window.Telegram && window.Telegram.WebApp;
+  if (!tg || !tg.initData) return;
+  let balance = 0, busy = false, lastHandled = 0;
+  const authHeaders = {"Content-Type":"application/json","Authorization":"tma " + tg.initData};
+  function button() {
+    const nodes = [...document.querySelectorAll("button,[role=button],[data-a],div")];
+    return nodes.filter(el => /Вывести\\s*\\(от\\s*50/i.test((el.innerText || el.textContent || "").trim()) &&
+      (el.innerText || el.textContent || "").trim().length < 90)
+      .sort((a,b) => (a.innerText || a.textContent || "").length - (b.innerText || b.textContent || "").length)[0];
+  }
+  async function refresh() {
+    try {
+      const r = await fetch("/api/stars/balance", {headers:authHeaders});
+      const d = await r.json();
+      if (!r.ok) return;
+      balance = Number(d.stars || 0);
+      const b = button();
+      if (b) {
+        const enabled = balance >= 50;
+        b.style.opacity = enabled ? "1" : ".55";
+        b.style.filter = enabled ? "none" : "grayscale(.45)";
+        b.setAttribute("aria-disabled", enabled ? "false" : "true");
+        if ("disabled" in b) b.disabled = !enabled;
+        b.title = enabled ? "Доступно к выводу: " + balance + " звёзд" : "Для вывода нужно минимум 50 звёзд";
+      }
+      document.querySelectorAll("body *").forEach(el => {
+        if (el.children.length === 0 && /Выводимые звёзды:/i.test(el.textContent || "")) {
+          el.textContent = "Выводимые звёзды: " + balance + " ★";
+        }
+      });
+    } catch {}
+  }
+  async function requestWithdrawal() {
+    if (busy) return;
+    busy = true;
+    try {
+      await refresh();
+      if (balance < 50) { alert("Для вывода нужно минимум 50 игровых звёзд."); return; }
+      const raw = prompt("Сколько игровых звёзд вывести? Доступно: " + balance, String(balance));
+      if (raw === null) return;
+      const amount = Math.floor(Number(raw));
+      if (!Number.isSafeInteger(amount) || amount < 50 || amount > balance) {
+        alert("Укажи сумму от 50 до " + balance + " звёзд."); return;
+      }
+      const destination = prompt("Укажи свой Telegram @username или ID для ручной выплаты:");
+      if (!destination || !destination.trim()) return;
+      const r = await fetch("/api/stars/withdrawal", {
+        method:"POST", headers:authHeaders,
+        body:JSON.stringify({amount,destination:destination.trim()})
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error === "insufficient_stars" ? "Недостаточно звёзд на балансе." : (d.message || "Не удалось создать заявку."));
+      alert("Заявка на вывод #" + d.request_id + " создана. " + amount + " звёзд зарезервировано. Выплата будет выполнена вручную.");
+      await refresh();
+      location.reload();
+    } catch(e) { alert(e.message || "Ошибка заявки на вывод"); }
+    finally { busy = false; }
+  }
+  function intercept(e) {
+    const el = e.target instanceof Element ? e.target : e.target?.parentElement;
+    const target = el?.closest("button,[role=button],[data-a],div");
+    if (!target || !/Вывести\\s*\\(от\\s*50/i.test((target.innerText || target.textContent || "").trim())) return;
+    if (Date.now() - lastHandled < 1200) { e.preventDefault(); e.stopImmediatePropagation(); return; }
+    lastHandled = Date.now();
+    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+    requestWithdrawal();
+  }
+  document.addEventListener("pointerup", intercept, true);
+  document.addEventListener("click", intercept, true);
+  refresh();
+  setTimeout(refresh, 900);
+})();
+</script></body>`);
 
 function verify(header) {
   const raw = (header || "").replace(/^tma /, "");
@@ -334,13 +409,17 @@ app.post("/api/stars/withdrawal", auth, wrap(async (req, res) => {
   const client = await db.connect();
   try {
     await client.query("begin");
-    await client.query("insert into star_wallets(tg_id) values($1) on conflict(tg_id) do nothing", [req.u.id]);
-    const { rows } = await client.query("select withdrawable from star_wallets where tg_id=$1 for update", [req.u.id]);
-    if (rows[0].withdrawable < amount) {
+    await ensureWallet(req.u.id);
+    const { rows } = await client.query("select balance from star_wallets where tg_id=$1 for update", [req.u.id]);
+    const balance = Number(rows[0]?.balance || 0);
+    if (balance < 50 || amount > balance) {
       await client.query("rollback");
-      return res.status(400).json({ error: "insufficient_withdrawable_stars" });
+      return res.status(400).json({ error: "insufficient_stars", balance, minimum: 50 });
     }
-    await client.query("update star_wallets set withdrawable=withdrawable-$2,updated_at=now() where tg_id=$1", [req.u.id, amount]);
+    const updated = await client.query(
+      "update star_wallets set balance=balance-$2,updated_at=now() where tg_id=$1 returning balance",
+      [req.u.id, amount]
+    );
     const id = crypto.randomUUID();
     await client.query(
       "insert into star_withdrawal_requests(id,tg_id,amount,destination) values($1,$2,$3,$4)",
@@ -349,10 +428,10 @@ app.post("/api/stars/withdrawal", auth, wrap(async (req, res) => {
     await client.query(
       `insert into star_transactions(tg_id,kind,amount,balance_after,note)
        values($1,'withdrawal_request',$2,$3,$4)`,
-      [req.u.id, -amount, rows[0].withdrawable - amount, `Withdrawal request ${id}`]
+      [req.u.id, -amount, updated.rows[0].balance, `Manual withdrawal request ${id}`]
     );
     await client.query("commit");
-    res.json({ ok: true, request_id: id, status: "pending" });
+    res.json({ ok: true, request_id: id, status: "pending", balance: updated.rows[0].balance });
   } catch (e) {
     await client.query("rollback").catch(() => {});
     throw e;
