@@ -2050,6 +2050,22 @@ body{padding-bottom:env(safe-area-inset-bottom,0px)}
  .nav.more-open .nav-more{z-index:60}
 }
 @media(prefers-reduced-motion:reduce){.view{animation:none}.tile,.invitem{transition:none}}
+</style><style id="farm-empire-illustrated-assets-v24">
+/* V24 ORIGINAL ART PASS — decorative sprites never intercept map taps */
+#farmMap .fe-world-detail-layer{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+#farmMap .fe-world-detail{position:absolute;display:block;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 4px 3px #294a2b55);opacity:.98}
+#farmMap .fe-world-detail svg{display:block;width:100%;height:100%;overflow:visible}
+#farmMap .fe-world-detail.tree{width:clamp(40px,11vw,76px);height:clamp(48px,13vw,94px)}
+#farmMap .fe-world-detail.flower{width:clamp(42px,9vw,66px);height:clamp(34px,7vw,54px)}
+#farmMap .fe-world-detail.prop{width:clamp(34px,8vw,58px);height:clamp(40px,9vw,66px)}
+#farmMap .fe-world-detail.path{width:clamp(100px,25vw,170px);height:clamp(38px,9vw,62px)}
+#farmMap .fe-world-detail.birdhouse{width:clamp(28px,6vw,46px);height:clamp(40px,9vw,66px)}
+#farmMap .fe-world-detail.lantern{width:clamp(24px,5vw,38px);height:clamp(42px,9vw,64px)}
+#farmMap .animal-sprite .farm-animal-art{width:100%;height:100%;overflow:visible}
+.animal-interior-icon .farm-animal-art{width:76px;height:76px}
+.animal-big .farm-animal-art{width:66px;height:62px}
+@media(max-width:520px){#farmMap .fe-world-detail{opacity:.93}#farmMap .fe-world-detail.tree{width:42px;height:52px}#farmMap .fe-world-detail.path{width:108px;height:42px}}
+@media(prefers-reduced-motion:reduce){#farmMap .fe-world-detail{transition:none!important}}
 </style></head>
 <body><div id="bootScreen" role="status" aria-live="polite"><div class="boot-loading-ui"><div class="boot-status" id="bootStatus">Загружаем твою ферму…</div><div class="boot-progress"><i id="bootProgressFill"></i></div></div></div><div class="app">
 <header class="top"><div class="brand"><div class="logo">🌱</div><div>FARM <span style="color:#68ad55">EMPIRE</span><div style="font-size:10px;color:#829487;letter-spacing:2px">ALPHA 4.5 · GRAND GLOW-UP</div></div></div>
@@ -2476,14 +2492,23 @@ function spendInputs(inputs){Object.entries(inputs).forEach(([id,n])=>state.inve
 function fmt(sec){sec=Math.max(0,Math.ceil(sec));if(sec<60)return sec+'с';if(sec<3600)return Math.floor(sec/60)+'м '+(sec%60?sec%60+'с':'');if(sec<86400)return Math.floor(sec/3600)+'ч '+Math.floor(sec%3600/60)+'м';return Math.floor(sec/86400)+'д '+Math.floor(sec%86400/3600)+'ч'}
 
 function farmBuildingSvg(kind){
- const aliases={house:'house',mill:'mill',bakery:'bakery',dairy:'dairy',coop:'coop',barn:'barn',sheep:'sheep',pigsty:'pigsty',duck:'duck',goat:'goat',storage:'storage',market:'market',orders:'orders',pond:'pond'};
- const key=aliases[kind]||'storage';
+ const aliases={house:'house-detail',mill:'mill-detail',bakery:'bakery-detail',dairy:'dairy-detail',coop:'coop-detail',barn:'barn-detail',sheep:'sheep-detail',pigsty:'pigsty-detail',duck:'duck-detail',goat:'goat-detail',storage:'storage-detail',market:'market-detail',orders:'orders-detail',pond:'pond-detail'};
+ const key=aliases[kind]||'storage-detail';
  return '<svg class="farm-building-art" viewBox="0 0 180 160" role="img" aria-hidden="true" focusable="false"><use href="assets/farm-world-sprites.svg#building-'+key+'"></use></svg>';
 }
-function farmAnimalSvg(id,baby=false){
- const aliases={cow:'cow',sheep:'sheep',pig:'pig',chicken:'chicken',duck:'duck',goat:'goat'};
- const key=aliases[id]||'chicken';
- return '<svg class="farm-animal-art'+(baby?' baby-art':'')+'" viewBox="0 0 120 90" aria-hidden="true" focusable="false"><use href="assets/farm-world-sprites.svg#animal-'+key+'"></use></svg>';
+function farmAnimalSvg(id,baby=false,pose=0){
+ const poses={
+  cow:{adult:[[0,1],[2,1],[1,1]],baby:[[1,1]]},
+  sheep:{adult:[[3,1],[0,2]],baby:[[1,2]]},
+  pig:{adult:[[2,2],[3,2]],baby:[[2,2]]},
+  chicken:{adult:[[0,0],[1,0],[3,0]],baby:[[2,0]]},
+  duck:{adult:[[0,3]],baby:[[1,3]]},
+  goat:{adult:[[2,3],[3,3]],baby:[[3,3]]}
+ };
+ const variants=(poses[id]||poses.chicken)[baby?'baby':'adult'];
+ const cell=variants[Math.abs(Number(pose)||0)%variants.length];
+ const x=-cell[0]*48,y=-cell[1]*48;
+ return '<svg class="farm-animal-art'+(baby?' baby-art':'')+'" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><image href="assets/farm-animals-atlas.png" x="'+x+'" y="'+y+'" width="192" height="192" preserveAspectRatio="none" pointer-events="none"></image></svg>';
 }
 let farmMapAnimalSignature='';
 function upgradeFarmMapArt(){
@@ -2506,6 +2531,22 @@ function upgradeFarmMapArt(){
   const fence=document.createElement('div');fence.className='fe-map-fence';fence.setAttribute('aria-hidden','true');
   fence.innerHTML='<svg viewBox="0 0 160 70"><use href="assets/farm-world-sprites.svg#nature-fence"></use></svg>';
   map.appendChild(fence);
+ }
+ if(!map.querySelector('.fe-world-detail-layer')){
+  const layer=document.createElement('div');layer.className='fe-world-detail-layer';layer.setAttribute('aria-hidden','true');
+  const details=[
+   ['apple-tree','nature-apple-tree','4%','27%','tree'],
+   ['blossom-tree','nature-blossom-tree','95%','35%','tree'],
+   ['wheelbarrow','nature-wheelbarrow','88%','24%','prop'],
+   ['flower-bed','nature-flower-bed','5%','57%','flower'],
+   ['lavender','nature-lavender','94%','68%','flower'],
+   ['lantern','nature-lantern','5%','78%','prop'],
+   ['bench','nature-bench','94%','88%','prop'],
+   ['birdhouse','nature-birdhouse','10%','94%','prop'],
+   ['stone-path','nature-stone-path','51%','96%','path']
+  ];
+  layer.innerHTML=details.map(d=>'<span class="fe-world-detail '+d[4]+' '+d[0]+'" style="left:'+d[2]+';top:'+d[3]+'"><svg viewBox="'+(d[4]==='tree'?'0 0 110 130':d[4]==='flower'?'0 0 120 90':d[4]==='path'?'0 0 180 70':d[0]==='lantern'?'0 0 60 100':d[0]==='birdhouse'?'0 0 70 100':d[0]==='bench'?'0 0 120 80':'0 0 120 90')+'"><use href="assets/farm-world-sprites.svg#'+d[1]+'"></use></svg></span>').join('');
+  map.appendChild(layer);
  }
 }
 function renderFarmMap(){
@@ -2543,7 +2584,7 @@ function renderMapAnimalLife(){
   const visible=herd.slice(0,8);
   const animals=visible.map((a,i)=>{
    const baby=animalStage(a,ANIMALS[p.id])!=='adult';
-   return '<span class="animal-sprite '+(baby?'baby':'adult')+'" style="--delay:'+((i%4)*-.37)+'s" title="'+(baby?'Молодняк':'Взрослое животное')+'">'+farmAnimalSvg(p.id,baby)+'</span>';
+   return '<span class="animal-sprite '+(baby?'baby':'adult')+'" style="--delay:'+((i%4)*-.37)+'s" title="'+(baby?'Молодняк':'Взрослое животное')+'">'+farmAnimalSvg(p.id,baby,i)+'</span>';
   }).join('');
   const overflow=herd.length>8?'<span class="pen-overflow">+'+(herd.length-8)+'</span>':'';
   const empty=herd.length===0?'<span class="pen-empty">Пока пусто</span>':'';
