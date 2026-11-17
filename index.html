@@ -2059,6 +2059,7 @@ body{padding-bottom:env(safe-area-inset-bottom,0px)}
 #farmMap .fe-world-detail.flower{width:clamp(42px,9vw,66px);height:clamp(34px,7vw,54px)}
 #farmMap .fe-world-detail.prop{width:clamp(34px,8vw,58px);height:clamp(40px,9vw,66px)}
 #farmMap .fe-world-detail.path{width:clamp(100px,25vw,170px);height:clamp(38px,9vw,62px)}
+#farmMap .fe-world-detail.mushrooms,#farmMap .fe-world-detail.bush{width:clamp(38px,8vw,56px);height:clamp(28px,6vw,42px)}
 #farmMap .fe-world-detail.birdhouse{width:clamp(28px,6vw,46px);height:clamp(40px,9vw,66px)}
 #farmMap .fe-world-detail.lantern{width:clamp(24px,5vw,38px);height:clamp(42px,9vw,64px)}
 #farmMap .animal-sprite .farm-animal-art{width:100%;height:100%;overflow:visible}
@@ -2529,7 +2530,7 @@ function upgradeFarmMapArt(){
  });
  if(!map.querySelector('.fe-map-fence')){
   const fence=document.createElement('div');fence.className='fe-map-fence';fence.setAttribute('aria-hidden','true');
-  fence.innerHTML='<svg viewBox="0 0 160 70"><use href="assets/farm-world-sprites.svg#nature-fence"></use></svg>';
+  fence.innerHTML='<svg viewBox="0 0 160 70"><use href="assets/farm-world-sprites.svg#nature-white-fence"></use></svg>';
   map.appendChild(fence);
  }
  if(!map.querySelector('.fe-world-detail-layer')){
@@ -2543,9 +2544,11 @@ function upgradeFarmMapArt(){
    ['lantern','nature-lantern','5%','78%','prop'],
    ['bench','nature-bench','94%','88%','prop'],
    ['birdhouse','nature-birdhouse','10%','94%','prop'],
-   ['stone-path','nature-stone-path','51%','96%','path']
+   ['stone-path','nature-stone-path','51%','96%','path'],
+   ['mushrooms','nature-mushrooms','22%','88%','mushrooms'],
+   ['berry-bush','nature-berry-bush','16%','64%','bush']
   ];
-  layer.innerHTML=details.map(d=>'<span class="fe-world-detail '+d[4]+' '+d[0]+'" style="left:'+d[2]+';top:'+d[3]+'"><svg viewBox="'+(d[4]==='tree'?'0 0 110 130':d[4]==='flower'?'0 0 120 90':d[4]==='path'?'0 0 180 70':d[0]==='lantern'?'0 0 60 100':d[0]==='birdhouse'?'0 0 70 100':d[0]==='bench'?'0 0 120 80':'0 0 120 90')+'"><use href="assets/farm-world-sprites.svg#'+d[1]+'"></use></svg></span>').join('');
+  layer.innerHTML=details.map(d=>'<span class="fe-world-detail '+d[4]+' '+d[0]+'" style="left:'+d[2]+';top:'+d[3]+'"><svg viewBox="'+(d[4]==='tree'?'0 0 110 130':d[4]==='flower'?'0 0 120 90':d[4]==='path'?'0 0 180 70':d[4]==='mushrooms'||d[4]==='bush'?'0 0 100 70':d[0]==='lantern'?'0 0 60 100':d[0]==='birdhouse'?'0 0 70 100':d[0]==='bench'?'0 0 120 80':'0 0 120 90')+'"><use href="assets/farm-world-sprites.svg#'+d[1]+'"></use></svg></span>').join('');
   map.appendChild(layer);
  }
 }
