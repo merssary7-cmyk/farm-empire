@@ -78,7 +78,7 @@ const page = fs
   document.addEventListener("click", intercept, true);
 })();
 document.addEventListener("click",e=>{const el=e.target instanceof Element?e.target:e.target?.parentElement;const node=el?.closest("[data-a]");if(!node)return;setTimeout(()=>{if(!node.isConnected)return;const opts={bubbles:true,cancelable:true,clientX:e.clientX,clientY:e.clientY,pointerId:1,pointerType:"mouse",isPrimary:true};node.dispatchEvent(new PointerEvent("pointerdown",opts));node.dispatchEvent(new PointerEvent("pointerup",opts));},0)},true);
-</script></body>`);
+</script></body>`)
   .replace("</body>", `<script>
 (() => {
   const tg = window.Telegram && window.Telegram.WebApp;
