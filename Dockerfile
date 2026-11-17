@@ -7,3 +7,4 @@ RUN (cat public/index.html.gz.b64.part* | base64 -d | gzip -dc > public/index.ht
 ENV PORT=3000
 EXPOSE 3000
 CMD ["node", "server.js"]
+# Rebuild after Mini App click-handler compatibility fix
