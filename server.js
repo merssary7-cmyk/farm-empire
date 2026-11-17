@@ -270,6 +270,44 @@ app.post("/api/stars/invoice", auth, wrap(async (req, res) => {
   }
 }));
 
+app.post("/api/stars/refund", auth, wrap(async (req, res) => {
+  const orderId = String(req.body && req.body.order_id || "");
+  if (!/^[0-9a-f-]{36}$/i.test(orderId)) return res.status(400).json({ error: "invalid_order_id" });
+  const { rows } = await db.query(
+    "select id, telegram_payment_charge_id, status from star_orders where id=$1 and tg_id=$2",
+    [orderId, req.u.id]
+  );
+  const order = rows[0];
+  if (!order || order.status !== "paid" || !order.telegram_payment_charge_id)
+    return res.status(400).json({ error: "order_not_refundable" });
+  await telegram("refundStarPayment", {
+    user_id: req.u.id,
+    telegram_payment_charge_id: order.telegram_payment_charge_id
+  });
+  const client = await db.connect();
+  try {
+    await client.query("begin");
+    const locked = await client.query("select * from star_orders where id=$1 for update", [orderId]);
+    if (locked.rows[0]?.status === "paid") {
+      const wallet = await client.query(
+        "update star_wallets set balance=greatest(0,balance-$2),updated_at=now() where tg_id=$1 returning balance",
+        [req.u.id, locked.rows[0].product_stars]
+      );
+      await client.query("update star_orders set status='refunded' where id=$1", [orderId]);
+      await client.query(
+        `insert into star_transactions(tg_id,order_id,kind,amount,balance_after,note)
+         values($1,$2,'refund',$3,$4,'User requested Telegram Stars refund')`,
+        [req.u.id, orderId, -locked.rows[0].product_stars, wallet.rows[0].balance]
+      );
+    }
+    await client.query("commit");
+    res.json({ ok: true, status: "refunded" });
+  } catch (e) {
+    await client.query("rollback").catch(() => {});
+    throw e;
+  } finally { client.release(); }
+}));
+
 app.get("/api/stars/balance", auth, wrap(async (req, res) => {
   await ensureWallet(req.u.id);
   const { rows } = await db.query(
