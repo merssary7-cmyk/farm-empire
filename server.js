@@ -111,9 +111,10 @@ async function telegram(method, body) {
 }
 async function ensureWallet(tgId) {
   await db.query(
-    \`insert into star_wallets(tg_id,balance)
-     values($1,coalesce((select case when (state->>'stars') ~ '^[0-9]+
-
+    "insert into star_wallets(tg_id,balance) values($1,coalesce((select case when (state->>'stars') ~ '^[0-9]+$' then (state->>'stars')::integer else 0 end from players where tg_id=$1),0)) on conflict(tg_id) do nothing",
+    [tgId]
+  );
+}
 const app = express();
 app.use(express.json({ limit: "300kb" }));
 
