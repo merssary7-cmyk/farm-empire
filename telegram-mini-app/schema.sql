@@ -4,4 +4,8 @@ create table if not exists players (
   state jsonb not null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
+,
+  revision integer not null default 0
 );
+
+alter table players add column if not exists revision integer not null default 0;
