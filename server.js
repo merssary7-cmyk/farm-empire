@@ -29,11 +29,11 @@ const page = fs
   const packages = {50:50, 130:150, 400:500};
   function findPackage(target) {
     let el = target instanceof Element ? target : target && target.parentElement;
-    for (let i = 0; el && i < 9; i++, el = el.parentElement) {
-      const value = (el.innerText || el.textContent || "").replace(/\\s+/g, " ").trim();
+    for (let i = 0; el && i < 20; i++, el = el.parentElement) {
+      const value = (el.innerText || el.textContent || "").replace(/[\\s\\u00a0]+/g, " ").trim();
       if (!/Купить/i.test(value) || !/Telegram\\s*Stars/i.test(value)) continue;
       const match = value.match(/(50|130|400)\\s*Telegram\\s*Stars/i);
-      if (match && packages[Number(match[1])]) return Number(match[1]);
+      if (match && Object.prototype.hasOwnProperty.call(packages, Number(match[1]))) return Number(match[1]);
     }
     return null;
   }
