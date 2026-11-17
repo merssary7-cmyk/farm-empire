@@ -2429,7 +2429,7 @@ async function pushCloudSave(){
  const serialized=JSON.stringify(state);if(serialized===lastCloudSyncedSerialized)return;
  cloudSyncBusy=true;cloudStatus('☁️ Сохраняем…','syncing');
  try{
-  const response=await cloudFetch('https://farm-empire-api-core-production.up.railway.app/api/game/save',{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'tma '+window.Telegram.WebApp.initData},body:JSON.stringify({save:JSON.parse(serialized),expectedRevision:cloudRevision})});
+  const response=await cloudFetch('/api/game/save',{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'tma '+window.Telegram.WebApp.initData},body:JSON.stringify({save:JSON.parse(serialized),expectedRevision:cloudRevision})});
   const result=await response.json().catch(()=>({}));
   if(response.status===409){
    cloudRevision=Number(result.revision)||cloudRevision;
@@ -2458,7 +2458,7 @@ async function initCloudSave(){
  cloudStatus('☁️ Подключаем…','syncing');
  let phase='запрос';
  try{
-  const response=await cloudFetch('https://farm-empire-api-core-production.up.railway.app/api/game/save',{method:'GET',headers:{'Authorization':'tma '+tg.initData},cache:'no-store'});
+  const response=await cloudFetch('/api/game/save',{method:'GET',headers:{'Authorization':'tma '+tg.initData},cache:'no-store'});
   phase='чтение ответа';
   const result=await response.json();if(!response.ok){const error=new Error(result.error||'HTTP '+response.status);error.status=response.status;throw error;}
   phase='обработка сохранения';
@@ -2820,12 +2820,12 @@ function autoFarmTick(){
 }
 async function syncStarsEntitlements(){
  const tg=window.Telegram?.WebApp;if(!tg||!tg.initData)return;
- try{const r=await fetch('https://farm-empire-api-core-production.up.railway.app/api/stars/sync-entitlements',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'tma '+tg.initData},body:'{}'});if(!r.ok)return;const ent=await r.json();if(Number(ent.autoFarmExpiresAt)>state.autoFarm.expiresAt){const wasInactive=state.autoFarm.expiresAt<=Date.now();state.autoFarm.expiresAt=Number(ent.autoFarmExpiresAt);if(wasInactive)state.autoFarm.lastRun=Date.now();save();update();}}catch(_){/* Optional server is absent in local preview. */}
+ try{const r=await fetch('/api/stars/sync-entitlements',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'tma '+tg.initData},body:'{}'});if(!r.ok)return;const ent=await r.json();if(Number(ent.autoFarmExpiresAt)>state.autoFarm.expiresAt){const wasInactive=state.autoFarm.expiresAt<=Date.now();state.autoFarm.expiresAt=Number(ent.autoFarmExpiresAt);if(wasInactive)state.autoFarm.lastRun=Date.now();save();update();}}catch(_){/* Optional server is absent in local preview. */}
 }
 async function requestStarsInvoice(kind,details){
  const tg=window.Telegram?.WebApp;if(!tg||!tg.initData){toast('Покупки Stars доступны после запуска игры через Telegram.');return;}
  try{
-  const response=await fetch('https://farm-empire-api-core-production.up.railway.app/api/stars/create-invoice',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'tma '+tg.initData},body:JSON.stringify({kind,...details})});
+  const response=await fetch('/api/stars/create-invoice',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'tma '+tg.initData},body:JSON.stringify({kind,...details})});
   const data=await response.json().catch(()=>({}));
   if(!response.ok){const messages={NICKNAME_TAKEN:'Этот никнейм уже занят',NICKNAME_UNCHANGED:'Это уже твой текущий никнейм',INVALID_NICKNAME:'Проверь никнейм: 3–20 символов',RESERVED_NICKNAME:'Это имя нельзя использовать'};throw new Error(messages[data.error]||'Сервер оплаты не подключён ('+response.status+')');}
   if(data.freeChange&&kind==='nickname_change'){const updated=await loadPlayerProfile(details.nickname);closeModal();toast(updated?'🎉 Первый никнейм изменён бесплатно!':'Никнейм сохранён бесплатно.');return;}
@@ -2833,12 +2833,12 @@ async function requestStarsInvoice(kind,details){
   tg.openInvoice(data.invoiceLink,async status=>{
    if(status==='paid'){
     try{
-     const v=await fetch('https://farm-empire-api-core-production.up.railway.app/api/stars/sync-entitlements',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'tma '+tg.initData}});
+     const v=await fetch('/api/stars/sync-entitlements',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'tma '+tg.initData}});
      if(!v.ok)throw new Error('Не удалось подтвердить покупку');
      const ent=await v.json();
      if(kind==='autofarm'&&ent.autoFarmExpiresAt){{const previous=state.autoFarm.expiresAt;state.autoFarm.expiresAt=Math.max(previous,Number(ent.autoFarmExpiresAt));if(previous<=Date.now())state.autoFarm.lastRun=Date.now();}save();update();toast('🤖 Автоферма активирована!');}
      else if(kind==='nickname_change'){const updated=await loadPlayerProfile(details.nickname);closeModal();toast(updated?'⭐ Никнейм успешно изменён!':'⭐ Платёж получен, никнейм обновится после подтверждения сервера.');}
-     else if(kind==='roulette_spin'){const rr=await fetch('https://farm-empire-api-core-production.up.railway.app/api/stars/roulette-result',{method:'POST',headers:{'Authorization':'tma '+tg.initData}});if(!rr.ok)throw new Error('Результат ожидает подтверждения сервера');const prize=await rr.json();if(Number.isFinite(Number(prize.coins))&&Number(prize.coins)>0){state.coins+=Number(prize.coins);$('wheelResult').textContent='Премиум-оборот: +'+Number(prize.coins).toLocaleString('ru-RU')+' 🪙';log('⭐ Премиум-рулетка: +'+Number(prize.coins)+' монет');save();update();}}
+     else if(kind==='roulette_spin'){const rr=await fetch('/api/stars/roulette-result',{method:'POST',headers:{'Authorization':'tma '+tg.initData}});if(!rr.ok)throw new Error('Результат ожидает подтверждения сервера');const prize=await rr.json();if(Number.isFinite(Number(prize.coins))&&Number(prize.coins)>0){state.coins+=Number(prize.coins);$('wheelResult').textContent='Премиум-оборот: +'+Number(prize.coins).toLocaleString('ru-RU')+' 🪙';log('⭐ Премиум-рулетка: +'+Number(prize.coins)+' монет');save();update();}}
     }catch(e){toast('Платёж получен; синхронизация ожидает сервер.');}
    }else if(status==='cancelled')toast('Покупка отменена');else toast('Платёж не завершён');
   });
@@ -2863,7 +2863,7 @@ async function loadPlayerProfile(expectedNickname=''){
  try{
   let profile=null;
   for(let attempt=0;attempt<(expectedNickname?5:1);attempt++){
-   const response=await fetch('https://farm-empire-api-core-production.up.railway.app/api/player/profile',{headers:{'Authorization':'tma '+tg.initData}});
+   const response=await fetch('/api/player/profile',{headers:{'Authorization':'tma '+tg.initData}});
    if(!response.ok)throw new Error('PROFILE_LOAD_FAILED');
    profile=await response.json();
    if(!expectedNickname||String(profile.nickname||'').toLocaleLowerCase('und')===String(expectedNickname).normalize('NFC').trim().replace(/\s+/g,' ').toLocaleLowerCase('und'))break;
