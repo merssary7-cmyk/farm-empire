@@ -30,9 +30,9 @@ const page = fs
   function findPackage(target) {
     let el = target instanceof Element ? target : target && target.parentElement;
     for (let i = 0; el && i < 9; i++, el = el.parentElement) {
-      const value = (el.innerText || el.textContent || "").replace(/\\s+/g, " ").trim();
-      if (!/Купить/i.test(value) || !/Telegram\\s*Stars/i.test(value)) continue;
-      const match = value.match(/(50|130|400)\\s*Telegram\\s*Stars/i);
+      const value = (el.innerText || el.textContent || "").replace(/\s+/g, " ").trim();
+      if (!/Купить/i.test(value) || !/Telegram\s*Stars/i.test(value)) continue;
+      const match = value.match(/(50|130|400)\s*Telegram\s*Stars/i);
       if (match && packages[Number(match[1])]) return Number(match[1]);
     }
     return null;
@@ -87,7 +87,7 @@ document.addEventListener("click",e=>{const el=e.target instanceof Element?e.tar
   const authHeaders = {"Content-Type":"application/json","Authorization":"tma " + tg.initData};
   function button() {
     const nodes = [...document.querySelectorAll("button,[role=button],[data-a],div")];
-    return nodes.filter(el => /Вывести\\s*\\(от\\s*50/i.test((el.innerText || el.textContent || "").trim()) &&
+    return nodes.filter(el => /Вывести\s*\(от\s*50/i.test((el.innerText || el.textContent || "").trim()) &&
       (el.innerText || el.textContent || "").trim().length < 90)
       .sort((a,b) => (a.innerText || a.textContent || "").length - (b.innerText || b.textContent || "").length)[0];
   }
@@ -142,7 +142,7 @@ document.addEventListener("click",e=>{const el=e.target instanceof Element?e.tar
   function intercept(e) {
     const el = e.target instanceof Element ? e.target : e.target?.parentElement;
     const target = el?.closest("button,[role=button],[data-a],div");
-    if (!target || !/Вывести\\s*\\(от\\s*50/i.test((target.innerText || target.textContent || "").trim())) return;
+    if (!target || !/Вывести\s*\(от\s*50/i.test((target.innerText || target.textContent || "").trim())) return;
     if (Date.now() - lastHandled < 1200) { e.preventDefault(); e.stopImmediatePropagation(); return; }
     lastHandled = Date.now();
     e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
