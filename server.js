@@ -119,28 +119,23 @@ app.use(express.json({ limit: "300kb" }));
 app.get("/", (_q, r) => r.type("html").send(page));
 app.get("/health", (_q, r) => r.json({ ok: true }));
 
-app.post(WEBHOOK_PATH, (req, res) => {
+app.post(WEBHOOK_PATH, async (req, res) => {
   if (req.get("x-telegram-bot-api-secret-token") !== WEBHOOK_SECRET) return res.sendStatus(401);
-  res.sendStatus(200);
   const update = req.body || {};
-  (async () => {
+  try {
     if (update.pre_checkout_query) {
       const q = update.pre_checkout_query;
-      let ok = false;
-      try {
-        const { rows } = await db.query(
-          "select tg_id, price_xtr, currency, status from star_orders where invoice_payload=$1",
-          [q.invoice_payload]
-        );
-        ok = !!rows[0] && String(rows[0].tg_id) === String(q.from.id) &&
-          rows[0].price_xtr === q.total_amount && rows[0].currency === q.currency && rows[0].status === "pending";
-      } catch (e) { console.error("pre_checkout validation:", e.message); }
+      const { rows } = await db.query(
+        "select tg_id, price_xtr, currency, status from star_orders where invoice_payload=$1",
+        [q.invoice_payload]
+      );
+      const ok = !!rows[0] && String(rows[0].tg_id) === String(q.from.id) &&
+        rows[0].price_xtr === q.total_amount && rows[0].currency === q.currency && rows[0].status === "pending";
       await telegram("answerPreCheckoutQuery", {
         pre_checkout_query_id: q.id,
         ok,
         ...(!ok ? { error_message: "Счёт недействителен или уже использован. Создайте новую покупку." } : {})
       });
-      return;
     }
 
     const message = update.message;
@@ -157,11 +152,11 @@ app.post(WEBHOOK_PATH, (req, res) => {
             payment.currency !== "XTR" || payment.total_amount !== order.price_xtr) {
           await client.query("rollback");
           console.error("Unmatched successful Telegram payment", payment.telegram_payment_charge_id);
-          return;
+          return res.sendStatus(200);
         }
         if (order.status === "paid") {
           await client.query("commit");
-          return;
+          return res.sendStatus(200);
         }
         await client.query(
           "insert into star_wallets(tg_id) values($1) on conflict(tg_id) do nothing", [order.tg_id]
@@ -186,7 +181,6 @@ app.post(WEBHOOK_PATH, (req, res) => {
         await client.query("rollback").catch(() => {});
         throw e;
       } finally { client.release(); }
-      return;
     }
 
     const refunded = message && message.refunded_payment;
@@ -217,7 +211,11 @@ app.post(WEBHOOK_PATH, (req, res) => {
         throw e;
       } finally { client.release(); }
     }
-  })().catch(e => console.error("Telegram webhook processing:", e));
+    return res.sendStatus(200);
+  } catch (e) {
+    console.error("Telegram webhook processing:", e);
+    return res.sendStatus(500);
+  }
 });
 
 app.get("/api/load", auth, wrap(async (req, res) => {
