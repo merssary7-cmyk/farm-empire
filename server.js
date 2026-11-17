@@ -65,8 +65,11 @@ const page = fs
     const price = findPackage(event.target);
     if (!price) return;
     const now = Date.now();
-    if (event.type === "click" && now - lastPaymentTap < 1500) {
-      event.preventDefault(); event.stopImmediatePropagation(); return;
+    if (now - lastPaymentTap < 1500) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      return;
     }
     lastPaymentTap = now;
     event.preventDefault();
@@ -74,7 +77,10 @@ const page = fs
     event.stopImmediatePropagation();
     buy(price);
   }
-  document.addEventListener("pointerup", intercept, true);
+  // Catch the tap before the game's own pointer/click handlers can throw.
+  document.addEventListener("pointerdown", intercept, true);
+  document.addEventListener("touchstart", intercept, {capture:true, passive:false});
+  document.addEventListener("mousedown", intercept, true);
   document.addEventListener("click", intercept, true);
 })();
 document.addEventListener("click",e=>{const el=e.target instanceof Element?e.target:e.target?.parentElement;const node=el?.closest("[data-a]");if(!node)return;setTimeout(()=>{if(!node.isConnected)return;const opts={bubbles:true,cancelable:true,clientX:e.clientX,clientY:e.clientY,pointerId:1,pointerType:"mouse",isPrimary:true};node.dispatchEvent(new PointerEvent("pointerdown",opts));node.dispatchEvent(new PointerEvent("pointerup",opts));},0)},true);
@@ -191,9 +197,15 @@ async function ensureWallet(tgId) {
   );
 }
 const app = express();
+app.set("etag", false);
 app.use(express.json({ limit: "300kb" }));
 
-app.get("/", (_q, r) => r.type("html").send(page));
+app.get("/", (_q, r) => r
+  .set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate")
+  .set("Pragma", "no-cache")
+  .set("Expires", "0")
+  .type("html")
+  .send(page));
 app.get("/health", (_q, r) => r.json({ ok: true }));
 
 app.post(WEBHOOK_PATH, async (req, res) => {
